@@ -1,8 +1,14 @@
 from fastapi import APIRouter, HTTPException
 from app.modules.users.service import service
+from app.modules.users.auth import router as auth
 from app.modules.users.models import UserModel, UserResponseModel
 
 router = APIRouter()
+
+router.include_router(
+    auth.router,
+    prefix="/auth",
+)
 
 @router.get("/")
 async def read_users(
@@ -22,6 +28,21 @@ async def find_user_by_id(
   response_model=UserResponseModel
 ):
   result = await service.find_user_by_id(id)
+  if result:
+    return UserResponseModel(
+      message="found user",
+      content=result
+    )
+  else:
+    raise HTTPException(status_code=400, detail="user not found")
+
+@router.get("/email/{email}")
+async def find_user_by_email(
+  email: str,
+  status_code=200,
+  response_model=UserResponseModel
+):
+  result = await service.find_user_by_email(email)
   if result:
     return UserResponseModel(
       message="found user",

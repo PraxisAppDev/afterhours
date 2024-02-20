@@ -11,8 +11,13 @@ class UserRepository:
     cursor = self.collection.find()
     return list(map(lambda document: handle_object_id(document), await cursor.to_list(1000)))
 
-  async def find_one(self, id: str):
+  async def find_one_by_id(self, id: str):
     document = await self.collection.find_one({"_id": ObjectId(id)})
+    if document:
+      return handle_object_id(document)
+  
+  async def find_one_by_email(self, email: str):
+    document = await self.collection.find_one({"email": email})
     if document:
       return handle_object_id(document)
 
