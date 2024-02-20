@@ -45,7 +45,7 @@ async def add_user(
   else:
     raise HTTPException(status_code=409, detail="user already exists")
 
-@router.post("/{id}")
+@router.put("/{id}")
 async def update_user_by_id(
   id,
   user: UserModel,

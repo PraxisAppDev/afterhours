@@ -10,6 +10,7 @@ class UserModel(BaseModel):
   email: str = Field(..., pattern=r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
   phone: str = Field(..., pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$") # Only included regex for dashes
   fullname: str = Field(...)
+  salt: str = Field(...)
   hashedPassword: str = Field(...)
   lastLogin: datetime = Field(...)
   huntHistory: List[PyObjectId] = []
@@ -22,6 +23,7 @@ class UserModel(BaseModel):
           "email": "test@gmail.com",
           "phone": "123-456-7890",
           "fullname": "testy tester",
+          "salt": "421fsd",
           "hashed_password": "randomlyhashedpassword",
           "lastLogin": "2024-02-19T10:30:00Z",
           "huntHistory": []
