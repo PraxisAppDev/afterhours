@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:praxis_afterhours/app_utils/basic_text_field.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/views/bottom_nav_bar.dart';
@@ -150,16 +151,24 @@ class SignInView extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {},
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        "images/facebook.png",
-                        width: 30,
-                        height: 30,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Image.asset(
+                          "images/facebook.png",
+                          width: 30,
+                          height: 30,
+                        ),
                       ),
-                      const Text(
-                        "Sign In With Facebook",
-                        style: TextStyle(color: praxisWhite),
+                      const Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 32.0),
+                          child: Text(
+                            "Sign In With Facebook",
+                            style: TextStyle(color: praxisWhite),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -182,14 +191,23 @@ class SignInView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        "images/google.png",
-                        width: 30,
-                        height: 30,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Image.asset(
+                          "images/google.png",
+                          width: 30,
+                          height: 30,
+                        ),
                       ),
-                      const Text(
-                        "Sign In With Google",
-                        style: TextStyle(color: praxisBlack),
+                      const Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 32.0),
+                          child: Text(
+                            "Sign In With Google",
+                            style: TextStyle(color: praxisBlack),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -206,14 +224,23 @@ class SignInView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        "images/apple.png",
-                        width: 25,
-                        height: 25,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Image.asset(
+                          "images/apple.png",
+                          width: 25,
+                          height: 25,
+                        ),
                       ),
-                      const Text(
-                        "Sign In With Apple",
-                        style: TextStyle(color: praxisWhite),
+                      const Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            "Sign In With Apple",
+                            style: TextStyle(color: praxisWhite),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
                     ],
                   ),
