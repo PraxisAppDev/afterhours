@@ -6,3 +6,4 @@ asyncio
 python-dotenv
 passlib
 jose
+cryptography

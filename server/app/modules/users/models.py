@@ -8,9 +8,8 @@ class UserModel(BaseModel):
   id: Optional[PyObjectId] = Field(alias="_id", default=None)
   username: str = Field(...)
   email: str = Field(..., pattern=r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-  phone: str = Field(..., pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$") # Only included regex for dashes
+  phone: Union[None, str] = Field(None, pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$")
   fullname: str = Field(...)
-  salt: str = Field(...)
   hashedPassword: str = Field(...)
   lastLogin: datetime = Field(...)
   huntHistory: List[PyObjectId] = []
@@ -24,7 +23,7 @@ class UserModel(BaseModel):
           "phone": "123-456-7890",
           "fullname": "testy tester",
           "salt": "421fsd",
-          "hashed_password": "randomlyhashedpassword",
+          "hashedPassword": "randomlyhashedpassword",
           "lastLogin": "2024-02-19T10:30:00Z",
           "huntHistory": []
         }
@@ -33,12 +32,12 @@ class UserModel(BaseModel):
   }
 
 class UpdateUserModel(BaseModel):
-  username: str
-  email: Optional[str] = Field(pattern=r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-  phone: Optional[str] = Field(pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$") # Only included regex for dashes
-  fullname: Optional[str]
-  hashedPassword: Optional[str] = Field(default=None)
-  lastLogin: Optional[datetime]
+  username: Optional[str] = Field(None)
+  email: Optional[str] = Field(None, pattern=r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+  phone: Optional[str] = Field(None, pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$")
+  fullname: Optional[str] = Field(None)
+  hashedPassword: Optional[str] = Field(None)
+  lastLogin: Optional[datetime] = Field(None)
 
   model_config = {
     "json_schema_extra": {
@@ -48,8 +47,9 @@ class UpdateUserModel(BaseModel):
           "email": "test@gmail.com",
           "phone": "123-456-7890",
           "fullname": "testy tester",
-          "hashed_password": "randomlyhashedpassword",
-          "huntId": "23d3f6fccdcd5a3917558d43"
+          "hashedPassword": "randomlyhashedpassword",
+          "huntId": "23d3f6fccdcd5a3917558d43",
+          "lastLogin": "2024-02-19T10:30:00Z"
         }
       ]
     }
