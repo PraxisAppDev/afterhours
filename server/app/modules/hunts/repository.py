@@ -4,7 +4,7 @@ from app.util import handle_object_id
 
 class HuntRepository:
   def __init__(self):
-    self.collection = database.get_collection("users")
+    self.collection = database.get_collection("hunts")
 
   async def get_all(self):
     cursor = self.collection.find()
