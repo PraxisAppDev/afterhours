@@ -8,7 +8,7 @@ class AuthService():
   # TODO - ADD SALT LATER
   async def authenticate_user(self, username: str, plain_password: str):
     user = await user_service.find_user_by_email(username)
-    if not user or not verify_password(plain_password, user.hashedPassword):
+    if not user or not verify_password(plain_password, user["hashedPassword"]):
       return None
     else:
       return user
