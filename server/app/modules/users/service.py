@@ -14,6 +14,9 @@ class UserService:
 
   async def find_user_by_email(self, email: str):
     return await self.repository.find_one_by_email(email)
+  
+  async def find_user_by_username(self, username:str):
+    return await self.repository.find_one_by_username(username)
 
   async def add_user(self, user: UserModel):
     return await self.repository.add_one(user)
