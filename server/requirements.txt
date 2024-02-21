@@ -4,3 +4,5 @@ uvicorn
 motor
 asyncio
 python-dotenv
+passlib
+jose
