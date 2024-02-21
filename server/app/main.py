@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.modules.users import router as users
 from app.modules.hunts import router as hunts
+from app.exceptions import unhandled_exception_handler
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -8,6 +9,8 @@ app = FastAPI()
 origins = [
     # TODO
 ]
+
+app.add_exception_handler(Exception, unhandled_exception_handler)
 
 app.add_middleware(
     CORSMiddleware,
