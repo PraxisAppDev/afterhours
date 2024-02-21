@@ -4,7 +4,6 @@ from app.modules.hunts.models import HuntModel, HuntResponseModel
 
 router = APIRouter()
 
-# TODO (Josiah)
 @router.get("/load_list_of_hunts")
 async def load_list_of_hunts(
   status_code=200,
