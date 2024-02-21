@@ -4,7 +4,7 @@ class HuntService:
   def __init__(self):
     self.repository = repository
 
-  async def get_users(self):
+  async def get_hunts(self):
     return await self.repository.get_all()
 
 service = HuntService()

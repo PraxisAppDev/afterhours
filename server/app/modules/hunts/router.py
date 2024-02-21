@@ -5,8 +5,13 @@ from app.modules.hunts.models import HuntModel, HuntResponseModel
 router = APIRouter()
 
 # TODO (Josiah)
-@router.get("/")
+@router.get("/load_list_of_hunts")
 async def load_list_of_hunts(
   status_code=200,
+  response_model=HuntResponseModel
 ):
-  return "bruh"
+  result = await service.get_hunts()
+  return HuntResponseModel(
+    message="fetched hunts",
+    content=result
+  )
