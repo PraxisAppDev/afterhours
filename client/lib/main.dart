@@ -8,7 +8,7 @@ void main() {
       theme: ThemeData(
         fontFamily: "Poppins",
       ),
-      home: Splash(),
+      home: const Splash(),
     ),
   );
 }
