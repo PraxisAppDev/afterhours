@@ -16,7 +16,7 @@ class _SplashState extends State<Splash> {
   }
 
   _navigatetoSignIn(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 2));
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => SignInView()));
   }
