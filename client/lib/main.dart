@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:praxis_afterhours/views/sign_in_view.dart';
+import 'package:praxis_afterhours/views/splash.dart';
 
 void main() {
   runApp(
@@ -8,7 +8,7 @@ void main() {
       theme: ThemeData(
         fontFamily: "Poppins",
       ),
-      home: SignInView(),
+      home: const Splash(),
     ),
   );
 }
