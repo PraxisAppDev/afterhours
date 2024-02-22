@@ -3,12 +3,12 @@ services:
   server:
     build: .
     ports:
-      - 8000:8000
+      - 8001:8001
     env_file:
       - app/.env
   mongo:
     image: mongo
     ports:
-      - 8002:8002
-    environment:
-      - name=value
+      - 27017:8002
+    env_file:
+      - mongo.config.env
