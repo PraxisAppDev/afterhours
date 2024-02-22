@@ -12,10 +12,10 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    _navigatetoSignIn();
+    _navigatetoSignIn(context);
   }
 
-  _navigatetoSignIn() async {
+  _navigatetoSignIn(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 10));
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => SignInView()));
@@ -25,31 +25,31 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Color(0xffFFFFFF),
-      body: Center(
-        child: Stack(
-          children: [
-            Positioned(
+      body: Stack(
+        children: [
+          Center(
+            child: Positioned(
                 child: Image(
                     width: 1000,
                     height: 1000,
                     image: AssetImage('../../assets/logo/logo.png'))),
-            Positioned(
-                bottom: 0,
-                right: 0,
-                child: Image(
-                    width: 200,
-                    height: 200,
-                    image: AssetImage('../../assets/logo/corner_logo.png'))),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Image(
-                    width: 100,
-                    height: 100,
-                    image: AssetImage('../../assets/logo/copyright.png'))),
-          ],
-        ),
+          ),
+          Positioned(
+              bottom: -30,
+              right: -30,
+              child: Image(
+                  width: 200,
+                  height: 200,
+                  image: AssetImage('../../assets/logo/corner_logo.png'))),
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Image(
+                  width: 100,
+                  height: 100,
+                  image: AssetImage('../../assets/logo/copyright.png'))),
+        ],
       ),
     );
   }
