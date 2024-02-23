@@ -27,6 +27,6 @@
     - Type in the following address to see the Swagger UI in your browser
       >http://localhost:8001/docs#/
 
-5. Stop and remove containers
+6. Stop and remove containers
 
     >docker-compose down
