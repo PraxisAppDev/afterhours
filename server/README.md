@@ -22,6 +22,11 @@
     - Detached Mode
       >docker-compose up -d
 
+5. View API Spec and Documentation
+
+    - Type in the following address to see the Swagger UI in your browser
+      >http://localhost:8001/docs#/
+
 5. Stop and remove containers
 
     >docker-compose down
