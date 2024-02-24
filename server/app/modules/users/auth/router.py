@@ -20,7 +20,7 @@ async def login(request: LoginModel):
     )
   else:
     raise HTTPException(
-      status_code=400,
+      status_code=422,
       detail="unable to sign in"
     )
 
@@ -38,6 +38,6 @@ async def signup(request: SignUpModel):
     )
   else:
     raise HTTPException(
-      status_code=400,
+      status_code=422,
       detail="unable to sign up"
     )
