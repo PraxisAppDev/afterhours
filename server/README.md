@@ -29,9 +29,6 @@
     - To build and start `test` containers
         - `test` Default Mode
           >docker-compose --profile test up --abort-on-container-exit --exit-code-from test
-
-        - `test` Detached Mode
-          >docker-compose --profile test up -d --abort-on-container-exit --exit-code-from test
         
         - `test` python3 script (in test directory)
           >python3 run_tests.py
