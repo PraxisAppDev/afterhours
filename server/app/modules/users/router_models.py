@@ -10,7 +10,11 @@ class UserModel(BaseModel):
   id: Optional[PyObjectId] = Field(alias="_id", default=None)
   username: str = Field(...)
   email: str = Field(...)
-  phone: Union[None, str] = Field(None, pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$")
+  phone: Union[None, str] = Field(
+    None,
+    description="The user's phone number.",
+    pattern=r"^(\+\d{1,3})? (((\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4})|(\d{5} \d{5})|\d{6,15})(, ?\d{1,4})?$"
+  )
   fullname: str = Field(...)
   lastLogin: datetime = Field(...)
   huntHistory: List[PyObjectId] = []
