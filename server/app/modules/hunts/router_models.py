@@ -2,7 +2,7 @@ from typing import List, Optional, Union
 from datetime import datetime
 from pydantic import BaseModel, Field
 from app.models import PyObjectId
-from app.modules.users.models import UserModel
+from app.modules.users.router_models import UserModel
 
 class ClueModel(BaseModel):
   hint: str = Field(...)
@@ -73,4 +73,4 @@ class HuntModel(BaseModel):
 # TODO
 class HuntResponseModel(BaseModel):
   message: str
-  content: Union[List[HuntModel]]
+  content: List[HuntModel]

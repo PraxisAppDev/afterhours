@@ -1,9 +1,20 @@
+# basic server libraries: fastapi, pydantic, uvicorn, asyncio
 fastapi
 pydantic
 uvicorn
-motor
 asyncio
 python-dotenv
+
+# mongodb
+motor
+
+# used to implement authentication logic
 passlib
+python-jose[cryptography]
 jose
 cryptography
+
+# note: I am using email_validator because email validation is actually very complicated
+# this is not left-pad
+# https://pdw.ex-parrot.com/Mail-RFC822-Address.html
+email-validator
