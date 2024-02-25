@@ -1,7 +1,7 @@
 from datetime import datetime
 from app.modules.users.auth.util import get_password_hash, verify_password
 from app.modules.users.service import service as user_service
-from app.modules.users.models import UpdateUserModel, UserModel
+from app.modules.users.router_models import UpdateUserModel, UserModel
 
 class AuthService():
   async def authenticate_user(self, email: str, plain_password: str):

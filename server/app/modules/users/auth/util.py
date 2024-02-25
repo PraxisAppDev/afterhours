@@ -13,7 +13,7 @@ JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 JWT_ALGORITHM = os.environ["JWT_ALGORITHM"]
 JWT_ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ["JWT_ACCESS_TOKEN_EXPIRE_MINUTES"])
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto", truncate_error=True)
 
 def verify_password(plain_password, hashed_password):
   return pwd_context.verify(plain_password, hashed_password)

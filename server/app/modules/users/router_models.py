@@ -1,16 +1,21 @@
 from typing import List, Optional, Union
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from app.models import PyObjectId
+from email_validator import validate_email, EmailNotValidError
+from enum import Enum
 
 # TODO
 class UserModel(BaseModel):
   id: Optional[PyObjectId] = Field(alias="_id", default=None)
   username: str = Field(...)
-  email: str = Field(..., pattern=r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-  phone: Union[None, str] = Field(None, pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$")
+  email: str = Field(...)
+  phone: Union[None, str] = Field(
+    None,
+    description="The user's phone number.",
+    pattern=r"^(\+\d{1,3})? (((\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4})|(\d{5} \d{5})|\d{6,15})(, ?\d{1,4})?$"
+  )
   fullname: str = Field(...)
-  hashedPassword: str = Field(...)
   lastLogin: datetime = Field(...)
   huntHistory: List[PyObjectId] = []
 
@@ -22,8 +27,6 @@ class UserModel(BaseModel):
           "email": "test@gmail.com",
           "phone": "123-456-7890",
           "fullname": "testy tester",
-          "salt": "421fsd",
-          "hashedPassword": "randomlyhashedpassword",
           "lastLogin": "2024-02-19T10:30:00Z",
           "huntHistory": []
         }
@@ -33,10 +36,9 @@ class UserModel(BaseModel):
 
 class UpdateUserModel(BaseModel):
   username: Optional[str] = Field(None)
-  email: Optional[str] = Field(None, pattern=r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+  email: Optional[str] = Field(None, min_length=3, max_length=254) # not using a regex because email validation is relatively complex
   phone: Optional[str] = Field(None, pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$")
   fullname: Optional[str] = Field(None)
-  hashedPassword: Optional[str] = Field(None)
   lastLogin: Optional[datetime] = Field(None)
 
   model_config = {
@@ -47,7 +49,6 @@ class UpdateUserModel(BaseModel):
           "email": "test@gmail.com",
           "phone": "123-456-7890",
           "fullname": "testy tester",
-          "hashedPassword": "randomlyhashedpassword",
           "huntId": "23d3f6fccdcd5a3917558d43",
           "lastLogin": "2024-02-19T10:30:00Z"
         }
@@ -55,6 +56,22 @@ class UpdateUserModel(BaseModel):
     }
   }
 
+  @field_validator("email")
+  def email_validator(cls, value):
+    try:
+      validate_email(value)
+      return value
+    except EmailNotValidError as e:
+      raise ValueError("Email is not valid: " + str(e))
+
+
+#enum
+class UserResponseTextModel(str, Enum):
+  USER_NOT_FOUND = "user not found"
+  USER_FOUND = "found user"
+  USER_UPDATED = "updated user"
+  USER_DELETED = "deleted user"
+
 class UserResponseModel(BaseModel):
-  message: str
+  message: UserResponseTextModel
   content: Union[List[UserModel], UserModel, str]

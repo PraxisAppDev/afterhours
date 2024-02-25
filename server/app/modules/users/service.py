@@ -1,5 +1,5 @@
 from app.modules.users.repository import repository
-from app.modules.users.models import UpdateUserModel, UserModel
+from app.modules.users.router_models import UpdateUserModel, UserModel
 
 # TODO
 class UserService:

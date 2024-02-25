@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from app.modules.users import router as users
 from app.modules.hunts import router as hunts
-from app.exceptions import unhandled_exception_handler
+from app.exceptions import unhandled_exception_handler, validation_exception_handler
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -10,6 +11,7 @@ origins = [
     # TODO
 ]
 
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
 
 app.add_middleware(
@@ -31,7 +33,3 @@ app.include_router(
     prefix="/hunts",
     tags=["Hunts"]
 )
-
-@app.get("/")
-async def read_root():
-    return {"message": "Hello World"}
