@@ -117,6 +117,17 @@ class Token(BaseModel):
   )
   token_type: str = "bearer"
 
+  model_config = {
+    "json_schema_extra": {
+      "examples": [
+        {
+          "access_token": "<a_token>",
+          "token_type": "bearer"
+        }
+      ]
+    }
+  }
+
 class AuthSuccessTextModel(str, Enum):
   LOGIN_SUCCESSFUL = "login successful"
   SIGNUP_SUCCESSFUL = "signup successful"
