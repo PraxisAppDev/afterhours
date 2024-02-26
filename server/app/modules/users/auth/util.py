@@ -1,6 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from fastapi import Request
-from fastapi.responses import JSONResponse
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 
@@ -27,3 +25,6 @@ def create_access_token(data: dict):
   payload.update({"exp": expire})
   encoded_jwt = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
   return encoded_jwt
+
+def get_payload(token: str):
+  return jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])

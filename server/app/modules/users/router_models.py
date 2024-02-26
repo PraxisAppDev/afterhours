@@ -5,7 +5,8 @@ from app.models import PyObjectId
 from email_validator import validate_email, EmailNotValidError
 from enum import Enum
 
-# TODO
+phone_number_regex = r"^(\+\d{1,3} )?(((\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4})|(\d{5} \d{5})|\d{6,15})(, ?\d{1,4})?$"
+
 class UserModel(BaseModel):
   id: Optional[PyObjectId] = Field(alias="_id", default=None)
   username: str = Field(...)
@@ -13,7 +14,7 @@ class UserModel(BaseModel):
   phone: Union[None, str] = Field(
     None,
     description="The user's phone number.",
-    pattern=r"^(\+\d{1,3})? (((\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4})|(\d{5} \d{5})|\d{6,15})(, ?\d{1,4})?$"
+    pattern=phone_number_regex
   )
   fullname: str = Field(...)
   lastLogin: datetime = Field(...)
@@ -34,10 +35,38 @@ class UserModel(BaseModel):
     }
   }
 
+class UserCreateModel(BaseModel):
+  id: Optional[PyObjectId] = Field(alias="_id", default=None)
+  username: str = Field(...)
+  email: str = Field(...)
+  phone: Union[None, str] = Field(
+    None,
+    description="The user's phone number.",
+    pattern=phone_number_regex
+  )
+  fullname: str = Field(...)
+  hashedPassword: str = Field(...)
+  lastLogin: datetime = Field(...)
+  huntHistory: List[PyObjectId] = []
+
+  model_config = {
+    "json_schema_extra": {
+      "examples": [
+        {
+          "username": "test",
+          "email": "test@gmail.com",
+          "phone": "123-456-7890",
+          "fullname": "testy tester",
+          "lastLogin": "2024-02-19T10:30:00Z",
+          "huntHistory": []
+        }
+      ]
+    }
+  }
 class UpdateUserModel(BaseModel):
   username: Optional[str] = Field(None)
   email: Optional[str] = Field(None, min_length=3, max_length=254) # not using a regex because email validation is relatively complex
-  phone: Optional[str] = Field(None, pattern=r"^[1-9]\d{2}-\d{3}-\d{4}$")
+  phone: Optional[str] = Field(None, pattern=phone_number_regex)
   fullname: Optional[str] = Field(None)
   lastLogin: Optional[datetime] = Field(None)
 
@@ -74,4 +103,4 @@ class UserResponseTextModel(str, Enum):
 
 class UserResponseModel(BaseModel):
   message: UserResponseTextModel
-  content: Union[List[UserModel], UserModel, str]
+  content: Union[List[UserModel], UserModel, str, bool]

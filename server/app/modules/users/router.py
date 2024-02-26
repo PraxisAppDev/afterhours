@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import JSONResponse
-from app.modules.users.service import service
+from app.modules.users.service import service as user_service
+from app.modules.users.auth.service import service as auth_service
 from app.modules.users.auth import router as auth
-from app.modules.users.router_models import UpdateUserModel, UserModel, UserResponseModel, UserResponseTextModel
+from app.modules.users.router_models import UpdateUserModel, UserResponseModel, UserResponseTextModel
 from app.exceptions import ValidationErrorsModel
 from typing_extensions import Annotated
 
@@ -13,8 +14,20 @@ router.include_router(
     prefix="/auth",
 )
 
+# debugging purposes
+# @router.get(
+#     "/get_all_users",
+#     status_code=200,
+#     response_model=UserResponseModel
+# )
+# async def get_all_users():
+#   return UserResponseModel(
+#     message=UserResponseTextModel.USER_FOUND,
+#     content=await user_service.get_users()
+#   )
+
 @router.get(
-  "/{id}",
+  "/get_user_info",
   status_code=200,
   response_model=UserResponseModel,
   responses={
@@ -28,8 +41,10 @@ router.include_router(
     }
   }
 )
-async def find_user_by_id(id: Annotated[str, Path(pattern="^[0-9a-fA-F]{24}$")]):
-  result = await service.find_user_by_id(id)
+async def find_user_by_id(
+  id: Annotated[str, Depends(auth_service.get_id_with_token)]
+):
+  result = await user_service.find_user_by_id(id)
   if result:
     return UserResponseModel(
       message=UserResponseTextModel.USER_FOUND,
@@ -45,7 +60,7 @@ async def find_user_by_id(id: Annotated[str, Path(pattern="^[0-9a-fA-F]{24}$")])
     )
 
 @router.put(
-  "/{id}",
+  "/update_user_info",
   status_code = 200,
   response_model=UserResponseModel,
   responses={
@@ -59,8 +74,8 @@ async def find_user_by_id(id: Annotated[str, Path(pattern="^[0-9a-fA-F]{24}$")])
     }
   }
 )
-async def update_user_by_id(id: Annotated[str, Path(pattern="^[0-9a-fA-F]{24}$")], user: UpdateUserModel):
-  result = await service.update_user_by_id(id, user)
+async def update_user_by_id(id: Annotated[str, Depends(auth_service.get_id_with_token)], user: UpdateUserModel):
+  result = await user_service.update_user_by_id(id, user)
   if result:
     return UserResponseModel(
       message=UserResponseTextModel.USER_UPDATED,
@@ -76,7 +91,7 @@ async def update_user_by_id(id: Annotated[str, Path(pattern="^[0-9a-fA-F]{24}$")
     )
 
 @router.delete(
-  "/{id}",
+  "/delete_user",
   status_code=200,
   response_model=UserResponseModel,
   responses={
@@ -90,8 +105,8 @@ async def update_user_by_id(id: Annotated[str, Path(pattern="^[0-9a-fA-F]{24}$")
     }
   },
 )
-async def delete_user_by_id(id: Annotated[str, Path(pattern="^[0-9a-fA-F]{24}$")]):
-  result = await service.delete_user_by_id(id)
+async def delete_user_by_id(id: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  result = await user_service.delete_user_by_id(id)
   if result:
     return UserResponseModel(
       message=UserResponseTextModel.USER_DELETED,

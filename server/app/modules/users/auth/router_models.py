@@ -34,7 +34,7 @@ class SignUpModel(BaseModel):
           "username": "testy tester",
           "email": "random@gmail.com",
           "fullname": "Test Testy",
-          "password": "randompassword"
+          "password": "randompassword123"
         }
       ],
     }
@@ -87,10 +87,10 @@ class SignUpModel(BaseModel):
 
 
 class LoginModel(BaseModel):
-  email: str = Field(
-    description="The user's email address. Must be a valid email address.",
+  username: str = Field(
+    description="The username of the user. Most be unique. Must be between 3 and 20 characters long.",
     min_length=3, 
-    max_length=254, # 254 is the maximum length of an email address by IETF standards
+    max_length=20
   )
   password: str = Field(
     description="The password of the user. Must have 8 or more characters, one number and one special character. Alternatively, must be at least 16 characters long. Must be less than 72 characters.",
@@ -103,8 +103,26 @@ class LoginModel(BaseModel):
     "json_schema_extra": {
       "examples": [
         {
-          "email": "random@gmail.com",
-          "password": "randompassword"
+          "username": "testy tester",
+          "password": "randompassword123"
+        }
+      ]
+    }
+  }
+
+class Token(BaseModel):
+  access_token: str = Field(
+    description="A JWT token to be used for authentication.",
+    pattern=r"^[A-Za-z0-9_-]{2,}(?:\.[A-Za-z0-9_-]{2,}){2}$"
+  )
+  token_type: str = "bearer"
+
+  model_config = {
+    "json_schema_extra": {
+      "examples": [
+        {
+          "access_token": "<a_token>",
+          "token_type": "bearer"
         }
       ]
     }
@@ -118,9 +136,8 @@ class AuthSuccessModel(BaseModel):
   message: AuthSuccessTextModel = Field(
     description="A message about the success of the authentication operation."
   )
-  token: str = Field(
-    description="A JWT token to be used for authentication.",
-    pattern=r"^[A-Za-z0-9_-]{2,}(?:\.[A-Za-z0-9_-]{2,}){2}$"
+  token: Token = Field(
+    description="A JWT token to be used for authentication."
   )
 
   model_config = {
@@ -128,7 +145,10 @@ class AuthSuccessModel(BaseModel):
       "examples": [
         {
           "message": "login successful",
-          "token": "<a JWT token>"
+          "token": {
+            "access_token": "<a_token>",
+            "token_type": "bearer"
+          }
         }
       ]
     }
@@ -137,6 +157,7 @@ class AuthSuccessModel(BaseModel):
 class AuthErrorTextModel(str, Enum):
   INCORRECT_CREDENTIALS = "Incorrect Email or Password. Please try again."
   INTERNAL_SERVER_ERROR = "Internal Server Error: error creating user"
+  USER_ALREADY_EXISTS = "User already exists"
 
 class AuthErrorModel(BaseModel):
   message: AuthErrorTextModel = Field(
@@ -151,6 +172,9 @@ class AuthErrorModel(BaseModel):
         },
         {
           "message": AuthErrorTextModel.INTERNAL_SERVER_ERROR
+        },
+        {
+          "message": AuthErrorTextModel.USER_ALREADY_EXISTS
         }
       ]
     }

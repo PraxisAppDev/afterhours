@@ -1,5 +1,5 @@
 from app.database import database
-from app.modules.users.router_models import UpdateUserModel, UserModel
+from app.modules.users.router_models import UpdateUserModel, UserCreateModel, UserModel
 from bson import ObjectId
 
 class UserRepository:
@@ -7,7 +7,7 @@ class UserRepository:
     self.collection = database.get_collection("users")
   
   # this method is only for debugging purposes, as listing all users is not a good idea
-  async def __get_all(self):
+  async def get_all(self):
     cursor = self.collection.find()
     return list(map(lambda document: document, await cursor.to_list(1000)))
   
@@ -15,8 +15,15 @@ class UserRepository:
     user = await self.collection.find_one({"_id": ObjectId(id)})
     if user is not None: del user["hashedPassword"]
     return user
+  
+  # this method is for authorization purposes
+  async def find_one_by_email(self, email: str):
+    return await self.collection.find_one({"email": email})
+  
+  async def find_one_by_username(self, username: str):
+    return await self.collection.find_one({"username": username})
 
-  async def add_one(self, user: UserModel) -> str:
+  async def add_one(self, user: UserCreateModel) -> str:
     document = dict(user)
     document.pop("id")
     result = await self.collection.insert_one(document)

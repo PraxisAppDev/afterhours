@@ -7,7 +7,7 @@ class HuntRepository:
   def __init__(self):
     self.collection = database.get_collection("hunts")
 
-  async def get_all_past_date(date=datetime.now()):
+  async def get_all_past_date(self, date=datetime.now()):
     cursor = self.collection.find({
       "endDate": {
         "$gte": date
@@ -16,7 +16,7 @@ class HuntRepository:
     cursor = cursor.listens_to()
     return list(map(lambda document: handle_object_id(document), await cursor.to_list(1000)))
 
-  async def get_all_before_date(date=datetime.now()):
+  async def get_all_before_date(self, date=datetime.now()):
     cursor = self.collection.find({
       "endDate": {
         "$lt": date
