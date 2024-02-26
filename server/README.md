@@ -21,14 +21,14 @@
 
     - To build and start `dev` containers
         - `dev` Default Mode
-          >docker-compose --profile dev up
+          >docker-compose --profile dev up --build
 
         - `dev` Detached Mode
-          >docker-compose --profile dev up -d
+          >docker-compose --profile dev up --build -d
 
     - To build and start `test` containers
         - `test` Default Mode
-          >docker-compose --profile test up --abort-on-container-exit --exit-code-from test
+          >docker-compose --profile test up --build --abort-on-container-exit --exit-code-from test
         
         - `test` python3 script (in test directory)
           >python3 run_tests.py
