@@ -87,7 +87,8 @@ async def signup(request: SignUpModel):
 # route to access api endpoints on swagger docs
 @router.post(
   "/token",
-  status_code=201
+  status_code=201,
+  response_model=Token
 )
 async def login_for_access_token(
   form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
