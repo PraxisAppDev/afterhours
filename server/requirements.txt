@@ -4,6 +4,7 @@ pydantic
 uvicorn
 asyncio
 python-dotenv
+python-multipart
 
 # mongodb
 motor
