@@ -8,6 +8,8 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenwidth = MediaQuery.of(context).size.width;
+    String firstName = 'Chell';
+    String lastName = 'Lorem';
 
     return Scaffold(
         appBar: AppBar(
@@ -34,8 +36,8 @@ class ProfileView extends StatelessWidget {
         ),
         body: Center(
           child: Column(children: [
-            buildProfileImage('Chell', 'Lorem', screenwidth),
-            buildNameTextField(),
+            buildProfileImage(firstName, lastName, screenwidth),
+            buildTextField(firstName + ' ' + lastName, 'Username'),
           ]),
         ));
   }
@@ -78,24 +80,30 @@ Widget buildProfileImage(
 }
 
 // Build from default username for now
-Widget buildNameTextField() {
+Widget buildTextField(String defaultText, String hintText) {
+  TextEditingController usernameController =
+      TextEditingController(text: defaultText);
+
   return SizedBox(
     width: 200,
     height: 100,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            maxLength: 20,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Enter your username',
-              counterText: '',
-            ),
-          ),
-        ),
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: Column(
+              children: [
+                TextField(
+                    controller: usernameController,
+                    maxLength: 40,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      hintText: hintText,
+                      counterText: '',
+                    )),
+              ],
+            )),
       ],
     ),
   );
