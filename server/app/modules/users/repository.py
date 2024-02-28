@@ -46,5 +46,10 @@ class UserRepository:
   async def delete_one(self, id: str):
     result = await self.collection.delete_one({"_id": ObjectId(id)})
     return result.deleted_count > 0
+  
+  async def get_hunt_ids_for_user(self, id: str):
+    cursor = self.collection.find({"_id": ObjectId(id)})
+    if cursor:
+      return [[str(id) for id in document['huntHistory']] for document in await cursor.to_list(1000)]
 
 repository = UserRepository()

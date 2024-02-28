@@ -120,3 +120,18 @@ async def delete_user_by_id(id: Annotated[str, Depends(auth_service.get_id_with_
         content=""
       ).model_dump()
     )
+  
+@router.get(
+  "/get_hunt_history",
+  status_code=200,
+  response_model=UserResponseModel
+)
+async def load_list_of_hunts_for_user(
+  id: Annotated[str, Depends(auth_service.get_id_with_token)]
+):
+  result = await user_service.get_hunt_ids_for_user(id)
+  # TODO - Use Hunt Service to get hunt model for each hunt id
+  return UserResponseModel(
+    message=UserResponseTextModel.HUNTS_FOUND,
+    content=result
+  )

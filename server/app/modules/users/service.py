@@ -1,5 +1,7 @@
+from typing import List
 from app.modules.users.repository import repository
 from app.modules.users.router_models import UpdateUserModel, UserCreateModel, UserModel
+from app.models import PyObjectId
 
 # TODO
 class UserService:
@@ -26,5 +28,8 @@ class UserService:
 
   async def delete_user_by_id(self, id: str) -> bool:
     return await self.repository.delete_one(id)
+  
+  async def get_hunt_ids_for_user(self, id: str) -> List[PyObjectId]:
+    return await self.repository.get_hunt_ids_for_user(id)
 
 service = UserService()
