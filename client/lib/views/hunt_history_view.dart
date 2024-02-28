@@ -8,47 +8,74 @@ class HuntHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Mock API Data
+    const eventsJson = [
+      {
+        "title": "Recruit Mixer",
+        "location": "The Greene Turtle (In-Person Only)",
+        "date": "01/30/024 at 8:30 PM"
+      },
+      {
+        "title": "Friday Employee Drinks",
+        "location": "Looney's Pub",
+        "date": "2/07/2024 at 7:30 PM"
+      },
+      {
+        "title": "End of Quarter Party",
+        "location": "Cornerstone Grill & Loft",
+        "date": "02/14/2024 at 7:00 PM"
+      },
+      {
+        "title": "Event",
+        "location": "Location",
+        "date": "02/28/2024 at 6:00 PM"
+      },
+    ];
+
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text(
-          "Hunt History",
-          style: TextStyle(
-            color: praxisWhite,
-            fontSize: 35,
+        appBar: AppBar(
+          centerTitle: false,
+          title: const Text(
+            "Hunt History",
+            style: TextStyle(
+              color: praxisWhite,
+              fontSize: 35,
+            ),
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Instructions(
+                              title: 'Instructions',
+                            )),
+                  )
+                },
+                icon: const Icon(Icons.info_outline),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                onPressed: () => {},
+                icon: const Icon(Icons.notifications),
+              ),
+            )
+          ],
+          backgroundColor: praxisRed,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const Instructions(
-                            title: 'Instructions',
-                          )),
-                )
-              },
-              icon: const Icon(Icons.info_outline),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              onPressed: () => {},
-              icon: const Icon(Icons.notifications),
-            ),
-          )
-        ],
-        backgroundColor: praxisRed,
-      ),
-      body: Column(children: <Widget>[
-        buildEvent("Recruit Mixer", "The Greene Turtle (In-Person Only)",
-            "01/30/024 at 8:30 PM"),
-      ]),
-    );
+        body: Column(
+            children: eventsJson.map((event) {
+          final String title = event['title'] ?? '';
+          final String location = event['location'] ?? '';
+          final String date = event['date'] ?? '';
+
+          return buildEvent(title, location, date);
+        }).toList()));
   }
 }
 
