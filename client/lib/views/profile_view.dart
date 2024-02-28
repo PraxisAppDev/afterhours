@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:praxis_afterhours/app_utils/basic_text_field.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
 class ProfileView extends StatelessWidget {
@@ -34,7 +35,7 @@ class ProfileView extends StatelessWidget {
         body: Center(
           child: Column(children: [
             buildProfileImage('Chell', 'Lorem', screenwidth),
-            const Text('Hello world'),
+            buildNameTextField(),
           ]),
         ));
   }
@@ -73,5 +74,29 @@ Widget buildProfileImage(
                 fontSize: fontSize),
           ),
         )),
+  );
+}
+
+// Build from default username for now
+Widget buildNameTextField() {
+  return SizedBox(
+    width: 200,
+    height: 100,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          child: TextField(
+            maxLength: 20,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Enter your username',
+              counterText: '',
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }
