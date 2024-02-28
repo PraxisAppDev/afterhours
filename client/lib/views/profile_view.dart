@@ -37,7 +37,18 @@ class ProfileView extends StatelessWidget {
         body: Center(
           child: Column(children: [
             buildProfileImage(firstName, lastName, screenwidth),
-            buildTextField(firstName + ' ' + lastName, 'Username'),
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: praxisBlack),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Column(children: [
+                    buildTextField(firstName + ' ' + lastName, 'Username'),
+                    buildTextField(firstName + '@gmail.com', 'Email'),
+                    buildTextField('111-111-111', 'Phone-Number'),
+                  ]),
+                ))
           ]),
         ));
   }
@@ -86,17 +97,18 @@ Widget buildTextField(String defaultText, String hintText) {
 
   return SizedBox(
     width: 200,
-    height: 100,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(hintText),
                 TextField(
                     controller: usernameController,
-                    maxLength: 40,
+                    maxLength: 30,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: hintText,
