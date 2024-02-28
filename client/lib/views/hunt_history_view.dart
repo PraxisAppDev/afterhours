@@ -88,6 +88,7 @@ Widget buildEvent(String title, String location, String date) {
         title: title,
         location: location,
         date: date,
+        onTapEnabled: false,
       ),
     ),
   );
