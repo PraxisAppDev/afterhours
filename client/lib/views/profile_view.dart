@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/app_utils/basic_text_field.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/instructions.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -25,7 +26,16 @@ class ProfileView extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
-                    onPressed: () => {}, icon: const Icon(Icons.info_outline))),
+                    onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Instructions(
+                                      title: 'Instructions',
+                                    )),
+                          )
+                        },
+                    icon: const Icon(Icons.info_outline))),
             Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
@@ -83,7 +93,7 @@ Widget buildProfileImage(
           child: Text(
             initials,
             style: TextStyle(
-                color: Colors.white,
+                color: praxisBlack,
                 fontWeight: FontWeight.bold,
                 fontSize: fontSize),
           ),
