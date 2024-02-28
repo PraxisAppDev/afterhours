@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/app_utils/basic_text_field.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/bottom_nav_bar.dart';
 
 class CreateAccountView extends StatelessWidget {
   CreateAccountView({super.key});
@@ -104,6 +105,12 @@ class CreateAccountView extends StatelessWidget {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       //insert create account logic here
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BottomNavBar(),
+                        ),
+                      );
                     }
                   },
                   child: const Text("Sign Up",
