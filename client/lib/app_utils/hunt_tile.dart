@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:praxis_afterhours/app_utils/team_options.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
 class HuntTile extends StatelessWidget {
@@ -36,7 +37,28 @@ class HuntTile extends StatelessWidget {
         ],
       ),
       tileColor: praxisGrey,
-      onTap: () async {},
+      onTap: () => teamDialog(context, title),
+    );
+  }
+
+
+  teamDialog(BuildContext context, String huntTitle) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          alignment: Alignment.center,
+          child: AlertDialog(
+            insetPadding: const EdgeInsets.symmetric(vertical: 230),
+            backgroundColor: praxisGrey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: const BorderSide(color: Colors.black),
+            ),
+            content: TeamOptions(huntTitle: huntTitle)
+          ),
+        );
+      }
     );
   }
 }

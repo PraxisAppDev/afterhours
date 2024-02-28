@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
-import 'package:praxis_afterhours/views/join_hunt_view.dart';
 
 class JoinTeamView extends StatelessWidget {
   const JoinTeamView({super.key});
@@ -11,18 +8,11 @@ class JoinTeamView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () async {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const JoinHuntView(),
-                ),
-              );
-            },
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            Navigator.pop(context);
+          },
         ),
         title: const Text(
           "Join Team",
@@ -264,7 +254,7 @@ class JoinTeamView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  color: Color(0xFFEEEEEE),
+                  color: const Color(0xFFEEEEEE),
                   child: TextButton(
                     onPressed: () {},
                     child: const SizedBox(

@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/app_utils/hunt_tile.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
-class JoinHuntView extends StatelessWidget {
+class JoinHuntView extends StatefulWidget {
   const JoinHuntView({super.key});
+
+  @override
+  State<JoinHuntView> createState() => _JoinHuntViewState();
+}
+
+class _JoinHuntViewState extends State<JoinHuntView> {
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +59,7 @@ class JoinHuntView extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
             child: TextButton(
-              onPressed: () async {},
+              onPressed: () {},
               child: const HuntTile(
                 title: "Friday Employee Drinks",
                 location: "Looney's Pub",
@@ -65,7 +71,7 @@ class JoinHuntView extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
             child: TextButton(
-              onPressed: () async {},
+              onPressed: () {},
               child: const HuntTile(
                 title: "End of Quarter Party",
                 location: "Cornerstone Grill & Loft",
@@ -73,6 +79,7 @@ class JoinHuntView extends StatelessWidget {
               ),
             ),
           ),
+          
         ],
       ),
     );
