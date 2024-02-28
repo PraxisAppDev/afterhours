@@ -11,7 +11,6 @@ class JoinHuntView extends StatefulWidget {
 }
 
 class _JoinHuntViewState extends State<JoinHuntView> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +60,7 @@ class _JoinHuntViewState extends State<JoinHuntView> {
                 title: "Recruit Mixer",
                 location: "The Greene Turtle (In-Person Only)",
                 date: "01/30/024 at 8:30 PM",
+                onTapEnabled: true,
               ),
             ),
           ),
@@ -73,6 +73,7 @@ class _JoinHuntViewState extends State<JoinHuntView> {
                 title: "Friday Employee Drinks",
                 location: "Looney's Pub",
                 date: "02/07/2024 at 7:30 PM",
+                onTapEnabled: true,
               ),
             ),
           ),
@@ -85,10 +86,10 @@ class _JoinHuntViewState extends State<JoinHuntView> {
                 title: "End of Quarter Party",
                 location: "Cornerstone Grill & Loft",
                 date: "02/14/2024 at 7:00 PM",
+                onTapEnabled: true,
               ),
             ),
           ),
-          
         ],
       ),
     );

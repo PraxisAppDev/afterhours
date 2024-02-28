@@ -6,37 +6,38 @@ class HuntTile extends StatelessWidget {
   final String title;
   final String date;
   final String location;
+  final bool onTapEnabled;
 
   const HuntTile({
     super.key,
     required this.title,
     required this.location,
     required this.date,
+    required this.onTapEnabled,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          )),
-      subtitle: Column(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.location_on_sharp),
-            title: Text(location),
-          ),
-          ListTile(
-            leading: const Icon(Icons.calendar_month),
-            title: Text(date),
-          ),
-        ],
-      ),
-      tileColor: praxisGrey,
-      onTap: () => teamDialog(context, title),
-    );
+        title: Text(title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            )),
+        subtitle: Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.location_on_sharp),
+              title: Text(location),
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_month),
+              title: Text(date),
+            ),
+          ],
+        ),
+        tileColor: praxisGrey,
+        onTap: onTapEnabled ? () => teamDialog(context, title) : null);
   }
 
   teamDialog(BuildContext context, String huntTitle) {
