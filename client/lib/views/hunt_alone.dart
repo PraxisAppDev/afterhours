@@ -28,48 +28,51 @@ class HuntAloneView extends StatelessWidget {
       body: Form(
         key: _formKey,
         child: Column(
-        children: [
-          PreferredSize(
-            preferredSize: const Size.fromHeight(kToolbarHeight),
-            child: Container(
-              color: praxisWhite,
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Enter your team name",
+          children: [
+            PreferredSize(
+              preferredSize: const Size.fromHeight(kToolbarHeight),
+              child: Container(
+                color: praxisWhite,
+                child: const TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Enter your team name",
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  color: const Color(0xFFEEEEEE),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "I'm Ready!",
-                        style: TextStyle(fontSize: 25),
-                        textAlign: TextAlign.center,
+            const Text(
+              "\nYou will be put in a team which will be locked by default and contain only you.",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    color: const Color(0xFFEEEEEE),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          "I'm Ready!",
+                          style: TextStyle(fontSize: 25),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
-      ),
-      
-      
-      
-      
     );
   }
 }
