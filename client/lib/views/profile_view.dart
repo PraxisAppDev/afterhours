@@ -34,22 +34,23 @@ class ProfileView extends StatelessWidget {
           ],
           backgroundColor: praxisRed,
         ),
-        body: Center(
-          child: Column(children: [
-            buildProfileImage(firstName, lastName, screenwidth),
-            Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: praxisBlack),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: Column(children: [
-                    buildTextField(firstName + ' ' + lastName, 'Username'),
-                    buildTextField(firstName + '@gmail.com', 'Email'),
-                    buildTextField('111-111-111', 'Phone-Number'),
-                  ]),
-                ))
-          ]),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Column(
+                children: [
+                  buildProfileImage(firstName, lastName, screenwidth),
+                  buildTextField(firstName + ' ' + lastName, 'Username'),
+                  const Divider(color: praxisBlack),
+                ],
+              ),
+            ),
+            buildTextField(firstName + '@gmail.com', 'Email'),
+            const Divider(color: praxisBlack),
+            buildTextField('111-111-111', 'Phone-Number'),
+            const Divider(color: praxisBlack),
+          ],
         ));
   }
 }
