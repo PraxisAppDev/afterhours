@@ -37,7 +37,7 @@ class JoinTeamView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const ExpansionTile(
+          ExpansionTile(
             collapsedBackgroundColor: Color(0xFFE2E0E0),
             backgroundColor: Color(0xFFE2E0E0),
             tilePadding: EdgeInsets.all(12),
@@ -121,7 +121,7 @@ class JoinTeamView extends StatelessWidget {
               )
             ],
           ),
-          const ExpansionTile(
+          ExpansionTile(
             tilePadding: EdgeInsets.all(12),
             title: Text(
               "The Billy Bobs",
@@ -135,7 +135,7 @@ class JoinTeamView extends StatelessWidget {
             ),
             controlAffinity: ListTileControlAffinity.leading,
             children: [
-              ListTile(
+              const ListTile(
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -179,6 +179,26 @@ class JoinTeamView extends StatelessWidget {
                       ],
                     ),
                   ],
+                ),
+              ),
+              ListTile(
+                title: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                    color: praxisRed,
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      "Join Team",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: praxisWhite,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -248,28 +268,28 @@ class JoinTeamView extends StatelessWidget {
               )
             ],
           ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  color: const Color(0xFFEEEEEE),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "Join Team",
-                        style: TextStyle(fontSize: 25),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
+          // Expanded(
+          //   child: Align(
+          //     alignment: Alignment.bottomCenter,
+          //     child: Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: Container(
+          //         color: const Color(0xFFEEEEEE),
+          //         child: TextButton(
+          //           onPressed: () {},
+          //           child: const SizedBox(
+          //             width: double.infinity,
+          //             child: Text(
+          //               "Join Team",
+          //               style: TextStyle(fontSize: 25),
+          //               textAlign: TextAlign.center,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
