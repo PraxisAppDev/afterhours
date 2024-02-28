@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/views/join_hunt_view.dart';
+import 'package:praxis_afterhours/views/profile_view.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -14,7 +15,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final screens = [
     const JoinHuntView(),
     const Text("History"),
-    const Text("Profile"),
+    const ProfileView(),
   ];
 
   @override
