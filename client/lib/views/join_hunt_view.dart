@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/app_utils/hunt_tile.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/instructions.dart';
 
 class JoinHuntView extends StatelessWidget {
   const JoinHuntView({super.key});
@@ -21,7 +22,15 @@ class JoinHuntView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
-              onPressed: () => {},
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Instructions(
+                            title: 'Instructions',
+                          )),
+                )
+              },
               icon: const Icon(Icons.info_outline),
             ),
           ),
