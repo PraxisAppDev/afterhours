@@ -42,14 +42,21 @@ class ProfileView extends StatelessWidget {
 
 // Build default from username for now
 Widget buildProfileImage(
-    String firstname, String lastname, double screenwidth) {
+    String firstName, String lastName, double screenWidth) {
   // Extract initials from username
-  String initials = firstname[0] + lastname[0];
-  double avatarSize = screenwidth * 0.3;
+  String initials = firstName[0] + lastName[0];
+  double avatarSize = screenWidth * 0.3;
+  double maxAvatarSize = 150;
+
+  // Limit avatar size for larger screen
+  if (screenWidth > 600) {
+    avatarSize = maxAvatarSize;
+  }
+
   double fontSize = avatarSize * 0.5;
 
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(20.0),
     child: Container(
         width: avatarSize,
         height: avatarSize,
