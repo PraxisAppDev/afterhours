@@ -51,16 +51,21 @@ class ProfileView extends StatelessWidget {
               child: Column(
                 children: [
                   buildProfileImage(firstName, lastName, screenwidth),
-                  buildTextField(
-                      '${firstName} ${lastName}', 'Username', 'profile'),
-                  const Divider(color: praxisBlack),
+                  ProfileTextField(
+                      defaultText: '${firstName} ${lastName}',
+                      label: 'Username',
+                      icon: 'profile'),
                 ],
               ),
             ),
-            buildTextField('${firstName} @gmail.com', 'Email', 'email'),
-            const Divider(color: praxisBlack),
-            buildTextField('111-111-111', 'Phone Number', 'phone'),
-            const Divider(color: praxisBlack),
+            ProfileTextField(
+                defaultText: '${firstName} @gmail.com',
+                label: 'Email',
+                icon: 'email'),
+            ProfileTextField(
+                defaultText: '111-111-111',
+                label: 'Phone Number',
+                icon: 'phone')
           ],
         ));
   }
@@ -100,34 +105,4 @@ Widget buildProfileImage(
           ),
         )),
   );
-}
-
-// Build from default username for now
-Widget buildTextField(String defaultText, String label, String icon) {
-  return ProfileTextField(defaultText: defaultText, label: label, icon: icon);
-
-//   return SizedBox(
-//     width: 200,
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: <Widget>[
-//         Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(hintText),
-//                 TextField(
-//                     controller: controller,
-//                     maxLength: 30,
-//                     decoration: InputDecoration(
-//                       border: const OutlineInputBorder(),
-//                       hintText: hintText,
-//                       counterText: '',
-//                     )),
-//               ],
-//             )),
-//       ],
-//     ),
-//   );
 }

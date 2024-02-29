@@ -15,22 +15,28 @@ class ProfileTextField extends StatefulWidget {
 }
 
 class _ProfileTextFieldState extends State<ProfileTextField> {
+  bool isEditing = false;
+
   @override
   Widget build(BuildContext context) {
     TextEditingController controller =
         TextEditingController(text: widget.defaultText);
 
-    return ListTile(
-      leading: getIcon(widget.icon),
-      subtitle: TextFormField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: widget.label,
-            labelStyle:
-                const TextStyle(fontSize: 18), // Adjust the font size as needed
-            // Add other InputDecoration properties as needed
-          )),
-      //trailing: IconButton(onPressed: () {}, icon: const Icon(Icons.edit))
+    return Column(
+      children: [
+        ListTile(
+            leading: getIcon(widget.icon),
+            subtitle: TextFormField(
+                controller: controller,
+                decoration: InputDecoration(
+                  labelText: widget.label,
+                  labelStyle: const TextStyle(
+                      fontSize: 18), // Adjust the font size as needed
+                  // Add other InputDecoration properties as needed
+                )),
+            trailing: isEditing ? null : const Icon(Icons.edit)),
+        const Divider(color: praxisBlack)
+      ],
     );
   }
 }
