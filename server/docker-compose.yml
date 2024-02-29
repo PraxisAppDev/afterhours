@@ -1,7 +1,8 @@
 version: "3.8"
 services:
   server:
-    profiles: [dev]
+    profiles: [dev, prod]
+    image: ghcr.io/praxisappdev/afterhours-server:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,6 +14,7 @@ services:
       - mongo
   test:
     profiles: [test]
+    image: ghcr.io/praxisappdev/afterhours-test:latest
     build:
       context: .
       dockerfile: test.Dockerfile
