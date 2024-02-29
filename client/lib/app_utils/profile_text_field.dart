@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:praxis_afterhours/app_utils/team_options.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
 class ProfileTextField extends StatefulWidget {
@@ -49,7 +48,7 @@ class _ProfileTextFieldState extends State<ProfileTextField> {
             trailing: isEditing
                 ? null
                 : IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () {
                       setState(() {
                         isEditing = true;

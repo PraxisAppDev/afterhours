@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/app_utils/profile_text_field.dart';
+import 'package:praxis_afterhours/app_utils/profile_avatar.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/views/instructions.dart';
 
@@ -8,7 +9,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenwidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     String firstName = 'Chell';
     String lastName = 'Lorem';
 
@@ -50,7 +51,10 @@ class ProfileView extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  buildProfileImage(firstName, lastName, screenwidth),
+                  ProfileAvatar(
+                      firstName: firstName,
+                      lastName: lastName,
+                      screenWidth: screenWidth),
                   ProfileTextField(
                       defaultText: '${firstName} ${lastName}',
                       label: 'Username',
@@ -69,40 +73,4 @@ class ProfileView extends StatelessWidget {
           ],
         ));
   }
-}
-
-// Build default from username for now
-Widget buildProfileImage(
-    String firstName, String lastName, double screenWidth) {
-  // Extract initials from username
-  String initials = firstName[0] + lastName[0];
-  double avatarSize = screenWidth * 0.3;
-  double maxAvatarSize = 150;
-
-  // Limit avatar size for larger screen
-  if (screenWidth > 600) {
-    avatarSize = maxAvatarSize;
-  }
-
-  double fontSize = avatarSize * 0.5;
-
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Container(
-        width: avatarSize,
-        height: avatarSize,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: praxisGrey,
-        ),
-        child: Center(
-          child: Text(
-            initials,
-            style: TextStyle(
-                color: praxisBlack,
-                fontWeight: FontWeight.bold,
-                fontSize: fontSize),
-          ),
-        )),
-  );
 }
