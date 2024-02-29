@@ -11,21 +11,25 @@ class HuntHistoryView extends StatelessWidget {
     // Mock API Data
     const eventsJson = [
       {
+        "place": 5,
         "title": "Recruit Mixer",
         "location": "The Greene Turtle (In-Person Only)",
         "date": "01/30/024 at 8:30 PM"
       },
       {
+        "place": 1,
         "title": "Friday Employee Drinks",
         "location": "Looney's Pub",
         "date": "2/07/2024 at 7:30 PM"
       },
       {
+        "place": 3,
         "title": "End of Quarter Party",
         "location": "Cornerstone Grill & Loft",
         "date": "02/14/2024 at 7:00 PM"
       },
       {
+        "place": 4,
         "title": "Event",
         "location": "Location",
         "date": "02/28/2024 at 6:00 PM"
@@ -70,26 +74,31 @@ class HuntHistoryView extends StatelessWidget {
         ),
         body: Column(
             children: eventsJson.map((event) {
-          final String title = event['title'] ?? '';
-          final String location = event['location'] ?? '';
-          final String date = event['date'] ?? '';
+          final String place = event['place'].toString();
+          final String title = event['title'].toString();
+          final String location = event['location'].toString();
+          final String date = event['date'].toString();
 
-          return buildEvent(title, location, date);
+          return buildEvent(title, location, date, place);
         }).toList()));
   }
 }
 
-Widget buildEvent(String title, String location, String date) {
+Widget buildEvent(String title, String location, String date, String place) {
   return Padding(
-    padding: const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
-    child: TextButton(
-      onPressed: () {},
-      child: HuntTile(
-        title: title,
-        location: location,
-        date: date,
-        onTapEnabled: false,
-      ),
-    ),
-  );
+      padding: const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextButton(
+                onPressed: () {},
+                child: HuntTile(
+                    title: title,
+                    location: location,
+                    date: date,
+                    onTapEnabled: false,
+                    trailing: place)),
+          ),
+        ],
+      ));
 }

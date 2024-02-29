@@ -7,6 +7,7 @@ class HuntTile extends StatelessWidget {
   final String date;
   final String location;
   final bool onTapEnabled;
+  final String trailing;
 
   const HuntTile({
     super.key,
@@ -14,6 +15,7 @@ class HuntTile extends StatelessWidget {
     required this.location,
     required this.date,
     required this.onTapEnabled,
+    this.trailing = '',
   });
 
   @override
@@ -27,9 +29,9 @@ class HuntTile extends StatelessWidget {
         subtitle: Column(
           children: [
             ListTile(
-              leading: const Icon(Icons.location_on_sharp),
-              title: Text(location),
-            ),
+                leading: const Icon(Icons.location_on_sharp),
+                title: Text(location),
+                trailing: trailing == '' ? null : getPlaceText(trailing)),
             ListTile(
               leading: const Icon(Icons.calendar_month),
               title: Text(date),
@@ -57,4 +59,33 @@ class HuntTile extends StatelessWidget {
           );
         });
   }
+}
+
+String getPlaceStr(String place) {
+  switch (place) {
+    case '1':
+      return '${place}st';
+    case '2':
+      return '${place}nd';
+    case '3':
+      return '${place}rd';
+    default:
+      return '${place}th';
+  }
+}
+
+Widget getPlaceText(String place) {
+  return Column(
+    children: [
+      Text(getPlaceStr(place),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          )),
+      const Text('place',
+          style: TextStyle(
+            fontSize: 12,
+          ))
+    ],
+  );
 }
