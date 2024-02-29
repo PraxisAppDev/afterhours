@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/hunt_history_view.dart';
 import 'package:praxis_afterhours/views/join_hunt_view.dart';
 import 'package:praxis_afterhours/views/profile_view.dart';
 
@@ -14,7 +15,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int currentPageIndex = 0;
   final screens = [
     const JoinHuntView(),
-    const Text("History"),
+    const HuntHistoryView(),
     const ProfileView(),
   ];
 
