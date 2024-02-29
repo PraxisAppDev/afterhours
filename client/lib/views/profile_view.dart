@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:praxis_afterhours/app_utils/basic_text_field.dart';
+import 'package:praxis_afterhours/app_utils/profile_text_field.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/views/instructions.dart';
 
@@ -51,14 +51,15 @@ class ProfileView extends StatelessWidget {
               child: Column(
                 children: [
                   buildProfileImage(firstName, lastName, screenwidth),
-                  buildTextField(firstName + ' ' + lastName, 'Username'),
+                  buildTextField(
+                      '${firstName} ${lastName}', 'Username', 'profile'),
                   const Divider(color: praxisBlack),
                 ],
               ),
             ),
-            buildTextField(firstName + '@gmail.com', 'Email'),
+            buildTextField('${firstName} @gmail.com', 'Email', 'email'),
             const Divider(color: praxisBlack),
-            buildTextField('111-111-111', 'Phone-Number'),
+            buildTextField('111-111-111', 'Phone Number', 'phone'),
             const Divider(color: praxisBlack),
           ],
         ));
@@ -102,32 +103,31 @@ Widget buildProfileImage(
 }
 
 // Build from default username for now
-Widget buildTextField(String defaultText, String hintText) {
-  TextEditingController usernameController =
-      TextEditingController(text: defaultText);
+Widget buildTextField(String defaultText, String label, String icon) {
+  return ProfileTextField(defaultText: defaultText, label: label, icon: icon);
 
-  return SizedBox(
-    width: 200,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(hintText),
-                TextField(
-                    controller: usernameController,
-                    maxLength: 30,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: hintText,
-                      counterText: '',
-                    )),
-              ],
-            )),
-      ],
-    ),
-  );
+//   return SizedBox(
+//     width: 200,
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: <Widget>[
+//         Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(hintText),
+//                 TextField(
+//                     controller: controller,
+//                     maxLength: 30,
+//                     decoration: InputDecoration(
+//                       border: const OutlineInputBorder(),
+//                       hintText: hintText,
+//                       counterText: '',
+//                     )),
+//               ],
+//             )),
+//       ],
+//     ),
+//   );
 }
