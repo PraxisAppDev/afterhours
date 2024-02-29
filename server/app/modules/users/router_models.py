@@ -100,7 +100,9 @@ class UserResponseTextModel(str, Enum):
   USER_FOUND = "found user"
   USER_UPDATED = "updated user"
   USER_DELETED = "deleted user"
+  HUNTS_FOUND = "found hunts"
 
 class UserResponseModel(BaseModel):
   message: UserResponseTextModel
-  content: Union[List[UserModel], UserModel, str, bool]
+  # TODO Change the last one to List of Hunts later
+  content: Union[List[UserModel], UserModel, str, bool, List[PyObjectId]]
