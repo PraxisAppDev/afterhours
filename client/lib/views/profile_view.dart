@@ -59,7 +59,7 @@ class ProfileView extends StatelessWidget {
               ),
             ),
             ProfileTextField(
-                defaultText: '${firstName} @gmail.com',
+                defaultText: '${firstName}@gmail.com',
                 label: 'Email',
                 icon: 'email'),
             ProfileTextField(

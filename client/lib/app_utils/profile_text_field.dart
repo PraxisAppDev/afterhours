@@ -16,28 +16,54 @@ class ProfileTextField extends StatefulWidget {
 
 class _ProfileTextFieldState extends State<ProfileTextField> {
   bool isEditing = false;
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(text: widget.defaultText);
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller =
-        TextEditingController(text: widget.defaultText);
-
     return Column(
       children: [
         ListTile(
             leading: getIcon(widget.icon),
             subtitle: TextFormField(
-                controller: controller,
-                decoration: InputDecoration(
-                  labelText: widget.label,
-                  labelStyle: const TextStyle(
-                      fontSize: 18), // Adjust the font size as needed
-                  // Add other InputDecoration properties as needed
-                )),
-            trailing: isEditing ? null : const Icon(Icons.edit)),
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: widget.label,
+                labelStyle: const TextStyle(
+                    fontSize: 18), // Adjust the font size as needed
+                // Add other InputDecoration properties as needed
+              ),
+              enabled: isEditing,
+              onFieldSubmitted: (value) {
+                setState(() {
+                  controller.text = value;
+                  isEditing = false;
+                });
+              },
+            ),
+            trailing: isEditing
+                ? null
+                : IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      setState(() {
+                        isEditing = true;
+                      });
+                    })),
         const Divider(color: praxisBlack)
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose(); // Dispose of the controller when no longer needed
+    super.dispose();
   }
 }
 
