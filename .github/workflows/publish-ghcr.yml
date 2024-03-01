@@ -24,7 +24,7 @@ jobs:
         with:
           registry: ghcr.io
           username: PraxisAppDev
-          password: ${{secrets.GITHUB_TOKEN}}
+          password: ${{ secrets.APPDEV_PA_TOKEN }}
 
       - name: Build and push images to Registry
         working-directory: ./server
