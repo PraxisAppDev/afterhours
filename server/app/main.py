@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from app.modules.users import router as users
 from app.modules.hunts import router as hunts
-from app.modules.join_hunt import router as join_hunt
 from app.exceptions import unhandled_exception_handler, validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,10 +32,4 @@ app.include_router(
     hunts.router,
     prefix="/hunts",
     tags=["Hunts"]
-)
-
-app.include_router(
-    join_hunt.router,
-    prefix="/join_hunt",
-    tags=["Join_Hunts"]
 )

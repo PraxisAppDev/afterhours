@@ -8,6 +8,7 @@ python-multipart
 
 # mongodb
 motor
+mongoengine
 
 # used to implement authentication logic
 passlib
