@@ -74,3 +74,19 @@ class HuntModel(BaseModel):
 class HuntResponseModel(BaseModel):
   message: str
   content: List[HuntModel]
+
+class Join_Hunts_Model(BaseModel):
+  id: Optional[PyObjectId] = Field(alias="_id", default=None)
+  name: str = Field(...)
+  description: str = Field(...)
+  huntID: str = Field(...)
+
+  # TODO
+  model_config = {
+    "json_schema_extra": {
+      "examples": [
+        {
+        }
+      ]
+    }
+  }
