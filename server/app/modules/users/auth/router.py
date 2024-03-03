@@ -6,18 +6,8 @@ from app.modules.users.auth.service import service
 from app.modules.users.auth.router_models import AuthSuccessModel, AuthSuccessTextModel, AuthErrorModel, AuthErrorTextModel, LoginModel, SignUpModel, Token
 from app.modules.users.auth.util import create_access_token
 from app.exceptions import ValidationErrorsModel
-from mongoengine import connect
 
 router = APIRouter()
-
-
-@router.get("/")
-def home():
-    return {"message": "Jello World"}
-
-@router.get("/get_all_users")
-def get_all_users():
-    return{"users": "not yet implemented"}
 
 @router.post(
     "/login",

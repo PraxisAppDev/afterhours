@@ -12,8 +12,6 @@ RUN pip3 install python-jose[cryptography]
 
 RUN pip3 install pytest httpx
 
-RUN pip3 install mongoengine
-
 # Installing python dependencies
 RUN pip3 install --no-cache-dir --upgrade -r /requirements.txt
 
