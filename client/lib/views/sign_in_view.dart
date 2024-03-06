@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:praxis_afterhours/app_utils/basic_text_field.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/errors/flash_error.dart';
 import 'package:praxis_afterhours/views/bottom_nav_bar.dart';
 import 'package:praxis_afterhours/views/create_account_view.dart';
+import 'package:praxis_afterhours/apis/auth_api.dart';
+import 'package:praxis_afterhours/storage/secure_storage.dart';
 
 class SignInView extends StatelessWidget {
   SignInView({super.key});
@@ -12,7 +14,7 @@ class SignInView extends StatelessWidget {
 
   String error = "";
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -60,10 +62,10 @@ class SignInView extends StatelessWidget {
               ),
               //Email Address
               BasicTextField(
-                labelText: "Email Address",
-                fieldType: BasicTextFieldType.email,
-                editingController: emailController,
-                validatorError: "Please enter your email",
+                labelText: "Username",
+                fieldType: BasicTextFieldType.username,
+                editingController: usernameController,
+                validatorError: "Please enter your username",
               ),
               //Password
               BasicTextField(
@@ -100,13 +102,28 @@ class SignInView extends StatelessWidget {
                 child: TextButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      try {
+                        var token = await logIn(
+                            usernameController.text, passwordController.text);
+                        await storage.write(key: "token", value: token);
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const BottomNavBar(),
+                            ),
+                          );
+                        }
+                      } on FormatException {
+                        if (context.mounted) {
+                          showFlashError(context, 'Invalid credentials');
+                        }
+                      } catch (err) {
+                        if (context.mounted) {
+                          showFlashError(context, 'Network error');
+                        }
+                      }
                       // print("All fields valid.");
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavBar(),
-                        ),
-                      );
                       //insert sign-in logic here
                     }
                   },
