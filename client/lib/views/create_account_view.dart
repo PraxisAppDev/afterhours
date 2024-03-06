@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/app_utils/basic_text_field.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/errors/flash_error.dart';
+import 'package:praxis_afterhours/storage/secure_storage.dart';
 import 'package:praxis_afterhours/views/bottom_nav_bar.dart';
+import 'package:praxis_afterhours/apis/auth_api.dart';
 
 class CreateAccountView extends StatelessWidget {
   CreateAccountView({super.key});
@@ -104,13 +107,31 @@ class CreateAccountView extends StatelessWidget {
                 child: TextButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      try {
+                        var token = await signUp(
+                            usernameController.text,
+                            emailController.text,
+                            fullNameController.text,
+                            passwordController.text);
+                        await storage.write(key: "token", value: token);
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const BottomNavBar(),
+                            ),
+                          );
+                        }
+                      } on FormatException {
+                        if (context.mounted) {
+                          showFlashError(context, 'Invalid credentials');
+                        }
+                      } catch (err) {
+                        if (context.mounted) {
+                          showFlashError(context, 'Network error');
+                        }
+                      }
                       //insert create account logic here
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavBar(),
-                        ),
-                      );
                     }
                   },
                   child: const Text("Sign Up",
