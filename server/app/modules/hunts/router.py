@@ -30,11 +30,12 @@ async def load_past_hunts():
   )
 
 @router.post(
-  "/join_hunt",
+  "/current_hunts",
   status_code=200,
   response_model=HuntResponseModel
 )
-async def load_upcoming_hunts():
+async def join_hunt():
+  #empty method, needs to be implemnted
   result = await service.get_upcoming()
   return HuntResponseModel(
     content=result
