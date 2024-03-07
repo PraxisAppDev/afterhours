@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/app_utils/hunt_tile.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/entities/upcoming_hunt.dart';
+import 'package:praxis_afterhours/service/upcoming_hunts_service.dart';
 import 'package:praxis_afterhours/views/instructions.dart';
 
 class JoinHuntView extends StatefulWidget {
@@ -11,6 +13,14 @@ class JoinHuntView extends StatefulWidget {
 }
 
 class _JoinHuntViewState extends State<JoinHuntView> {
+  late Future<List<UpcomingHunt>> futureHunts;
+
+  @override
+  void initState() {
+    super.initState();
+    futureHunts = fetchUpcomingHunts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +41,11 @@ class _JoinHuntViewState extends State<JoinHuntView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const Instructions(
-                            title: 'Instructions',
-                          )),
-                )
+                    builder: (context) => const Instructions(
+                      title: 'Instructions',
+                    ),
+                  ),
+                ),
               },
               icon: const Icon(Icons.info_outline),
             ),
@@ -49,48 +60,34 @@ class _JoinHuntViewState extends State<JoinHuntView> {
         ],
         backgroundColor: praxisRed,
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
-            child: TextButton(
-              onPressed: () {},
-              child: const HuntTile(
-                title: "Recruit Mixer",
-                location: "The Greene Turtle (In-Person Only)",
-                date: "01/30/024 at 8:30 PM",
-                onTapEnabled: true,
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
-            child: TextButton(
-              onPressed: () {},
-              child: const HuntTile(
-                title: "Friday Employee Drinks",
-                location: "Looney's Pub",
-                date: "02/07/2024 at 7:30 PM",
-                onTapEnabled: true,
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
-            child: TextButton(
-              onPressed: () {},
-              child: const HuntTile(
-                title: "End of Quarter Party",
-                location: "Cornerstone Grill & Loft",
-                date: "02/14/2024 at 7:00 PM",
-                onTapEnabled: true,
-              ),
-            ),
-          ),
-        ],
+      body: FutureBuilder<List<UpcomingHunt>>(
+        future: futureHunts,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: <Widget>[
+                for (UpcomingHunt upcomingHunt in snapshot.data ?? [])
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 2, bottom: 2, left: 0, right: 0),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: HuntTile(
+                        title: upcomingHunt.title,
+                        location: upcomingHunt.location,
+                        date: upcomingHunt.date,
+                        onTapEnabled: true,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          return const CircularProgressIndicator();
+        },
       ),
     );
   }

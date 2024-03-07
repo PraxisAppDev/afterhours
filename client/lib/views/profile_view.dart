@@ -14,63 +14,64 @@ class ProfileView extends StatelessWidget {
     String lastName = 'Lorem';
 
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: const Text(
-            'My Profile',
-            style: TextStyle(
-              color: praxisWhite,
-              fontSize: 35,
+      appBar: AppBar(
+        centerTitle: false,
+        title: const Text(
+          'My Profile',
+          style: TextStyle(
+            color: praxisWhite,
+            fontSize: 35,
+          ),
+        ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                  onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Instructions(
+                                    title: 'Instructions',
+                                  )),
+                        )
+                      },
+                  icon: const Icon(Icons.info_outline))),
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                  onPressed: () => {}, icon: const Icon(Icons.notifications))),
+        ],
+        backgroundColor: praxisRed,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Column(
+              children: [
+                ProfileAvatar(
+                    firstName: firstName,
+                    lastName: lastName,
+                    screenWidth: screenWidth),
+                ProfileTextField(
+                    defaultText: '$firstName $lastName',
+                    label: 'Username',
+                    icon: 'profile'),
+              ],
             ),
           ),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: IconButton(
-                    onPressed: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Instructions(
-                                      title: 'Instructions',
-                                    )),
-                          )
-                        },
-                    icon: const Icon(Icons.info_outline))),
-            Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(Icons.notifications))),
-          ],
-          backgroundColor: praxisRed,
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  ProfileAvatar(
-                      firstName: firstName,
-                      lastName: lastName,
-                      screenWidth: screenWidth),
-                  ProfileTextField(
-                      defaultText: '${firstName} ${lastName}',
-                      label: 'Username',
-                      icon: 'profile'),
-                ],
-              ),
-            ),
-            ProfileTextField(
-                defaultText: '${firstName}@gmail.com',
-                label: 'Email',
-                icon: 'email'),
-            ProfileTextField(
-                defaultText: '111-111-111',
-                label: 'Phone Number',
-                icon: 'phone')
-          ],
-        ));
+          ProfileTextField(
+              defaultText: '$firstName@gmail.com',
+              label: 'Email',
+              icon: 'email'),
+          const ProfileTextField(
+            defaultText: '111-111-111',
+            label: 'Phone Number',
+            icon: 'phone',
+          )
+        ],
+      ),
+    );
   }
 }

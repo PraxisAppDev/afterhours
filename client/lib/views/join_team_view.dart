@@ -37,7 +37,7 @@ class JoinTeamView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ExpansionTile(
+          const ExpansionTile(
             collapsedBackgroundColor: Color(0xFFE2E0E0),
             backgroundColor: Color(0xFFE2E0E0),
             tilePadding: EdgeInsets.all(12),
@@ -122,12 +122,12 @@ class JoinTeamView extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            tilePadding: EdgeInsets.all(12),
-            title: Text(
+            tilePadding: const EdgeInsets.all(12),
+            title: const Text(
               "The Billy Bobs",
               style: TextStyle(fontSize: 25),
             ),
-            collapsedShape: RoundedRectangleBorder(
+            collapsedShape: const RoundedRectangleBorder(
               side: BorderSide(
                 color: praxisBlack,
                 width: 1,
@@ -268,28 +268,6 @@ class JoinTeamView extends StatelessWidget {
               )
             ],
           ),
-          // Expanded(
-          //   child: Align(
-          //     alignment: Alignment.bottomCenter,
-          //     child: Padding(
-          //       padding: const EdgeInsets.all(8.0),
-          //       child: Container(
-          //         color: const Color(0xFFEEEEEE),
-          //         child: TextButton(
-          //           onPressed: () {},
-          //           child: const SizedBox(
-          //             width: double.infinity,
-          //             child: Text(
-          //               "Join Team",
-          //               style: TextStyle(fontSize: 25),
-          //               textAlign: TextAlign.center,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
