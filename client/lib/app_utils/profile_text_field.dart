@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
 class ProfileTextField extends StatelessWidget {
+  final TextEditingController editingController;
   final String label;
   final String defaultText;
   final String regex;
@@ -10,6 +11,7 @@ class ProfileTextField extends StatelessWidget {
 
   const ProfileTextField({
     super.key,
+    required this.editingController,
     required this.label,
     required this.defaultText,
     this.regex = '.',

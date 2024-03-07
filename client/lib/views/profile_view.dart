@@ -14,6 +14,10 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final _formKey = GlobalKey<FormState>();
 
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -64,10 +68,12 @@ class _ProfileViewState extends State<ProfileView> {
                         lastName: lastName,
                         screenWidth: screenWidth),
                     ProfileTextField(
+                        editingController: usernameController,
                         defaultText: '$firstName $lastName',
                         label: 'Username',
                         icon: 'profile'),
                     ProfileTextField(
+                      editingController: emailController,
                       defaultText: '$firstName@gmail.com',
                       label: 'Email',
                       regex:
@@ -75,7 +81,8 @@ class _ProfileViewState extends State<ProfileView> {
                       validatorMessage: 'Invalid email format',
                       icon: 'email',
                     ),
-                    const ProfileTextField(
+                    ProfileTextField(
+                      editingController: phoneController,
                       defaultText: '111-111-1111',
                       label: 'Phone Number',
                       regex:
