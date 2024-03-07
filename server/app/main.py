@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    # TODO
+    '*'
 ]
 
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
