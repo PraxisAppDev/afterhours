@@ -1,68 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
-class ProfileTextField extends StatefulWidget {
+class ProfileTextField extends StatelessWidget {
   final String label;
-  final String icon;
   final String defaultText;
+  final String regex;
+  final String validatorMessage;
+  final String icon;
 
-  const ProfileTextField(
-      {super.key, required this.defaultText, this.label = '', this.icon = ''});
-
-  @override
-  State<ProfileTextField> createState() => _ProfileTextFieldState();
-}
-
-class _ProfileTextFieldState extends State<ProfileTextField> {
-  bool isEditing = false;
-  late TextEditingController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController(text: widget.defaultText);
-  }
+  const ProfileTextField({
+    super.key,
+    required this.label,
+    required this.defaultText,
+    this.regex = '.',
+    this.validatorMessage = 'Invalid format',
+    this.icon = '',
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-            leading: getIcon(widget.icon),
-            subtitle: TextFormField(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: widget.label,
-                labelStyle: const TextStyle(
-                    fontSize: 18), // Adjust the font size as needed
-                // Add other InputDecoration properties as needed
-              ),
-              enabled: isEditing,
-              onFieldSubmitted: (value) {
-                setState(() {
-                  controller.text = value;
-                  isEditing = false;
-                });
-              },
-            ),
-            trailing: isEditing
-                ? null
-                : IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      setState(() {
-                        isEditing = true;
-                      });
-                    })),
-        const Divider(color: praxisBlack)
-      ],
-    );
-  }
+    bool showSuffixIcon = true;
 
-  @override
-  void dispose() {
-    controller.dispose(); // Dispose of the controller when no longer needed
-    super.dispose();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        initialValue: defaultText,
+        decoration: InputDecoration(
+          prefixIcon: getIcon(icon),
+          suffixIcon: showSuffixIcon ? const Icon(Icons.edit) : null,
+          labelText: label,
+          border: const OutlineInputBorder(),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field cannot be empty';
+          }
+          RegExp regExp = RegExp(regex);
+          if (!regExp.hasMatch(value)) {
+            return validatorMessage;
+          }
+          return null; // input is valid
+        },
+        textInputAction: TextInputAction.none,
+      ),
+    );
   }
 }
 
