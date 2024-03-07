@@ -24,7 +24,7 @@ class ProfileTextField extends StatelessWidget {
     bool showSuffixIcon = true;
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 30, top: 8, right: 30, bottom: 8),
       child: TextFormField(
         initialValue: defaultText,
         decoration: InputDecoration(
