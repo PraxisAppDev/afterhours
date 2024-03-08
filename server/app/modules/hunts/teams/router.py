@@ -12,10 +12,10 @@ async def load_team_info():
     {
       "team_name": "Aperture Science",
       "team_members": [
-        {"name": "Joe"},
-        {"name": "Bob"},
-        {"name": "Jim"},
-        {"name": "Frank"}
+        "Joe",
+        "Bob",
+        "Jim",
+        "Frank"
       ],
       "capacity": "4",
       "is_full": "true",
@@ -24,19 +24,19 @@ async def load_team_info():
     {
       "team_name": "The Billy Bobs",
       "team_members": [
-        {"name": "Joe"},
-        {"name": "Bob"},
-        {"name": "Dave"}
+        "Joe",
+        "Bob",
+        "Dave",
       ],
-      "capacity": "3",
+      "capacity": "4",
       "is_full": "false",
       "reason_full": "null",
     },
     {
       "team_name": "The Charlie Cats",
       "team_members": [
-        {"name": "Joe"},
-        {"name": "Bob"}
+        "Joe",
+        "Bob",
       ],
       "capacity": "4",
       "is_full": "true",

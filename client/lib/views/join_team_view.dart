@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/entities/team.dart';
+import 'package:praxis_afterhours/service/teams_service.dart';
 
-class JoinTeamView extends StatelessWidget {
+class JoinTeamView extends StatefulWidget {
   const JoinTeamView({super.key});
+
+  @override
+  State<JoinTeamView> createState() => _JoinTeamViewState();
+}
+
+class _JoinTeamViewState extends State<JoinTeamView> {
+  late Future<List<Team>> futureTeams;
+
+  @override
+  void initState() {
+    super.initState();
+    futureTeams = fetchTeams();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,240 +50,149 @@ class JoinTeamView extends StatelessWidget {
         ),
         backgroundColor: praxisRed,
       ),
-      body: Column(
-        children: [
-          const ExpansionTile(
-            collapsedBackgroundColor: Color(0xFFE2E0E0),
-            backgroundColor: Color(0xFFE2E0E0),
-            tilePadding: EdgeInsets.all(12),
-            title: Row(
-              children: [
-                Text(
-                  "Aperture Science",
-                  style: TextStyle(fontSize: 25),
-                ),
-                Spacer(),
-                Icon(Icons.lock),
-              ],
-            ),
-            collapsedShape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: praxisBlack,
-                width: 1,
-              ),
-            ),
-            controlAffinity: ListTileControlAffinity.leading,
-            children: [
-              ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Members (4/4):",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
+      body: FutureBuilder<List<Team>>(
+        future: futureTeams,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: <Widget>[
+                for (Team team in snapshot.data ?? [])
+                  ExpansionTile(
+                    collapsedBackgroundColor: team.isFull
+                        ? const Color(0xFFE2E0E0)
+                        : const Color(0xFFFFFFFF),
+                    backgroundColor: team.isFull
+                        ? const Color(0xFFE2E0E0)
+                        : const Color(0xFFFFFFFF),
+                    tilePadding: const EdgeInsets.all(12),
+                    title: Row(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.0),
-                          child: Icon(Icons.circle),
-                        ),
-                        SizedBox(width: 5),
                         Text(
-                          "Joe",
-                          style: TextStyle(fontSize: 20),
+                          team.teamName,
+                          style: const TextStyle(fontSize: 25),
                         ),
-                        SizedBox(width: 200),
-                        Icon(Icons.circle),
-                        SizedBox(width: 5),
-                        Text(
-                          "Bob",
-                          style: TextStyle(fontSize: 20),
-                        ),
+                        const Spacer(),
+                        if (team.isFull) const Icon(Icons.lock),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.0),
-                          child: Icon(Icons.circle),
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Jim",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(width: 200),
-                        Icon(Icons.circle),
-                        SizedBox(width: 5),
-                        Text(
-                          "Frank",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "This team is full!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
-                ),
-              )
-            ],
-          ),
-          ExpansionTile(
-            tilePadding: const EdgeInsets.all(12),
-            title: const Text(
-              "The Billy Bobs",
-              style: TextStyle(fontSize: 25),
-            ),
-            collapsedShape: const RoundedRectangleBorder(
-              side: BorderSide(
-                color: praxisBlack,
-                width: 1,
-              ),
-            ),
-            controlAffinity: ListTileControlAffinity.leading,
-            children: [
-              const ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Members (3/4):",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.0),
-                          child: Icon(Icons.circle),
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Joe",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(width: 200),
-                        Icon(Icons.circle),
-                        SizedBox(width: 5),
-                        Text(
-                          "Bob",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.0),
-                          child: Icon(Icons.circle),
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Dave",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                title: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                    color: praxisRed,
-                  ),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "Join Team",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: praxisWhite,
+                    collapsedShape: const RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: praxisBlack,
+                        width: 1,
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const ExpansionTile(
-            collapsedBackgroundColor: Color(0xFFE2E0E0),
-            backgroundColor: Color(0xFFE2E0E0),
-            tilePadding: EdgeInsets.all(12),
-            title: Row(
-              children: [
-                Text(
-                  "The Charlie Cats",
-                  style: TextStyle(
-                    fontSize: 25,
-                  ),
-                ),
-                Spacer(),
-                Icon(Icons.lock),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    children: [
+                      ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Members (${team.teamMembers.length}/${team.capacity}):",
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            for (var i = 0;
+                                i < team.teamMembers.length ~/ 2 * 2;
+                                i += 2)
+                              Column(
+                                children: [
+                                  if (i == 0)
+                                    const SizedBox(height: 5)
+                                  else
+                                    const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 16.0),
+                                        child: Icon(Icons.circle),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        team.teamMembers[i],
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                      const SizedBox(width: 200),
+                                      const Icon(Icons.circle),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        team.teamMembers[i + 1],
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            for (var i = team.teamMembers.length ~/ 2 * 2;
+                                i < team.teamMembers.length;
+                                i += 2)
+                              Column(
+                                children: [
+                                  if (team.teamMembers.length == 1)
+                                    const SizedBox(height: 5)
+                                  else
+                                    const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 16.0),
+                                        child: Icon(Icons.circle),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        team.teamMembers[i],
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                          ],
+                        ),
+                      ),
+                      if (team.isFull)
+                        ListTile(
+                          title: Text(
+                            switch (team.reasonFull) {
+                              "capacity_reached" => "This team is full!",
+                              "team_locked" => "This team is locked!",
+                              _ => throw const FormatException(
+                                  "Invalid reason_full")
+                            },
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        )
+                      else
+                        ListTile(
+                          title: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                              color: praxisRed,
+                            ),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: const Text(
+                                "Join Team",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: praxisWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  )
               ],
-            ),
-            collapsedShape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: praxisBlack,
-                width: 1,
-              ),
-            ),
-            controlAffinity: ListTileControlAffinity.leading,
-            children: [
-              ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Members (2/4):",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.0),
-                          child: Icon(Icons.circle),
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Joe",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(width: 200),
-                        Icon(Icons.circle),
-                        SizedBox(width: 5),
-                        Text(
-                          "Bob",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "This team is locked!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
-                ),
-              )
-            ],
-          ),
-        ],
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          return const CircularProgressIndicator();
+        },
       ),
     );
   }

@@ -10,28 +10,13 @@ router = APIRouter()
   # response_model=HuntResponseModel
 )
 async def load_upcoming_hunts():
-  return [
-      {
-        "title": "Recruit Mixer",
-        "location": "The Greene Turtle (In-Person Only)",
-        "date": "01/30/024 at 8:30 PM"
-      },
-      {
-        "title": "Friday Employee Drinks",
-        "location": "Looney's Pub",
-        "date": "02/07/2024 at 7:30 PM"
-      },
-      {
-        "title": "End of Quarter Party",
-        "location": "Cornerstone Grill & Loft",
-        "date": "02/14/2024 at 7:00 PM"
-      }
-    ]
   result = await service.get_upcoming()
-  return HuntResponseModel(
-    message="fetched hunts",
-    content=result
-  )
+  print(result)
+  return result
+  # return HuntResponseModel(
+  #   message="fetched hunts",
+  #   content=result
+  # )
 
 @router.get(
   "/history",
