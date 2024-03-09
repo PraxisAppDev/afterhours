@@ -54,139 +54,151 @@ class _JoinTeamViewState extends State<JoinTeamView> {
         future: futureTeams,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Column(
-              children: <Widget>[
-                for (Team team in snapshot.data ?? [])
-                  ExpansionTile(
-                    collapsedBackgroundColor: team.isFull
-                        ? const Color(0xFFE2E0E0)
-                        : const Color(0xFFFFFFFF),
-                    backgroundColor: team.isFull
-                        ? const Color(0xFFE2E0E0)
-                        : const Color(0xFFFFFFFF),
-                    tilePadding: const EdgeInsets.all(12),
-                    title: Row(
-                      children: [
-                        Text(
-                          team.teamName,
-                          style: const TextStyle(fontSize: 25),
-                        ),
-                        const Spacer(),
-                        if (team.isFull) const Icon(Icons.lock),
-                      ],
-                    ),
-                    collapsedShape: const RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: praxisBlack,
-                        width: 1,
-                      ),
-                    ),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    children: [
-                      ListTile(
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Members (${team.teamMembers.length}/${team.capacity}):",
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            for (var i = 0;
-                                i < team.teamMembers.length ~/ 2 * 2;
-                                i += 2)
-                              Column(
-                                children: [
-                                  if (i == 0)
-                                    const SizedBox(height: 5)
-                                  else
-                                    const SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 16.0),
-                                        child: Icon(Icons.circle),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        team.teamMembers[i],
-                                        style: const TextStyle(fontSize: 20),
-                                      ),
-                                      const SizedBox(width: 200),
-                                      const Icon(Icons.circle),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        team.teamMembers[i + 1],
-                                        style: const TextStyle(fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            for (var i = team.teamMembers.length ~/ 2 * 2;
-                                i < team.teamMembers.length;
-                                i += 2)
-                              Column(
-                                children: [
-                                  if (team.teamMembers.length == 1)
-                                    const SizedBox(height: 5)
-                                  else
-                                    const SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 16.0),
-                                        child: Icon(Icons.circle),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        team.teamMembers[i],
-                                        style: const TextStyle(fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
-                          ],
-                        ),
-                      ),
-                      if (team.isFull)
-                        ListTile(
-                          title: Text(
-                            switch (team.reasonFull) {
-                              "capacity_reached" => "This team is full!",
-                              "team_locked" => "This team is locked!",
-                              _ => throw const FormatException(
-                                  "Invalid reason_full")
-                            },
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 18),
+            if (snapshot.data!.isEmpty) {
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 32.0),
+                  child: Text(
+                    "No Teams Available!",
+                    style: TextStyle(fontSize: 35),
+                  ),
+                ),
+              );
+            } else {
+              return Column(
+                children: <Widget>[
+                  for (Team team in snapshot.data ?? [])
+                    ExpansionTile(
+                      collapsedBackgroundColor: team.isFull
+                          ? const Color(0xFFE2E0E0)
+                          : const Color(0xFFFFFFFF),
+                      backgroundColor: team.isFull
+                          ? const Color(0xFFE2E0E0)
+                          : const Color(0xFFFFFFFF),
+                      tilePadding: const EdgeInsets.all(12),
+                      title: Row(
+                        children: [
+                          Text(
+                            team.teamName,
+                            style: const TextStyle(fontSize: 25),
                           ),
-                        )
-                      else
+                          const Spacer(),
+                          if (team.isFull) const Icon(Icons.lock),
+                        ],
+                      ),
+                      collapsedShape: const RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: praxisBlack,
+                          width: 1,
+                        ),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      children: [
                         ListTile(
-                          title: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Members (${team.teamMembers.length}/${team.capacity}):",
+                                style: const TextStyle(fontSize: 20),
                               ),
-                              color: praxisRed,
+                              for (var i = 0;
+                                  i < team.teamMembers.length ~/ 2 * 2;
+                                  i += 2)
+                                Column(
+                                  children: [
+                                    if (i == 0)
+                                      const SizedBox(height: 5)
+                                    else
+                                      const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 16.0),
+                                          child: Icon(Icons.circle),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          team.teamMembers[i],
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                        const SizedBox(width: 200),
+                                        const Icon(Icons.circle),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          team.teamMembers[i + 1],
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              for (var i = team.teamMembers.length ~/ 2 * 2;
+                                  i < team.teamMembers.length;
+                                  i += 2)
+                                Column(
+                                  children: [
+                                    if (team.teamMembers.length == 1)
+                                      const SizedBox(height: 5)
+                                    else
+                                      const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 16.0),
+                                          child: Icon(Icons.circle),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          team.teamMembers[i],
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                            ],
+                          ),
+                        ),
+                        if (team.isFull)
+                          ListTile(
+                            title: Text(
+                              switch (team.reasonFull) {
+                                "capacity_reached" => "This team is full!",
+                                "team_locked" => "This team is locked!",
+                                _ => throw const FormatException(
+                                    "Invalid reason_full")
+                              },
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 18),
                             ),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                "Join Team",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: praxisWhite,
+                          )
+                        else
+                          ListTile(
+                            title: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                                color: praxisRed,
+                              ),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  "Join Team",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: praxisWhite,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
-                  )
-              ],
-            );
+                      ],
+                    )
+                ],
+              );
+            }
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }

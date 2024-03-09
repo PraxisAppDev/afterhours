@@ -66,20 +66,31 @@ class _JoinHuntViewState extends State<JoinHuntView> {
           if (snapshot.hasData) {
             return Column(
               children: <Widget>[
-                for (UpcomingHunt upcomingHunt in snapshot.data ?? [])
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 2, bottom: 2, left: 0, right: 0),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: HuntTile(
-                        title: upcomingHunt.title,
-                        location: upcomingHunt.location,
-                        date: upcomingHunt.date,
-                        onTapEnabled: true,
+                if (snapshot.data!.isEmpty)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 32.0),
+                      child: Text(
+                        "No Hunts Available!",
+                        style: TextStyle(fontSize: 35),
                       ),
                     ),
-                  ),
+                  )
+                else
+                  for (UpcomingHunt upcomingHunt in snapshot.data ?? [])
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 2, bottom: 2, left: 0, right: 0),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: HuntTile(
+                          title: upcomingHunt.title,
+                          location: upcomingHunt.location,
+                          date: upcomingHunt.date,
+                          onTapEnabled: true,
+                        ),
+                      ),
+                    ),
               ],
             );
           } else if (snapshot.hasError) {
