@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.modules.hunts.service import service
 from app.modules.hunts.router_models import HuntModel, HuntResponseModel, HuntCreatedSuccessfullyModel, HuntCreationErrorModel
 from app.modules.hunts.hunt_models import ChallengeSchema
+from app.modules.users.auth.router_models import AuthSuccessTextModel
 
 router = APIRouter()
 
@@ -44,3 +45,16 @@ async def create_hunt(request: ChallengeSchema):
   print(request)
   inserted_hunt_id = await service.create_hunt(request)
   return HuntCreatedSuccessfullyModel(message="Hunt created successfully", inserted_hunt_id=inserted_hunt_id)
+
+@router.post(
+  "/current_hunts",
+  status_code=200,
+  response_model=HuntResponseModel
+)
+async def join_hunt():
+  #empty method, needs to be implemnted
+  result = await service.get_upcoming()
+  return HuntResponseModel(
+    content=result
+  )
+

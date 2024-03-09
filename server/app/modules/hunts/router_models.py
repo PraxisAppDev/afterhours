@@ -83,3 +83,4 @@ class HuntCreatedSuccessfullyModel(BaseModel):
 
 class HuntCreationErrorModel(BaseModel):
   message: str 
+
