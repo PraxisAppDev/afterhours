@@ -1,6 +1,7 @@
 from app.modules.hunts.repository import repository
 from datetime import datetime
 
+
 class HuntService:
   def __init__(self):
     self.repository = repository
@@ -10,5 +11,9 @@ class HuntService:
   
   async def get_past(self):
     return await self.repository.get_all_before_date(date=datetime.now())
+
+  async def create_hunt(self, hunt_challenge):
+    return await self.repository.create_hunt(hunt_challenge)
+
 
 service = HuntService()
