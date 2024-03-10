@@ -79,3 +79,46 @@ def test_team_websocket_join_and_accept_request():
 
       data = leader.receive_json()
       assert data == {}
+
+# Tests if team members get notified if a user leaves
+# TODO - Figure out and finish later
+def test_team_websocket_leave():
+  teamId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
+  leaderId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
+  memberId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
+
+  with client.websocket_connect("/ws/stream") as leader:
+    with client.websocket_connect("/ws/stream") as member:
+      payload = InitRequestMessage(
+        teamId=teamId,
+        userId=leaderId,
+        listenTo=[TeamListenerType.TEAMINFO, TeamListenerType.TEAMJOINREQUESTS],
+        protocolExtensions=[]
+      )
+      leader.send_json(payload.model_dump())
+      data = leader.receive_json()
+      assert data == {
+        "success": True,
+        "protocolExtensions": []
+      }
+
+      payload = InitRequestMessage(
+        teamId=teamId,
+        userId=memberId,
+        listenTo=[TeamListenerType.TEAMINFO],
+        protocolExtensions=[]
+      )
+      member.send_json(payload.model_dump())
+      data = member.receive_json()
+      assert data == {
+        "success": True,
+        "protocolExtensions": []
+      }
+      
+    # member.close()
+    
+    # data = leader.receive_json()
+    # assert data == {
+    #   "message": "user left",
+    #   "userId": memberId
+    # }
