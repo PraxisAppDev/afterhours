@@ -1,8 +1,9 @@
 import random
 import string
-from app.modules.ws.TeamConnectionManager import InitRequestMessage, TeamListenerType, TeamRequestAcceptMessage, TeamRequestJoinMessage, TeamRequestMessage, TeamRequestType
+from app.modules.ws.TeamConnectionManager import InitRequestMessage, TeamListenerType, TeamRequestAcceptMessage, TeamRequestJoinMessage, TeamRequestType
 from test.client import client
 
+# Test that connections are registered
 def test_team_websocket_connection():
   with client.websocket_connect("/ws/stream") as websocket:
     payload = InitRequestMessage(
@@ -18,10 +19,11 @@ def test_team_websocket_connection():
       "protocolExtensions": []
     }
 
+# Test team join request and team accept request
 def test_team_websocket_join_and_accept_request():
-  teamId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
-  leaderId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
-  joinerId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+  teamId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
+  leaderId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
+  joinerId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
 
   with client.websocket_connect("/ws/stream") as leader:
     with client.websocket_connect("/ws/stream") as joiner:
@@ -74,3 +76,6 @@ def test_team_websocket_join_and_accept_request():
       assert data == {
         "success": True
       }
+
+      data = leader.receive_json()
+      assert data == {}

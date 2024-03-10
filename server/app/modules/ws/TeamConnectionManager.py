@@ -1,21 +1,18 @@
+import asyncio
 from enum import StrEnum
-from typing import Dict, List, Tuple, Union
+import traceback
+from typing import Dict, List, Union
 from fastapi import WebSocket
 from collections import defaultdict
-
 from pydantic import BaseModel
-
-# import pymongo
-# from app import database
-
-# Only care about HUNTTEAMINFO & HUNTTEAMJOINREQUEST for now
+from app.modules.users.service import service as user_service
 
 type TEAM_ID = str
 type USER_ID = str
 
 class TeamRequestType(StrEnum):
-  TEAMJOINREQUEST = "HUNTTEAMJOINREQUEST"
-  TEAMACCEPTREQUEST = "HUNTTEAMACCEPTREQUEST"
+  TEAMJOINREQUEST = "TEAMJOINREQUEST"
+  TEAMACCEPTREQUEST = "TEAMACCEPTREQUEST"
 
 class TeamListenerType(StrEnum):
   TEAMINFO = "TEAMINFO"
@@ -67,6 +64,7 @@ class TeamConnectionManager:
       List[List[Union[USER_ID, WebSocket, List[TeamListenerType]]]]
     ] = defaultdict(list)
 
+  # Initialization of websocket connection
   async def connect(self, ws: WebSocket):
     await ws.accept()
 
@@ -80,19 +78,23 @@ class TeamConnectionManager:
 
     await ws.send_json(response)
 
+  # Places new websocket connection into a corresponding bucket
   def register_connection(self, init: InitRequestMessage, ws: WebSocket):
     teamId = init["teamId"]
     listenTo = init["listenTo"]
     userId = init["userId"]
     self.active_connections[teamId].append([userId, ws, listenTo])
 
+  # Performs different operations based on request type
   async def handle_request(self, request: TeamRequestMessage):
     type = request["type"]
     teamId = request["teamId"]
 
     if type == TeamRequestType.TEAMJOINREQUEST:
       joinerId = request["joinerId"]
+      
       for userId, ws, listenTo in self.active_connections[teamId]:
+        # Inform team leader of join request
         if TeamListenerType.TEAMJOINREQUESTS in listenTo:
           join_request = TeamJoinRequest(
             userId=joinerId
@@ -101,20 +103,37 @@ class TeamConnectionManager:
     
     if type == TeamRequestType.TEAMACCEPTREQUEST:
       acceptedUserId = request["acceptedUserId"]
+
+      # TODO - Add HuntService method to add user to team
+
+      # Iterates through all team member connections
+      # Not costly overall since teams are capped at 6 members
       for userId, ws, listenTo in self.active_connections[teamId]:
+        # Inform joiner of acceptance
         if TeamListenerType.TEAMACCEPTREQUESTS in listenTo and userId == acceptedUserId:
-          # TODO - Add meaningful resposne
           listenTo.pop()
           listenTo.append(TeamListenerType.TEAMINFO)
+          
           response = TeamJoinRequestResponse(
             success=True
           )
+          
           await ws.send_json(response.model_dump())
+        
+        # Send JSON data of new user to every member on the team
+        elif TeamListenerType.TEAMINFO in listenTo:
+          try:
+            new_member = await user_service.find_user_by_id(acceptedUserId)
+          except:
+            new_member = {}
+          
+          await ws.send_json(new_member)
 
+  # TODO - Might instead add it to a queue of connections to remove
   def disconnect(self, ws: WebSocket):
-    # TODO - Might instead add it to a queue of connections to remove
     self.clean(ws)
 
+  # Removes connection from their corresponding bucket
   def clean(self, ws: WebSocket):
     for team_bucket in self.active_connections.values():
       i = 0
@@ -126,6 +145,10 @@ class TeamConnectionManager:
       
       if i < len(team_bucket):
         team_bucket.pop(i)
+        break
+
+# import pymongo
+# from app import database
 
 # class TeamDBChangeStream:
 #   def __init__(self):
