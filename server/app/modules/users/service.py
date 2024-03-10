@@ -29,6 +29,10 @@ class UserService:
   async def delete_user_by_id(self, id: str) -> bool:
     return await self.repository.delete_one(id)
   
+  # used for testing
+  async def delete_user_by_username(self, username: str) -> bool:
+    return await self.repository.delete_one_by_username(username)
+  
   async def get_hunt_ids_for_user(self, id: str) -> List[PyObjectId]:
     return await self.repository.get_hunt_ids_for_user(id)
 
