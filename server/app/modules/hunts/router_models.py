@@ -73,6 +73,7 @@ class HuntModel(BaseModel):
 
 class HuntResponseModel(BaseModel):
   message: str
+<<<<<<< HEAD
   content: List[HuntModel]
 
 
@@ -84,3 +85,6 @@ class HuntCreatedSuccessfullyModel(BaseModel):
 class HuntCreationErrorModel(BaseModel):
   message: str 
 
+=======
+  content: List[HuntModel]
+>>>>>>> dev
