@@ -70,7 +70,17 @@ class HuntModel(BaseModel):
     }
   }
 
-# TODO
+
 class HuntResponseModel(BaseModel):
   message: str
   content: List[HuntModel]
+
+
+class HuntCreatedSuccessfullyModel(BaseModel):
+  message: str
+  inserted_hunt_id: str
+
+
+class HuntCreationErrorModel(BaseModel):
+  message: str 
+
