@@ -15,8 +15,7 @@ router = APIRouter()
     500: {
       "description": "Error creating hunt",
       "model": TeamsResponseModel
-    }
-    
+    } 
   }
 )
 async def create_team(request: Team):
