@@ -70,6 +70,7 @@ class HuntModel(BaseModel):
     }
   }
 
+
 class HuntResponseModel(BaseModel):
   message: str
   content: List[HuntModel]
