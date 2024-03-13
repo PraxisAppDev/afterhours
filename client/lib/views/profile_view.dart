@@ -41,6 +41,7 @@ class _ProfileViewState extends State<ProfileView> {
             fontSize: 35,
           ),
         ),
+        automaticallyImplyLeading: false,
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 8.0),
