@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:praxis_afterhours/constants/colors.dart';
 
 class ProfileTextField extends StatelessWidget {
   final TextEditingController editingController;
@@ -23,10 +22,12 @@ class ProfileTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     bool showSuffixIcon = true;
 
+    editingController.text = defaultText;
+
     return Padding(
       padding: const EdgeInsets.only(left: 30, top: 8, right: 30, bottom: 8),
       child: TextFormField(
-        initialValue: defaultText,
+        controller: editingController,
         decoration: InputDecoration(
           prefixIcon: getIcon(icon),
           suffixIcon: showSuffixIcon ? const Icon(Icons.edit) : null,

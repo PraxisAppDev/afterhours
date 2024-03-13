@@ -17,7 +17,15 @@ class _ProfileViewState extends State<ProfileView> {
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    phoneNumberController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +117,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   icon: 'email',
                                 ),
                                 ProfileTextField(
-                                  editingController: phoneController,
+                                  editingController: phoneNumberController,
                                   defaultText: phoneNumber,
                                   label: 'Phone Number',
                                   regex:
@@ -145,6 +153,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       ),
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
+                                          _submitForm(userInfo);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
@@ -162,5 +171,22 @@ class _ProfileViewState extends State<ProfileView> {
             }
           }),
     );
+  }
+
+  void _submitForm(Map<String, dynamic>? userInfo) async {
+    if (userInfo != null) {
+      String username = usernameController.text;
+      String email = emailController.text;
+      String phoneNumber = phoneNumberController.text;
+
+      final updatedUserInfo = {
+        ...userInfo['content'],
+        "username": username,
+        "email": email,
+        "phone": phoneNumber,
+      };
+
+      await updateUserInfo(updatedUserInfo);
+    }
   }
 }
