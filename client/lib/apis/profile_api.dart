@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:praxis_afterhours/apis/api_client.dart';
 import 'package:praxis_afterhours/storage/secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // TODO: refactor into own component to be used for everyone
 Future<String?> getToken() async {
@@ -9,7 +10,8 @@ Future<String?> getToken() async {
     final token = await storage.read(key: "token");
     return token;
   } catch (e) {
-    throw Exception("Failed to read token");
+    Fluttertoast.showToast(msg: "Error: Failed to read token: $e");
+    throw Exception("Error: Failed to read token: $e");
   }
 }
 
@@ -30,7 +32,9 @@ Future<Map<String, dynamic>> fetchUserInfo() async {
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
     return jsonResponse;
   } else {
-    throw Exception("Failed to load user data: $response.statusCode");
+    Fluttertoast.showToast(
+        msg: "Error: Failed to load user data: $response.statusCode");
+    throw Exception("Error: Failed to load user data: $response.statusCode");
   }
 }
 
@@ -51,6 +55,8 @@ Future<void> updateUserInfo(Map<dynamic, dynamic> userInfo) async {
   if (response.statusCode == 200) {
     // User info updated successfully
   } else {
-    throw Exception("Failed to update user info: ${response.statusCode}");
+    Fluttertoast.showToast(
+        msg: "Error: Failed to update user info: $response.statusCode");
+    throw Exception("Error: Failed to update user info: $response.statusCode");
   }
 }
