@@ -1,19 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:praxis_afterhours/apis/api_client.dart';
-import 'package:praxis_afterhours/storage/secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-// TODO: refactor into own component to be used for everyone
-Future<String?> getToken() async {
-  try {
-    final token = await storage.read(key: "token");
-    return token;
-  } catch (e) {
-    Fluttertoast.showToast(msg: "Error: Failed to read token: $e");
-    throw Exception("Error: Failed to read token: $e");
-  }
-}
+import 'package:praxis_afterhours/apis/api_utils/token.dart';
 
 Future<Map<String, dynamic>> fetchUserInfo() async {
   final token = await getToken();
