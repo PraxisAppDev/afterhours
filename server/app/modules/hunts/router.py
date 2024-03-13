@@ -13,12 +13,12 @@ router = APIRouter()
 )
 async def load_upcoming_hunts():
   result = await service.get_upcoming()
-  print(result)
   return result
-  # return HuntResponseModel(
-  #   message="fetched hunts",
-  #   content=result
-  # )
+  response = HuntResponseModel(
+    message="fetched hunts",
+    content=result
+  )
+  return response
 
 @router.get(
   "/history",
