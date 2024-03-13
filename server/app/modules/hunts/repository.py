@@ -10,13 +10,11 @@ class HuntRepository:
     self.collection = database.get_collection("hunts")
 
   async def get_all_past_date(self, date=datetime.now()):
-    print(date)
     cursor = self.collection.find({
       "endDate": {
-        "$gte": date.strftime("%Y-%m-%d %I:%M %p")
+        "$gte": date
       }
-    }) 
-
+    })
     # cursor = cursor.listens_to()
     return list(map(lambda document: handle_object_id(document), await cursor.to_list(1000)))
 

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from app.modules.users import router as users
 from app.modules.hunts import router as hunts
-from app.modules.hunts.teams import router as teams
 from app.modules.teams import router as teams
 from app.exceptions import unhandled_exception_handler, validation_exception_handler
 from fastapi.exceptions import RequestValidationError
@@ -10,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "*"
+    '*'
 ]
 
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
@@ -38,6 +37,6 @@ app.include_router(
 
 app.include_router(
     teams.router,
-    prefix="/hunts/teams",
+    prefix="/teams",
     tags=["Teams"]
 )

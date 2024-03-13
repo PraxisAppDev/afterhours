@@ -9,16 +9,14 @@ router = APIRouter()
 @router.get(
   "/upcoming",
   status_code=200,
-  # response_model=HuntResponseModel
+  response_model=HuntResponseModel
 )
 async def load_upcoming_hunts():
   result = await service.get_upcoming()
-  return result
-  response = HuntResponseModel(
+  return HuntResponseModel(
     message="fetched hunts",
     content=result
   )
-  return response
 
 @router.get(
   "/history",
