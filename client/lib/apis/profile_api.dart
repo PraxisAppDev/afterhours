@@ -22,7 +22,9 @@ Future<Map<String, dynamic>> fetchUserInfo() async {
     return jsonResponse;
   } else {
     Fluttertoast.showToast(
-        msg: "Error: Failed to load user data: $response.statusCode");
+      msg: "Error: Failed to load user data: $response.statusCode",
+      timeInSecForIosWeb: 10,
+    );
     throw Exception("Error: Failed to load user data: $response.statusCode");
   }
 }
@@ -45,7 +47,9 @@ Future<void> updateUserInfo(Map<dynamic, dynamic> userInfo) async {
     // User info updated successfully
   } else {
     Fluttertoast.showToast(
-        msg: "Error: Failed to update user info: $response.statusCode");
+      msg: "Error: Failed to update user info: $response.statusCode",
+      timeInSecForIosWeb: 10,
+    );
     throw Exception("Error: Failed to update user info: $response.statusCode");
   }
 }
