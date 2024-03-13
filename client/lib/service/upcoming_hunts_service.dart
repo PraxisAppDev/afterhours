@@ -17,7 +17,8 @@ Future<List<UpcomingHunt>> fetchUpcomingHunts() async {
   );
 
   if (response.statusCode == 200) {
-    return parseUpcomingHunts(response.body);
+    List<UpcomingHunt> parsedUpcomingHunts = parseUpcomingHunts(response.body);
+    return parsedUpcomingHunts;
   } else {
     throw Exception("Failed to load upcoming hunts");
   }
