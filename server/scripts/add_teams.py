@@ -1,6 +1,4 @@
 import requests
-from datetime import datetime
-import json
 from json import dumps
 
 headers = {

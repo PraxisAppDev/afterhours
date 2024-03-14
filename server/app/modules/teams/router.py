@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from app.modules.teams.service import service
 from app.modules.teams.router_models import TeamCreatedSuccesfully, TeamCreationErrorModel
-from app.modules.teams.team_models import Team
 from app.modules.teams.router_models import TeamRequestModel
 
 router = APIRouter()
