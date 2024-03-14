@@ -7,9 +7,9 @@ class Player(BaseModel):
     playerId: str = Field(..., description="Player ID")
     timeJoined: datetime = Field(...)
 
-
 class Team(BaseModel):
     id: Optional[str] = Field(None, alias="id")
+    hunt_id: Optional[str] = Field(None, alias = "hunt_id")
     name: str = Field(..., min_length=1, max_length=255, description="Team name")
     teamLead: str = Field(..., description="Team leader player ID")
     players: List[Player] = Field(...)
