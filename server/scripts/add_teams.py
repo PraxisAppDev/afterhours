@@ -1,4 +1,7 @@
 import requests
+from datetime import datetime
+import json
+from json import dumps
 
 headers = {
     'accept': 'application/json',
@@ -7,30 +10,25 @@ headers = {
 
 json_data = {
     #id refers to team id, hunt_id refers to the hunt id
-    "id": "",
     "hunt_id": "",
     "name": "",
     "teamLead": "",
     "players":[],
-    "challengeResults": [], 
     "invitations": []
 }
 
-def change(id, hunt_id, name, teamLead, players, challenges, invitation):
-    json_data['id'] = id
+def change( hunt_id, name, teamLead, players, invitation):
     json_data['hunt_id'] = hunt_id
     json_data['name'] = name
     json_data['teamLead'] = teamLead
     json_data['players'] = players
-    json_data['challengeResults'] = challenges
     json_data['invitations'] = invitation
 
-change("Team1ID", "65f235aadc9df7de117ae2fc", "BEAMTEAM", "beamer", [], [], [])
+#Players = [{"65e8d7479bf978a5b7c2dfbb", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
+change("65f38146d727b5919ed168ab", "BEAMTEAM", "65e8d7479bf978a5b7c2dfbb", [], [])
 response = requests.post('http://localhost:8001/teams/create_team', headers=headers, json=json_data)
 
-change("Team2ID", "65f235aadc9df7de117ae2fc", "DREAMTEAM", "dreamer", [], [], [])
-response = requests.post('http://localhost:8001/teams/create_team', headers=headers, json=json_data)
-
-change("Team3ID", "65ee52ace57f451f1387ea22", "CLEANTEAM", "cleaner", [], [], [])
+#Players = [{"65e8d8d29bf978a5b7c2dfbc", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
+change("65f38146d727b5919ed168ab", "DREAMTEAM", "65e8d8d29bf978a5b7c2dfbc", [], [])
 response = requests.post('http://localhost:8001/teams/create_team', headers=headers, json=json_data)
 
