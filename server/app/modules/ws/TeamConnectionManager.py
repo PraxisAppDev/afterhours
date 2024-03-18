@@ -9,7 +9,6 @@ from app.modules.users.auth.service import service as auth_service
 class TeamRequestType(StrEnum):
   TEAMJOINREQUEST = "TEAMJOINREQUEST"
   TEAMACCEPTREQUEST = "TEAMACCEPTREQUEST"
-  ADDLISTENER = "ADDLISTENER"
 
 class TeamListenerType(StrEnum):
   TEAMINFO = "TEAMINFO"
