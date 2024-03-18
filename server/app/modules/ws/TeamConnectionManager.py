@@ -1,16 +1,15 @@
 from enum import StrEnum
-from typing import Dict, List, Union
+from typing import Dict, List
 from fastapi import WebSocket
 from collections import defaultdict
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from app.modules.users.service import service as user_service
 from app.modules.users.auth.service import service as auth_service
-
-type TEAM_ID = str
 
 class TeamRequestType(StrEnum):
   TEAMJOINREQUEST = "TEAMJOINREQUEST"
   TEAMACCEPTREQUEST = "TEAMACCEPTREQUEST"
+  ADDLISTENER = "ADDLISTENER"
 
 class TeamListenerType(StrEnum):
   TEAMINFO = "TEAMINFO"
@@ -23,7 +22,11 @@ class TeamErrorMessage(StrEnum):
   UPGRADE_API_VERSION = "UPGRADE_API_VERSION"
   INVALID_API_VERSION = "INVALID_API_VERSION"
 
+"""
+Init Requests + Responses
+"""
 class InitRequestMessage(BaseModel):
+  type: str = Field(default='init')
   teamId: str
   # userId: str
   authToken: str
@@ -31,6 +34,7 @@ class InitRequestMessage(BaseModel):
   protocolExtensions: List[str]
 
 class InitResponseBaseMessage(BaseModel):
+  type: str = Field(default='initResponse')
   success: bool
 
 class InitResponseSuccessMessage(InitResponseBaseMessage):
@@ -39,22 +43,35 @@ class InitResponseSuccessMessage(InitResponseBaseMessage):
 class InitResponseFailureMessage(InitResponseBaseMessage):
   errorMessage: TeamErrorMessage
 
-class TeamRequestMessage(BaseModel):
+"""
+Team Requests + Responses
+"""
+class TeamRequestBaseMessage(BaseModel):
   type: TeamRequestType
   teamId: str
 
-class TeamRequestJoinMessage(TeamRequestMessage):
-  joinerId: str
+class TeamRequestJoinMessage(TeamRequestBaseMessage):
+  authToken: str
 
-class TeamRequestAcceptMessage(TeamRequestMessage):
+class TeamRequestAcceptMessage(TeamRequestBaseMessage):
   acceptedUserId: str
 
+"""
+Reactionary Models
+Pushed to specific websockets as a "reaction" to other websocket requests
+For example, if one connection makes a TeamRequestJoinMessage to the manager,
+we would then send a TeamJoinRequest to the specific team leader
+"""
 class TeamJoinRequest(BaseModel):
   userId: str
 
 class TeamJoinRequestResponse(BaseModel):
   success: bool
 
+"""
+TeamConnection Model
+Used to avoid very large tuples
+"""
 class TeamConnection(BaseModel):
   # WebSocket does not have Pydantic validation...
   model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -63,7 +80,12 @@ class TeamConnection(BaseModel):
   ws: WebSocket
   listenTo: List[TeamListenerType]
 
-# Class that handles all the realtime logic for team operations
+type TEAM_ID = str
+
+"""
+TeamConnectionManager
+Class that handles all the realtime logic for team operations
+"""
 class TeamConnectionManager:
   def __init__(self):
     self.active_connections: Dict[
@@ -71,7 +93,9 @@ class TeamConnectionManager:
       List[TeamConnection]
     ] = defaultdict(list)
 
-  # Initialization of websocket connection
+  """
+  Initialization of websocket connection
+  """
   async def connect(self, ws: WebSocket):
     await ws.accept()
 
@@ -81,14 +105,17 @@ class TeamConnectionManager:
 
     await ws.send_json(response.model_dump())
 
-  # Places new websocket connection into a corresponding bucket
-  async def register_connection(self, init: InitRequestMessage, ws: WebSocket) -> Union[InitResponseSuccessMessage, InitResponseFailureMessage]:
+  """
+  Places new websocket connection into a corresponding bucket
+  """
+  async def register_connection(self, init: InitRequestMessage, ws: WebSocket) -> InitResponseBaseMessage:
     try:
       teamId = init["teamId"]
       listenTo = init["listenTo"]
       authToken = init["authToken"]
 
-      userId = auth_service.get_id_with_token(authToken)
+      # Decrypts token here
+      userId = await auth_service.get_id_with_token(authToken)
 
       if await user_service.find_user_by_id(id):
         self.active_connections[teamId].append(TeamConnection(
@@ -113,14 +140,30 @@ class TeamConnectionManager:
         errorMessage=TeamErrorMessage.INVALID_REQUEST
       )
 
-  # Performs different operations based on request type
-  async def handle_request(self, request: TeamRequestMessage):
+  """
+  Performs different methods based on request type
+  """
+  async def handle_request(self, request: TeamRequestBaseMessage):
     type = request["type"]
-    teamId = request["teamId"]
 
     if type == TeamRequestType.TEAMJOINREQUEST:
-      joinerId = request["joinerId"]
+      await self.handle_join_request(request)
       
+    elif type == TeamRequestType.TEAMACCEPTREQUEST:
+      await self.handle_accept_request(request)
+
+  """
+  Handles Join Request
+  1. Validates request (TODO)
+  2. Notify team leader of join request
+  """
+  async def handle_join_request(self, request: TeamRequestJoinMessage):
+    teamId = request["teamId"]
+    # TODO - Maybe find a way to not need an authToken
+    authToken = request["authToken"]
+    joinerId = await auth_service.get_id_with_token(authToken)
+
+    if await user_service.find_user_by_id(id):
       for connection in self.active_connections[teamId]:
         # Inform team leader of join request
         if TeamListenerType.TEAMJOINREQUESTS in connection.listenTo:
@@ -128,48 +171,58 @@ class TeamConnectionManager:
             userId=joinerId
           )
           await connection.ws.send_json(join_request.model_dump())
-    
-    if type == TeamRequestType.TEAMACCEPTREQUEST:
-      acceptedUserId = request["acceptedUserId"]
+  
+  """
+  Handles Accept Request
+  1. Validates request (TODO)
+  2. Adds accepted user to hunt team
+  3. Changes accepted user's listener from TEAMACCEPTREQUESTS to TEAMINFO
+  4. Notifies joiner of acceptance
+  5. Notifies everyone else in the team of the new member
+  """
+  async def handle_accept_request(self, request: TeamRequestAcceptMessage):
+    teamId = request["teamId"]
+    acceptedUserId = request["acceptedUserId"]
 
-      # TODO - Add HuntService method to add user to team
+    # TODO - Add HuntService method to add user to team
 
-      # Iterates through all team member connections
-      # Not costly overall since teams are capped at 6 members
-      for connection in self.active_connections[teamId]:
-        # Inform joiner of acceptance
-        if TeamListenerType.TEAMACCEPTREQUESTS in connection.listenTo and connection.userId == acceptedUserId:
-          connection.listenTo.pop()
-          connection.listenTo.append(TeamListenerType.TEAMINFO)
+    # Iterates through all team member connections
+    # Not costly overall since teams are capped at 6 members
+    for connection in self.active_connections[teamId]:
+      # Inform joiner of acceptance
+      if TeamListenerType.TEAMACCEPTREQUESTS in connection.listenTo and connection.userId == acceptedUserId:
+        connection.listenTo.pop()
+        connection.listenTo.append(TeamListenerType.TEAMINFO)
+            
+        response = TeamJoinRequestResponse(
+          success=True
+        )    
+        await connection.ws.send_json(response.model_dump())
           
-          response = TeamJoinRequestResponse(
-            success=True
-          )
-          
-          await connection.ws.send_json(response.model_dump())
-        
-        # Send JSON data of new user to every member on the team
-        elif TeamListenerType.TEAMINFO in connection.listenTo:
-          try:
-            new_member = await user_service.find_user_by_id(acceptedUserId)
-          except:
-            new_member = {}
-          
-          await connection.ws.send_json(new_member)
+      # Send JSON data of new user to every member on the team
+      elif TeamListenerType.TEAMINFO in connection.listenTo:
+        # try except is for testing purposes, can remove later
+        try:
+          new_member = await user_service.find_user_by_id(acceptedUserId)
+        except:
+          new_member = {}
 
-  # TODO - Might instead add it to a queue of connections to remove
+        await connection.ws.send_json(new_member)
+
   def disconnect(self, ws: WebSocket):
     self.clean(ws)
 
-  # Removes connection from their corresponding bucket
+  """
+  Removes connection from their corresponding bucket
+  """
   def clean(self, ws: WebSocket):
-    leaveUserId = None
     for team_bucket in self.active_connections.values():
       i = 0
 
       while i < len(team_bucket):
         if ws == team_bucket[i].ws:
           leaveUserId = team_bucket[i].userId
+          isTeamLeader = TeamListenerType.TEAMJOINREQUESTS in team_bucket[i].listenTo
           break
         i += 1
       
@@ -184,6 +237,11 @@ class TeamConnectionManager:
             "message": "user left",
             "userId": leaveUserId
           })
+
+        # Promote member with the longest tenure if team leader left
+        # TODO - Figure out all edge cases with this
+        if isTeamLeader and team_bucket:
+          team_bucket[0].listenTo.append(TeamListenerType.TEAMJOINREQUESTS)
           
         break
 
