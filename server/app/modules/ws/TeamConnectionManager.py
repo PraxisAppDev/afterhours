@@ -237,11 +237,12 @@ class TeamConnectionManager:
         team_bucket.pop(i)
 
         for connection in team_bucket:
-          # TODO Change message
-          connection.ws.send_json({
-            "message": "user left",
-            "userId": leaveUserId
-          })
+          if TeamListenerType.TEAMINFO in connection.listenTo:
+            # TODO Change message
+            connection.ws.send_json({
+              "message": "user left",
+              "userId": leaveUserId
+            })
 
         # Promote member with the longest tenure if team leader left
         # TODO - Figure out all edge cases with this
