@@ -20,4 +20,4 @@ COPY ./test /test
 
 WORKDIR /test
 
-CMD ["pytest"]
+CMD ["pytest", "-s", "--disable-warnings"]
