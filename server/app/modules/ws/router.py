@@ -1,13 +1,14 @@
-from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from app.modules.ws.TeamConnectionManager import TeamConnectionManager
 
 router = APIRouter()
 
 manager = TeamConnectionManager()
 
-# TODO - Protect with token authentication
 @router.websocket("/stream")
-async def websocket_endpoint(ws: WebSocket):
+async def websocket_endpoint(
+  ws: WebSocket,
+):
   await manager.connect(ws)
   try:
     while True:

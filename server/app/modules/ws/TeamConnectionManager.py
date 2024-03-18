@@ -1,9 +1,10 @@
 from enum import StrEnum
-from typing import Dict, List
+from typing import Dict, List, Union
 from fastapi import WebSocket
 from collections import defaultdict
 from pydantic import BaseModel, ConfigDict
 from app.modules.users.service import service as user_service
+from app.modules.users.auth.service import service as auth_service
 
 type TEAM_ID = str
 
@@ -24,17 +25,18 @@ class TeamErrorMessage(StrEnum):
 
 class InitRequestMessage(BaseModel):
   teamId: str
-  userId: str
+  # userId: str
+  authToken: str
   listenTo: List[TeamListenerType]
   protocolExtensions: List[str]
 
 class InitResponseBaseMessage(BaseModel):
   success: bool
 
-class InitResponsSuccessMessage(InitResponseBaseMessage):
+class InitResponseSuccessMessage(InitResponseBaseMessage):
   protocolExtensions: List[str]
 
-class InitReponseFailureMessage(InitResponseBaseMessage):
+class InitResponseFailureMessage(InitResponseBaseMessage):
   errorMessage: TeamErrorMessage
 
 class TeamRequestMessage(BaseModel):
@@ -74,25 +76,42 @@ class TeamConnectionManager:
     await ws.accept()
 
     init = await ws.receive_json()
-    self.register_connection(init, ws)
+    
+    response = await self.register_connection(init, ws)
 
-    response = InitResponsSuccessMessage(
-      success=True,
-      protocolExtensions=[]
-    ).model_dump()
-
-    await ws.send_json(response)
+    await ws.send_json(response.model_dump())
 
   # Places new websocket connection into a corresponding bucket
-  def register_connection(self, init: InitRequestMessage, ws: WebSocket):
-    teamId = init["teamId"]
-    listenTo = init["listenTo"]
-    userId = init["userId"]
-    self.active_connections[teamId].append(TeamConnection(
-      userId=userId,
-      ws=ws,
-      listenTo=listenTo
-    ))
+  async def register_connection(self, init: InitRequestMessage, ws: WebSocket) -> Union[InitResponseSuccessMessage, InitResponseFailureMessage]:
+    try:
+      teamId = init["teamId"]
+      listenTo = init["listenTo"]
+      authToken = init["authToken"]
+
+      userId = auth_service.get_id_with_token(authToken)
+
+      if await user_service.find_user_by_id(id):
+        self.active_connections[teamId].append(TeamConnection(
+          userId=userId,
+          ws=ws,
+          listenTo=listenTo
+        ))
+        return InitResponseSuccessMessage(
+          success=True,
+          protocolExtensions=[]
+        )
+    
+      else:
+        return InitResponseFailureMessage(
+          success=False,
+          errorMessage=TeamErrorMessage.INVALID_TOKEN
+        )
+      
+    except KeyError:
+      return InitResponseFailureMessage(
+        success=False,
+        errorMessage=TeamErrorMessage.INVALID_REQUEST
+      )
 
   # Performs different operations based on request type
   async def handle_request(self, request: TeamRequestMessage):
