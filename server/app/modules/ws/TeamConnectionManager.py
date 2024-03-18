@@ -111,6 +111,7 @@ class TeamConnectionManager:
 
   """
   Places new websocket connection into a corresponding bucket
+  TODO - VALIDATE THAT THE TEAM EXISTS
   """
   async def register_connection(self, init: InitRequestMessage, ws: WebSocket) -> InitResponseBaseMessage:
     try:
