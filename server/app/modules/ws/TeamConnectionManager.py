@@ -28,7 +28,6 @@ Init Requests + Responses
 class InitRequestMessage(BaseModel):
   type: str = Field(default='init')
   teamId: str
-  # userId: str
   authToken: str
   listenTo: List[TeamListenerType]
   protocolExtensions: List[str]
@@ -67,6 +66,12 @@ class TeamJoinRequest(BaseModel):
 
 class TeamJoinRequestResponse(BaseModel):
   success: bool
+
+class TeamJoinedUserInfo(BaseModel):
+  username: str
+  email: str
+  fullname: str
+
 
 """
 TeamConnection Model
@@ -115,9 +120,10 @@ class TeamConnectionManager:
       authToken = init["authToken"]
 
       # Decrypts token here
+      # TODO - Make sure this works
       userId = await auth_service.get_id_with_token(authToken)
 
-      if await user_service.find_user_by_id(id):
+      if await user_service.find_user_by_id(userId):
         self.active_connections[teamId].append(TeamConnection(
           userId=userId,
           ws=ws,
@@ -163,7 +169,7 @@ class TeamConnectionManager:
     authToken = request["authToken"]
     joinerId = await auth_service.get_id_with_token(authToken)
 
-    if await user_service.find_user_by_id(id):
+    if await user_service.find_user_by_id(joinerId):
       for connection in self.active_connections[teamId]:
         # Inform team leader of join request
         if TeamListenerType.TEAMJOINREQUESTS in connection.listenTo:
@@ -201,13 +207,12 @@ class TeamConnectionManager:
           
       # Send JSON data of new user to every member on the team
       elif TeamListenerType.TEAMINFO in connection.listenTo:
-        # try except is for testing purposes, can remove later
-        try:
-          new_member = await user_service.find_user_by_id(acceptedUserId)
-        except:
-          new_member = {}
-
-        await connection.ws.send_json(new_member)
+        new_member = await user_service.find_user_by_id(acceptedUserId)
+        await connection.ws.send_json(TeamJoinedUserInfo(
+          username=new_member["username"],
+          email=new_member["email"],
+          fullname=new_member["fullname"]
+        ).model_dump())
 
   def disconnect(self, ws: WebSocket):
     self.clean(ws)

@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from app.modules.users.auth.util import get_password_hash, verify_password, get_payload
 from app.modules.users.service import service as user_service
-from app.modules.users.router_models import UpdateUserModel, UserCreateModel, UserModel
+from app.modules.users.router_models import UpdateUserModel, UserCreateModel
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/auth/token")
 
