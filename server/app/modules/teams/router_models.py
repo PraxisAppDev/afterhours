@@ -1,7 +1,6 @@
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel, Field
 from app.models import PyObjectId
-from app.modules.teams.team_models import Player
 
 class TeamRequestModel(BaseModel):
   hunt_id: str = Field(...)
