@@ -30,6 +30,18 @@ class TeamsRepository:
         
     if result:
       return team_document.name
+    
+  async def join_team(self, id_hunt: str, team_name: str, id_user: str):
+    hunt = await self.collection.find_one({"_id": ObjectId(id_hunt)})
+    teams_list = hunt.get("gameState").get("teams")
+    team = [team for team in teams_list if team.get("name") == team_name]
+    new_teams_list = [team for team in teams_list if team.get("name") != team_name]
+    team[0]["players"].append(id_user)
+    updated_team = team[0]
+    new_teams_list.append(updated_team)
+    result = await self.collection.update_one({"_id": ObjectId(id_hunt)}, {"$set": {"gameState": {"teams": new_teams_list}}})
 
+    if result:
+      return new_teams_list
 
 repository = TeamsRepository()
