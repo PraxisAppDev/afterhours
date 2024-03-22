@@ -4,6 +4,8 @@ import 'package:praxis_afterhours/app_utils/profile_avatar.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/views/instructions.dart';
 import 'package:praxis_afterhours/apis/profile_api.dart';
+import 'package:praxis_afterhours/apis/auth_api.dart';
+import 'package:praxis_afterhours/views/sign_in_view.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -163,6 +165,42 @@ class _ProfileViewState extends State<ProfileView> {
                                         }
                                       },
                                       child: const Text('Save Changes'),
+                                    )),
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                praxisRed),
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                praxisWhite),
+                                        padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                            const EdgeInsets.all(18)),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                8), // BorderRadius
+                                          ),
+                                        ),
+                                        textStyle: MaterialStateProperty.all<
+                                                TextStyle>(
+                                            const TextStyle(fontSize: 20)),
+                                      ),
+                                      onPressed: () {
+                                        logoutUser();
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SignInView(),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text('Logout'),
                                     ))
                               ],
                             ),

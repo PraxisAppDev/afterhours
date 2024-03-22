@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:praxis_afterhours/apis/api_client.dart';
+import 'package:praxis_afterhours/storage/secure_storage.dart';
 
 Future<String> logIn(String username, String password) async {
   Response response;
@@ -40,4 +41,9 @@ Future<String> signUp(
   } else {
     throw const FormatException("invalid credentials");
   }
+}
+
+Future<void> logoutUser() async {
+  // Remove auth token from storage to logout of user session
+  await storage.delete(key: "token");
 }
