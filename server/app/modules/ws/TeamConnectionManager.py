@@ -6,6 +6,12 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.modules.users.service import service as user_service
 from app.modules.users.auth.service import service as auth_service
 
+"""
+EDGE CASES TO CONSIDER:
+- LEADER ACCEPTS THE MOMENT JOINER LEAVES
+- LEADER AND SECOND HIGHEST TENURE PLAYER BOTH LEAVE AT THE SAME TIME
+"""
+
 BUCKET_MAX_CONNECTIONS = 10
 
 class TeamRequestType(StrEnum):
@@ -153,9 +159,14 @@ class TeamConnectionManager:
 
         if role == TeamInitRole.TEAM_JOINER:
           listenTo.append(TeamListenerType.TEAM_REQUEST_RESPONSES)
-        elif role == TeamInitRole.TEAM_LEADER:
+        elif role == TeamInitRole.TEAM_LEADER and not self.active_connections[teamId]:
           listenTo.append(TeamListenerType.TEAM_INFO)
           listenTo.append(TeamListenerType.TEAM_JOIN_REQUESTS)
+        else:
+          return InitResponseFailureMessage(
+            success=False,
+            errorMessage=TeamErrorMessage.INVALID_REQUEST
+          )
 
         self.active_connections[teamId].append(TeamConnection(
           userId=userId,
@@ -289,13 +300,13 @@ class TeamConnectionManager:
         await connection.ws.send_json(response.model_dump())
         await connection.ws.close()
 
-  def disconnect(self, ws: WebSocket):
-    self.clean(ws)
+  async def disconnect(self, ws: WebSocket):
+    await self.clean(ws)
 
   """
   Removes connection from their corresponding bucket
   """
-  def clean(self, ws: WebSocket):
+  async def clean(self, ws: WebSocket):
     isTeamLeader = False
 
     for team_bucket in self.active_connections.values():
@@ -315,7 +326,7 @@ class TeamConnectionManager:
 
         for connection in team_bucket:
           if TeamListenerType.TEAM_INFO in connection.listenTo:
-            connection.ws.send_json({
+            await connection.ws.send_json({
               "message": "user left",
               "userId": leaveUserId
             })

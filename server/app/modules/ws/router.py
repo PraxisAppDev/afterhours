@@ -15,4 +15,4 @@ async def websocket_endpoint(
       request = await ws.receive_json()
       await manager.handle_request(ws, request)
   except WebSocketDisconnect:
-    manager.disconnect(ws)
+    await manager.disconnect(ws)
