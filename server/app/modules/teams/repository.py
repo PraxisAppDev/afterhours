@@ -48,6 +48,10 @@ class TeamsRepository:
     hunt = await self.collection.find_one({"_id": ObjectId(id_hunt)})
 
     if hunt:
-      return hunt.get("gameState").get("teams")
+      gameState = hunt.get("gameState")
+      if gameState:
+        return gameState.get("teams")
+      else:
+        return []
 
 repository = TeamsRepository()
