@@ -43,5 +43,11 @@ class TeamsRepository:
 
     if result:
       return new_teams_list
+    
+  async def get_teams(self, id_hunt: str):
+    hunt = await self.collection.find_one({"_id": ObjectId(id_hunt)})
+
+    if hunt:
+      return hunt.get("gameState").get("teams")
 
 repository = TeamsRepository()

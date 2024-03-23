@@ -41,3 +41,21 @@ async def join_team(id_hunt: str, team_name: str, id_user: Annotated[str, Depend
     message="joined team",
     content=teams_list
   )
+
+@router.post(
+  '/get_teams',
+  status_code=201,
+  response_model=TeamsResponseModel,
+  responses={
+    500: {
+      "description": "Error getting teams",
+      "model": TeamsResponseModel
+    } 
+  }
+)
+async def get_teams(id_hunt: str):
+  teams_list = await service.get_teams(id_hunt)
+  return TeamsResponseModel(
+    message="Get teams successful",
+    content=teams_list
+  )
