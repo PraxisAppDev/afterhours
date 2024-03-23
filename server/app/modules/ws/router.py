@@ -13,6 +13,6 @@ async def websocket_endpoint(
   try:
     while True:
       request = await ws.receive_json()
-      await manager.handle_request(request)
+      await manager.handle_request(ws, request)
   except WebSocketDisconnect:
     manager.disconnect(ws)

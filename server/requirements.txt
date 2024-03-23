@@ -22,3 +22,6 @@ email-validator
 
 # testing
 pytest-timeout
+
+# websockets
+websockets
