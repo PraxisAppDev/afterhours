@@ -23,8 +23,9 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: PraxisAppDev
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          logout: true
 
       - name: Build and push images to Registry
         working-directory: ./server
