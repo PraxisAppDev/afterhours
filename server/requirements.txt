@@ -20,5 +20,11 @@ cryptography
 # https://pdw.ex-parrot.com/Mail-RFC822-Address.html
 email-validator
 
+# testing
+pytest-timeout
+
+# websockets
+websockets
+
 # general
 requests
