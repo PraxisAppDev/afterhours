@@ -9,14 +9,8 @@ class LeaderboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () async {
-            Navigator.pop(context);
-          },
-        ),
         title: const Text(
-          "Join A Hunt",
+          "Leaderboard",
           style: TextStyle(
             color: praxisWhite,
             fontSize: 50,
