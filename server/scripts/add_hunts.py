@@ -102,6 +102,7 @@ class Add_Hunts():
         }
       }
     ],
+    "teams": []
   }
 
     # change("goob@gmail.com", "silly silly", "bl@hbl@h101", "raaaa raaaa")
