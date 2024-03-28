@@ -211,6 +211,7 @@ class Add_Hunts():
                 }
             },
         ],
+        "teams": []
     }
 
     hunt2_json = {
@@ -403,6 +404,7 @@ class Add_Hunts():
                 }
             },
         ],
+        "teams": []
     }
 
     hunt3_json = {
@@ -587,6 +589,7 @@ class Add_Hunts():
                 }
             },
         ],
+        "teams": []
     }
 
     json_data = {
@@ -683,6 +686,7 @@ class Add_Hunts():
                 }
             }
         ],
+        "teams": []
     }
 
     # change("goob@gmail.com", "silly silly", "bl@hbl@h101", "raaaa raaaa")
