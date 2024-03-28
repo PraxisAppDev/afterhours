@@ -12,10 +12,9 @@ class HuntRepository:
   async def get_all_past_date(self, date=datetime.now()):
     cursor = self.collection.find({
       "endDate": {
-        "$gte": date
+        "$gte": date.strftime("%Y-%m-%d %I:%M %p")
       }
     })
-    # cursor = cursor.listens_to()
     return list(map(lambda document: handle_object_id(document), await cursor.to_list(1000)))
 
   async def get_all_before_date(self, date=datetime.now()):
