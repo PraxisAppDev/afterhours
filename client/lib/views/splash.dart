@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:praxis_afterhours/views/sign_in_view.dart';
+import 'package:praxis_afterhours/views/authentication/sign_in_view.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -39,12 +39,15 @@ class _SplashState extends State<Splash> {
                     image: AssetImage('../../assets/logo/logo.png'))),
           ),
           Positioned(
-              bottom: -30,
+              bottom: -40,
               right: -30,
-              child: Image(
-                  width: 200,
-                  height: 200,
-                  image: AssetImage('../../assets/logo/corner_logo.png'))),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Image(
+                    width: 200,
+                    height: 200,
+                    image: AssetImage('../../assets/logo/corner_logo.png')),
+              )),
           Positioned(
               bottom: 0,
               left: 0,
