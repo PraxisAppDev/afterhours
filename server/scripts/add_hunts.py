@@ -11,7 +11,7 @@ class Add_Hunts():
   json_data = {
     "name": "Recruit Mixer",
     "description": "The Greene Turtle (in-person only)",
-    "startDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
+    "startDate": datetime(2024, 4, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
     "joinableAfterDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
     "endDate": datetime(2024, 5, 1, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
     "huntLocation": {
@@ -109,7 +109,3 @@ class Add_Hunts():
   def do(self):
     response = requests.post('http://localhost:8001/hunts/create_hunt', headers=self.headers, json=self.json_data)
     return json.loads((response.__dict__.get('_content')).decode('utf-8')).get('inserted_hunt_id')
-  
-
-
-      
