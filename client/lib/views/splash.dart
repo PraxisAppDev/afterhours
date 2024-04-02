@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/views/authentication/sign_in_view.dart';
+import 'package:praxis_afterhours/storage/secure_storage.dart';
+import 'package:praxis_afterhours/views/bottom_nav_bar.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -12,17 +14,24 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    _navigatetoSignIn(context);
+    _navigate(context);
   }
 
-  _navigatetoSignIn(BuildContext context) async {
+  _navigate(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-            pageBuilder: (_, __, ___) => SignInView(),
-            transitionsBuilder: (_, a, __, c) =>
-                FadeTransition(opacity: a, child: c)));
+    var token = await storage.containsKey(key: 'token');
+    var exp = await storage.read(key: 'exp');
+    var hasValidToken =
+        token && exp != null && DateTime.now().isBefore(DateTime.parse(exp));
+    if (context.mounted) {
+      Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (_, __, ___) =>
+                  hasValidToken ? BottomNavBar() : SignInView(),
+              transitionsBuilder: (_, a, __, c) =>
+                  FadeTransition(opacity: a, child: c)));
+    }
   }
 
   @override

@@ -116,13 +116,14 @@ class CreateAccountView extends StatelessWidget {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {
-                        var token = await signUp(
+                        var (token, exp) = await signUp(
                           usernameController.text,
                           emailController.text,
                           fullNameController.text,
                           passwordController.text,
                         );
                         await storage.write(key: "token", value: token);
+                        await storage.write(key: "exp", value: exp);
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
