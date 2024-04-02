@@ -28,10 +28,12 @@ async def login(request: LoginModel):
   user = await service.authenticate_user(request.username, request.password)
   if user:
     await service.log_user_sign_in(user["_id"])
+    access_token, exp = create_access_token({"_id": str(user["_id"])})
     return AuthSuccessModel(
       message=AuthSuccessTextModel.LOGIN_SUCCESSFUL,
       token=Token(
-        access_token=create_access_token({"_id": str(user["_id"])}),
+        access_token=access_token,
+        exp=exp,
         token_type="bearer"
       )
     )
@@ -62,10 +64,12 @@ async def signup(request: SignUpModel):
   new_user_id = await service.create_new_user(request.username, request.email, request.fullname, request.password)
   try:
     if new_user_id:
+      access_token, exp = create_access_token({"_id": new_user_id})
       return AuthSuccessModel(
         message=AuthSuccessTextModel.SIGNUP_SUCCESSFUL,
         token=Token(
-          access_token=create_access_token({"_id": new_user_id}),
+          access_token=access_token,
+          exp=exp,
           token_type="bearer"
         )
       )
