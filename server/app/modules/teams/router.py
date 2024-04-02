@@ -26,7 +26,7 @@ async def create_team(request: TeamRequestModel):
 
 @router.post(
   '/join_team',
-  status_code=200,
+  status_code=201,
   response_model=TeamsResponseModel,
   responses={
     500: {
