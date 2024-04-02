@@ -42,9 +42,9 @@ async def join_team(id_hunt: str, team_name: str, id_user: Annotated[str, Depend
     content=teams_list
   )
 
-@router.post(
+@router.get(
   '/get_teams',
-  status_code=201,
+  status_code=200,
   response_model=TeamsResponseModel,
   responses={
     500: {
