@@ -209,3 +209,30 @@ class Hunt {
     return formatter.parse(dateString);
   }
 }
+
+class Team {
+  final String id;
+  final String name;
+  String teamLeader;
+  List<String> players;
+  List<String> invitations;
+
+  Team({
+    required this.id,
+    required this.name,
+    required this.teamLeader,
+    required this.players,
+    required this.invitations,
+  });
+
+  factory Team.fromJson(Map<String, dynamic> json) {
+    return Team(
+      id: json['hunt_id'],
+      name: json['name'],
+      teamLeader: json['teamLead'],
+      players: List<String>.from(json['players']),
+      invitations: List<String>.from(json['invitations']),
+    );
+  }
+
+}

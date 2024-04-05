@@ -6,9 +6,11 @@ import 'package:praxis_afterhours/views/dashboard/join_hunt_options/join_team_vi
 
 class TeamOptions extends StatelessWidget {
   final String huntTitle;
+  final String huntId;
   const TeamOptions({
     super.key,
     required this.huntTitle,
+    required this.huntId,
   });
 
   final padding =
@@ -34,7 +36,7 @@ class TeamOptions extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const JoinTeamView(),
+                    builder: (context) => JoinTeamView(huntId: huntId,),
                   ),
                 );
               },
@@ -64,18 +66,20 @@ class TeamOptions extends StatelessWidget {
         Padding(
           padding: padding,
           child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HuntAloneView(),
-                    ));
-              },
-              child: const ListTile(
-                title: Center(
-                    child: Text("Hunt Alone", style: TextStyle(fontSize: 28))),
-                tileColor: praxisGrey,
-              )),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HuntAloneView(),
+                ),
+              );
+            },
+            child: const ListTile(
+              title: Center(
+                child: Text("Hunt Alone", style: TextStyle(fontSize: 28))),
+              tileColor: praxisGrey,
+            ),
+          ),
         ),
       ],
     ));

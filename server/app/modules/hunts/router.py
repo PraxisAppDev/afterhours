@@ -14,6 +14,7 @@ router = APIRouter()
 )
 async def load_upcoming_hunts():
   result = await service.get_upcoming()
+
   return HuntResponseModel(
     message="fetched hunts",
     content=result
