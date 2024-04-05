@@ -1,26 +1,60 @@
+import 'dart:convert';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/reusables/hunt_structure.dart';
 import 'package:praxis_afterhours/views/dashboard/join_hunt_options/waiting_room_view.dart';
+import 'package:http/http.dart' as http;
 
 class JoinTeamView extends StatefulWidget {
-  const JoinTeamView({super.key});
+  final String huntId;
+  const JoinTeamView({
+    super.key,
+    required this.huntId,
+  });
 
   @override
   _JoinTeamViewState createState() => _JoinTeamViewState();
 }
 
 class _JoinTeamViewState extends State<JoinTeamView> {
+  List<Team> _teams = [];
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  late final String huntId;
+
+  @override
+  void initState() {
+    super.initState();
+    huntId = widget.huntId;
+    _fetchTeams();
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _fetchTeams() async {
+    final response =
+        await http.get(Uri.parse('http://localhost:8001/teams/get_teams?id_hunt=$huntId'));
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      final List<dynamic> teamData = jsonData['content'];
+      
+      setState(() {
+        _teams = teamData.map((team) => Team.fromJson(team)).toList();
+      });
+    } else {
+      // Handle error case
+      print('Failed to fetch upcoming hunts');
+    }
   }
 
   @override
@@ -105,25 +139,13 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   }
 
   List<Widget> _buildFilteredTeamTiles() {
-    final teamTiles = [
-      _buildTeamTile("Aperture Science", 4, 4, ["Joe", "Bob", "Jim", "Frank"],
-          true, context),
-      _buildTeamTile(
-          "The Billy Bobs", 3, 4, ["Joe", "Bob", "Dave"], false, context),
-      _buildTeamTile("The Charlie Cats", 2, 4, ["Joe", "Bob"], true, context),
-      _buildTeamTile("The Delta Dogs", 4, 4, ["Joe", "Bob", "Jim", "Frank"],
-          false, context),
-      _buildTeamTile(
-          "The Echo Elephants", 3, 4, ["Joe", "Bob", "Dave"], false, context),
-      _buildTeamTile("The Foxtrot Foxes", 2, 4, ["Joe", "Bob"], false, context),
-      _buildTeamTile("The Golf Giraffes", 4, 4, ["Joe", "Bob", "Jim", "Frank"],
-          false, context),
-      _buildTeamTile(
-          "The Hotel Hippos", 3, 4, ["Joe", "Bob", "Dave"], false, context),
-      _buildTeamTile("The India Iguanas", 2, 4, ["Joe", "Bob"], false, context),
-      _buildTeamTile("The Juliet Jackals", 4, 4, ["Joe", "Bob", "Jim", "Frank"],
-          false, context),
-    ];
+
+    List<Widget> teamTiles = [];
+    for (Team team in _teams) {
+      teamTiles.add(
+        _buildTeamTile(team.name, team.players.length, team.players.length+1, team.players, false, context)
+      );
+    }
 
     final filteredTiles = teamTiles.where((tile) {
       final teamName = tile.key.toString().toLowerCase();

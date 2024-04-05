@@ -56,6 +56,7 @@ class HuntModel(BaseModel):
   # startDate: datetime = Field(...)
   # endDate: datetime = Field(...)
   startDate: str = Field(...)
+  joinableAfterDate: str = Field(...)
   endDate: str = Field(...)
   huntLocation: dict = Field(...)
   # venueLocation: List[float] = [] # Change later

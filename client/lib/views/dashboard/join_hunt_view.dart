@@ -39,7 +39,7 @@ class _JoinHuntViewState extends State<JoinHuntView> {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final List<dynamic> huntData = jsonData['content'];
-
+      
       setState(() {
         _hunts = huntData.map((hunt) => Hunt.fromJson(hunt)).toList();
       });
@@ -144,7 +144,7 @@ class HuntWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        join_hunt_options_dialog(context);
+        join_hunt_options_dialog(context, hunt.id);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -239,7 +239,7 @@ class HuntWidget extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          join_hunt_options_dialog(context);
+                          join_hunt_options_dialog(context, hunt.id);
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: praxisWhite,
@@ -265,7 +265,7 @@ class HuntWidget extends StatelessWidget {
     );
   }
 
-  Future<dynamic> join_hunt_options_dialog(BuildContext context) {
+  Future<dynamic> join_hunt_options_dialog(BuildContext context, String huntId) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -291,7 +291,7 @@ class HuntWidget extends StatelessWidget {
                 OpenContainer(
                   useRootNavigator: true,
                   transitionDuration: const Duration(seconds: 1),
-                  openBuilder: (context, _) => const JoinTeamView(),
+                  openBuilder: (context, _) => JoinTeamView(huntId: huntId),
                   closedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
