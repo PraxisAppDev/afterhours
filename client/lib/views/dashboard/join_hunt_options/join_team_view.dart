@@ -143,7 +143,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
     List<Widget> teamTiles = [];
     for (Team team in _teams) {
       teamTiles.add(
-        _buildTeamTile(team.name, team.players.length, team.players.length+1, team.players, false, context)
+        _buildTeamTile(team.name, team.players.length, team.capacity, team.players, false, context)
       );
     }
 
@@ -168,7 +168,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   Widget _buildTeamTile(
     String teamName,
     int currentMembers,
-    int totalMembers,
+    int capacity,
     List<String> memberNames,
     bool isLocked,
     BuildContext context,
@@ -205,7 +205,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Members ($currentMembers/$totalMembers):",
+                    "Members ($currentMembers/$capacity):",
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.start,
                   ),
@@ -225,7 +225,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                     }).toList(),
                   ),
                   const SizedBox(height: 16),
-                  if (currentMembers == totalMembers)
+                  if (currentMembers == capacity)
                     Container(
                       width: double.infinity,
                       child: const Text(

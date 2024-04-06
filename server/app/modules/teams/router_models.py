@@ -9,6 +9,7 @@ class TeamRequestModel(BaseModel):
   players: List[str] = Field()
   challengeResults: List[PyObjectId] = []
   invitations: List[str] = Field()
+  capacity: int = Field()
 
   # TODO
   model_config = {
