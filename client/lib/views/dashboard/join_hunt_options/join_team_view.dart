@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:praxis_afterhours/apis/socket/web_socket_channel.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/reusables/hunt_structure.dart';
 import 'package:praxis_afterhours/views/dashboard/join_hunt_options/waiting_room_view.dart';
@@ -21,7 +20,7 @@ class JoinTeamView extends StatefulWidget {
   });
 
   @override
-  _JoinTeamViewState createState() => _JoinTeamViewState();
+  State<JoinTeamView> createState() => _JoinTeamViewState();
 }
 
 class _JoinTeamViewState extends State<JoinTeamView> {
@@ -37,18 +36,9 @@ class _JoinTeamViewState extends State<JoinTeamView> {
     _fetchTeams();
   }
 
+  @override
   void initState() {
     super.initState();
-    (() async {
-      WebSocketApiRequest(
-        Uri.parse('ws://localhost:3000'),
-        teamId: 'teamId',
-        authToken: await getToken() ?? '',
-        role: TeamInitRole.teamJoiner,
-      ).responseStream.listen((event) {
-        print(event);
-      });
-    })();
   }
 
   @override

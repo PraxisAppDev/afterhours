@@ -57,7 +57,6 @@ async def join_team(hunt_id: str, team_name: str, id_user: Annotated[str, Depend
   '/list_teams',
   status_code=200,
   response_model=TeamsResponseModel,
-  response_class=StreamingResponse,
   responses={
     422: {
       "description": "Request could not be validated",

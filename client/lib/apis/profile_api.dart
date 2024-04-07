@@ -4,6 +4,7 @@ import 'package:praxis_afterhours/apis/api_client.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:praxis_afterhours/apis/api_utils/token.dart';
 
+
 Future<Map<String, dynamic>> fetchUserInfo() async {
   final token = await getToken();
   Response response;

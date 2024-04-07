@@ -45,8 +45,8 @@ dependencies:
   flutter_bounceable: ^1.1.0
   auto_size_text: ^3.0.0
   page_transition: ^2.1.0
-  web_socket_channel: ^2.4.4
   json_annotation: ^4.8.1
+  fetch_client: ^1.0.2
 
 dev_dependencies:
   flutter_test:
