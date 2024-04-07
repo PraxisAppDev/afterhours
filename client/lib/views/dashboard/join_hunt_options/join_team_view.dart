@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:animations/animations.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,8 +9,6 @@ import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/reusables/hunt_structure.dart';
 import 'package:praxis_afterhours/views/dashboard/join_hunt_options/waiting_room_view.dart';
 import 'package:http/http.dart' as http;
-
-import '../../../apis/api_utils/token.dart';
 
 class JoinTeamView extends StatefulWidget {
   final String huntId;
@@ -37,11 +35,6 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
@@ -60,7 +53,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
       });
     } else {
       // Handle error case
-      print('Failed to fetch upcoming hunts');
+      if(kDebugMode) print('Failed to fetch upcoming hunts');
     }
   }
 
@@ -308,9 +301,9 @@ class BasicTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final Function(String)? onChange;
-  final labelStyle;
+  final TextStyle labelStyle;
 
-  BasicTextField({
+  const BasicTextField({
     super.key,
     required this.editingController,
     required this.labelText,
