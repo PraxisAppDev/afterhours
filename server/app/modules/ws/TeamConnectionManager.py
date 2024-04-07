@@ -125,10 +125,12 @@ class TeamConnectionManager:
   Initialization of websocket connection
   """
   async def connect(self, ws: WebSocket):
+    print("Websocket Request")
+
     await ws.accept()
 
     init = await ws.receive_json()
-    
+
     response = await self.register_connection(init, ws)
 
     await ws.send_json(response.model_dump())

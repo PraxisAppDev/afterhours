@@ -28,7 +28,7 @@ class _SplashState extends State<Splash> {
           context,
           PageRouteBuilder(
               pageBuilder: (_, __, ___) =>
-                  hasValidToken ? BottomNavBar() : SignInView(),
+                  hasValidToken ? const BottomNavBar() : SignInView(),
               transitionsBuilder: (_, a, __, c) =>
                   FadeTransition(opacity: a, child: c)));
     }

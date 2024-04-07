@@ -1,7 +1,7 @@
 # basic server libraries: fastapi, pydantic, uvicorn, asyncio
 fastapi
 pydantic
-uvicorn
+uvicorn[standard]
 asyncio
 python-dotenv
 python-multipart

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -44,8 +44,15 @@ class WebSocketApiRequest {
     ));
     Stream<ResponseMessageBase> responseStream = _channel.getStream();
     ResponseMessageBase firstResponse = await responseStream.first;
+    if (kDebugMode) {
+      print(firstResponse);
+    }
     if(firstResponse is! InitResponseMessage) {
       throw Exception('Failed to initialize connection: $firstResponse is of an invalid type');
+    }
+    InitResponseMessage initResponse = firstResponse;
+    if(!initResponse.success) {
+      throw Exception('Failed to initialize connection: ${initResponse.errorMessage}');
     }
 
     yield* responseStream;
