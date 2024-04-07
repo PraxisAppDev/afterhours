@@ -5,16 +5,6 @@ import 'package:praxis_afterhours/constants/api_urls.dart';
 import 'package:praxis_afterhours/views/splash.dart';
 
 void main() {
-  WebSocketApiRequest(
-    WebsocketAPIUrls.wsUri,
-    teamId: "teamId",
-    authToken: "authToken",
-    role: TeamInitRole.teamJoiner
-  ).responseStream.listen((event) {
-    if (kDebugMode) {
-      print(event);
-    }
-  });
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,

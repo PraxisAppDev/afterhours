@@ -5,6 +5,7 @@ router = APIRouter()
 
 manager = TeamConnectionManager()
 
+
 @router.websocket("/stream")
 async def websocket_endpoint(
   ws: WebSocket,

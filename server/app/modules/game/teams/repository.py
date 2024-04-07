@@ -1,5 +1,5 @@
 from app.database import database
-from app.modules.teams.router_models import TeamRequestModel
+from app.modules.game.teams.router_models import TeamRequestModel
 import json
 from bson import ObjectId
 

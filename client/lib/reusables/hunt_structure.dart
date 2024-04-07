@@ -141,13 +141,14 @@ class Response {
 
 @JsonSerializable()
 class Hunt {
+  @JsonKey(name: '_id')
   final String id;
   final String name;
   final String description;
   @JsonKey(fromJson: _DateUtil._fromJson, toJson: _DateUtil._toJson)
   final DateTime startDate;
-  @JsonKey(fromJson: _DateUtil._fromJson, toJson: _DateUtil._toJson)
-  final DateTime joinableAfterDate;
+  @JsonKey(fromJson: _DateUtil._fromJsonNullable, toJson: _DateUtil._toJsonNullable)
+  final DateTime? joinableAfterDate;
   @JsonKey(fromJson: _DateUtil._fromJson, toJson: _DateUtil._toJson)
   final DateTime endDate;
   final HuntLocation huntLocation;
@@ -178,6 +179,14 @@ class _DateUtil {
 
   static String _toJson(DateTime date) {
     return formatter.format(date);
+  }
+
+  static DateTime? _fromJsonNullable(String? date) {
+    return (date?.isEmpty ?? true) ? null : formatter.parse(date!);
+  }
+
+  static String _toJsonNullable(DateTime? date) {
+    return date == null ? '' : formatter.format(date);
   }
 }
 

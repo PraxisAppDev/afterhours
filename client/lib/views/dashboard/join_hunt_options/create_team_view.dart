@@ -6,7 +6,7 @@ class CreateTeamView extends StatefulWidget {
   const CreateTeamView({super.key});
 
   @override
-  _CreateTeamViewState createState() => _CreateTeamViewState();
+  State<CreateTeamView> createState() => _CreateTeamViewState();
 }
 
 class _CreateTeamViewState extends State<CreateTeamView> {

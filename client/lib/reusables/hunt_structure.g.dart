@@ -116,12 +116,12 @@ Map<String, dynamic> _$ResponseToJson(Response instance) => <String, dynamic>{
     };
 
 Hunt _$HuntFromJson(Map<String, dynamic> json) => Hunt(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       startDate: _DateUtil._fromJson(json['startDate'] as String),
       joinableAfterDate:
-          _DateUtil._fromJson(json['joinableAfterDate'] as String),
+          _DateUtil._fromJsonNullable(json['joinableAfterDate'] as String?),
       endDate: _DateUtil._fromJson(json['endDate'] as String),
       huntLocation:
           HuntLocation.fromJson(json['huntLocation'] as Map<String, dynamic>),
@@ -131,11 +131,12 @@ Hunt _$HuntFromJson(Map<String, dynamic> json) => Hunt(
     );
 
 Map<String, dynamic> _$HuntToJson(Hunt instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'name': instance.name,
       'description': instance.description,
       'startDate': _DateUtil._toJson(instance.startDate),
-      'joinableAfterDate': _DateUtil._toJson(instance.joinableAfterDate),
+      'joinableAfterDate':
+          _DateUtil._toJsonNullable(instance.joinableAfterDate),
       'endDate': _DateUtil._toJson(instance.endDate),
       'huntLocation': instance.huntLocation,
       'challenges': instance.challenges,
