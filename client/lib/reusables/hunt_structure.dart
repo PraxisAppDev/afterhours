@@ -1,5 +1,9 @@
 import 'package:intl/intl.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'hunt_structure.g.dart';
+
+@JsonSerializable()
 class HuntLocation {
   final String type;
   final String locationName;
@@ -13,16 +17,12 @@ class HuntLocation {
     required this.geofence,
   });
 
-  factory HuntLocation.fromJson(Map<String, dynamic> json) {
-    return HuntLocation(
-      type: json['type'],
-      locationName: json['locationName'],
-      locationInstructions: json['locationInstructions'],
-      geofence: Geofence.fromJson(json['geofence']),
-    );
-  }
+  factory HuntLocation.fromJson(Map<String, dynamic> json) => _$HuntLocationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HuntLocationToJson(this);
 }
 
+@JsonSerializable()
 class Geofence {
   final String type;
   final List<double> coordinates;
@@ -34,15 +34,12 @@ class Geofence {
     required this.radius,
   });
 
-  factory Geofence.fromJson(Map<String, dynamic> json) {
-    return Geofence(
-      type: json['type'],
-      coordinates: List<double>.from(json['coordinates']),
-      radius: json['radius'],
-    );
-  }
+  factory Geofence.fromJson(Map<String, dynamic> json) => _$GeofenceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GeofenceToJson(this);
 }
 
+@JsonSerializable()
 class Challenge {
   final String questionTitle;
   final String description;
@@ -64,20 +61,10 @@ class Challenge {
     required this.response,
   });
 
-  factory Challenge.fromJson(Map<String, dynamic> json) {
-    return Challenge(
-      questionTitle: json['questionTitle'],
-      description: json['description'],
-      imageURL: json['imageURL'],
-      placeholderText: json['placeholderText'],
-      sequence: Sequence.fromJson(json['sequence']),
-      hints: List<Hint>.from(json['hints'].map((hint) => Hint.fromJson(hint))),
-      scoring: Scoring.fromJson(json['scoring']),
-      response: Response.fromJson(json['response']),
-    );
-  }
+  factory Challenge.fromJson(Map<String, dynamic> json) => _$ChallengeFromJson(json);
 }
 
+@JsonSerializable()
 class Sequence {
   final int num;
   final int order;
@@ -87,14 +74,12 @@ class Sequence {
     required this.order,
   });
 
-  factory Sequence.fromJson(Map<String, dynamic> json) {
-    return Sequence(
-      num: json['num'],
-      order: json['order'],
-    );
-  }
+  factory Sequence.fromJson(Map<String, dynamic> json) => _$SequenceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SequenceToJson(this);
 }
 
+@JsonSerializable()
 class Hint {
   final String type;
   final double penalty;
@@ -106,15 +91,12 @@ class Hint {
     required this.text,
   });
 
-  factory Hint.fromJson(Map<String, dynamic> json) {
-    return Hint(
-      type: json['type'],
-      penalty: json['penalty'],
-      text: json['text'],
-    );
-  }
+  factory Hint.fromJson(Map<String, dynamic> json) => _$HintFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HintToJson(this);
 }
 
+@JsonSerializable()
 class Scoring {
   final double points;
   final TimeDecay timeDecay;
@@ -124,14 +106,12 @@ class Scoring {
     required this.timeDecay,
   });
 
-  factory Scoring.fromJson(Map<String, dynamic> json) {
-    return Scoring(
-      points: json['points'],
-      timeDecay: TimeDecay.fromJson(json['timeDecay']),
-    );
-  }
+  factory Scoring.fromJson(Map<String, dynamic> json) => _$ScoringFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ScoringToJson(this);
 }
 
+@JsonSerializable()
 class TimeDecay {
   final String type;
   final int? timeLimit;
@@ -141,14 +121,10 @@ class TimeDecay {
     this.timeLimit,
   });
 
-  factory TimeDecay.fromJson(Map<String, dynamic> json) {
-    return TimeDecay(
-      type: json['type'],
-      timeLimit: json['timeLimit'],
-    );
-  }
+  factory TimeDecay.fromJson(Map<String, dynamic> json) => _$TimeDecayFromJson(json);
 }
 
+@JsonSerializable()
 class Response {
   final String type;
   final List<String> possibleAnswers;
@@ -160,21 +136,19 @@ class Response {
     required this.caseSensitive,
   });
 
-  factory Response.fromJson(Map<String, dynamic> json) {
-    return Response(
-      type: json['type'],
-      possibleAnswers: List<String>.from(json['possibleAnswers']),
-      caseSensitive: json['caseSensitive'],
-    );
-  }
+  factory Response.fromJson(Map<String, dynamic> json) => _$ResponseFromJson(json);
 }
 
+@JsonSerializable()
 class Hunt {
   final String id;
   final String name;
   final String description;
+  @JsonKey(fromJson: _DateUtil._fromJson, toJson: _DateUtil._toJson)
   final DateTime startDate;
+  @JsonKey(fromJson: _DateUtil._fromJson, toJson: _DateUtil._toJson)
   final DateTime joinableAfterDate;
+  @JsonKey(fromJson: _DateUtil._fromJson, toJson: _DateUtil._toJson)
   final DateTime endDate;
   final HuntLocation huntLocation;
   final List<Challenge> challenges;
@@ -190,23 +164,20 @@ class Hunt {
     required this.challenges,
   });
 
-  factory Hunt.fromJson(Map<String, dynamic> json) {
-    return Hunt(
-      id: json['_id'],
-      name: json['name'],
-      description: json['description'],
-      startDate: _parseDate(json['startDate']),
-      joinableAfterDate: _parseDate(json['joinableAfterDate']),
-      endDate: _parseDate(json['endDate']),
-      huntLocation: HuntLocation.fromJson(json['huntLocation']),
-      challenges: List<Challenge>.from(
-          json['challenges'].map((challenge) => Challenge.fromJson(challenge))),
-    );
+  factory Hunt.fromJson(Map<String, dynamic> json) => _$HuntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HuntToJson(this);
+}
+
+class _DateUtil {
+  static final formatter = DateFormat('yyyy-MM-dd hh:mm a');
+
+  static DateTime _fromJson(String date) {
+    return formatter.parse(date);
   }
 
-  static DateTime _parseDate(String dateString) {
-    final formatter = DateFormat('yyyy-MM-dd hh:mm a');
-    return formatter.parse(dateString);
+  static String _toJson(DateTime date) {
+    return formatter.format(date);
   }
 }
 
