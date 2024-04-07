@@ -3,6 +3,7 @@ import 'package:praxis_afterhours/app_utils/team_options.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
 class HuntTile extends StatelessWidget {
+  final String huntId;
   final String title;
   final String date;
   final String location;
@@ -11,6 +12,7 @@ class HuntTile extends StatelessWidget {
 
   const HuntTile({
     super.key,
+    required this.huntId,
     required this.title,
     required this.location,
     required this.date,
@@ -55,7 +57,10 @@ class HuntTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                   side: const BorderSide(color: Colors.black),
                 ),
-                content: TeamOptions(huntTitle: huntTitle)),
+                content: TeamOptions(
+                  huntId: huntId,
+                  huntTitle: huntTitle
+                )),
           );
         });
   }

@@ -75,17 +75,18 @@ class HuntHistoryView extends StatelessWidget {
         ),
         body: Column(
             children: eventsJson.map((event) {
+          final String huntId = event['_id'].toString();
           final String place = event['place'].toString();
           final String title = event['title'].toString();
           final String location = event['location'].toString();
           final String date = event['date'].toString();
 
-          return buildEvent(title, location, date, place);
+          return buildEvent(huntId, title, location, date, place);
         }).toList()));
   }
 }
 
-Widget buildEvent(String title, String location, String date, String place) {
+Widget buildEvent(String huntId, String title, String location, String date, String place) {
   return Padding(
       padding: const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
       child: Row(
@@ -94,6 +95,7 @@ Widget buildEvent(String title, String location, String date, String place) {
             child: TextButton(
                 onPressed: () {},
                 child: HuntTile(
+                    huntId: huntId,
                     title: title,
                     location: location,
                     date: date,
