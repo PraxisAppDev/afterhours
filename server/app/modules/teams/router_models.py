@@ -10,6 +10,7 @@ class TeamRequestModel(BaseModel):
   challengeResults: List[PyObjectId] = []
   invitations: List[str] = Field()
   capacity: int = Field()
+  isLocked: bool = Field()
 
   # TODO
   model_config = {

@@ -143,7 +143,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
     List<Widget> teamTiles = [];
     for (Team team in _teams) {
       teamTiles.add(
-        _buildTeamTile(team.name, team.players.length, team.capacity, team.players, false, context)
+        _buildTeamTile(team.name, team.players.length, team.capacity, team.players, team.isLocked, context)
       );
     }
 

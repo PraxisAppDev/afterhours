@@ -18,24 +18,32 @@ class Add_Teams:
         "teamLead": "",
         "players":[],
         "invitations": [],
-        "capacity": 0
+        "capacity": 0,
+        "isLocked": False
     }
 
-    def change(self,hunt_id, name, capacity, teamLead, players, invitation):
+    def change(self,hunt_id, name, capacity, teamLead, players, isLocked, invitation):
         self.json_data['hunt_id'] = hunt_id
         self.json_data['name'] = name
         self.json_data['capacity'] = capacity
         self.json_data['teamLead'] = teamLead
         self.json_data['players'] = players
+        self.json_data['isLocked'] = isLocked
         self.json_data['invitations'] = invitation
+        
         
 
     def add(self, hunt_id, team_id):
         #Players = [{"65e8d7479bf978a5b7c2dfbb", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
-        self.change(hunt_id, "BEAMTEAM", 4, "Jim Jones", ["Jim Jones", "Bob Smith"], [])
+        self.change(hunt_id, "BEAMTEAM", 4, "Jim Jones", ["Jim Jones", "Bob Smith"], False, [])
         requests.post('http://localhost:8001/teams/create_team', headers=self.headers, json=self.json_data)
 
         #Players = [{"65e8d8d29bf978a5b7c2dfbc", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
-        self.change(hunt_id, "DREAMTEAM", 3, "Jim Jones", ["Jim Jones", "Bob Smith", "Tom Donaldson"], [])
+        self.change(hunt_id, "DREAMTEAM", 3, "Jim Jones", ["Jim Jones", "Bob Smith", "Tom Donaldson"], False, [])
         requests.post('http://localhost:8001/teams/create_team', headers=self.headers, json=self.json_data)
+
+        self.change(hunt_id, "REDEEMTEAM", 5, "Jim Jones", ["Jim Jones", "Bob Smith", "Tom Donaldson"], True, [])
+        requests.post('http://localhost:8001/teams/create_team', headers=self.headers, json=self.json_data)
+
+        
 
