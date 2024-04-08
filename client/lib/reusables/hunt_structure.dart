@@ -216,6 +216,8 @@ class Team {
   String teamLeader;
   List<String> players;
   List<String> invitations;
+  final int capacity;
+  bool isLocked;
 
   Team({
     required this.id,
@@ -223,6 +225,8 @@ class Team {
     required this.teamLeader,
     required this.players,
     required this.invitations,
+    required this.capacity,
+    required this.isLocked,
   });
 
   factory Team.fromJson(Map<String, dynamic> json) {
@@ -232,6 +236,8 @@ class Team {
       teamLeader: json['teamLead'],
       players: List<String>.from(json['players']),
       invitations: List<String>.from(json['invitations']),
+      capacity: json['capacity'],
+      isLocked: json['isLocked'],
     );
   }
 
