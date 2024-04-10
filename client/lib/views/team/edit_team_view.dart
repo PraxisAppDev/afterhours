@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 
+import '../../../reusables/hunt_structure.dart';
+
 class CreateTeamView extends StatefulWidget {
-  const CreateTeamView({super.key});
+  final String newTeamName;
+  final Hunt hunt;
+
+  const CreateTeamView({super.key, required this.newTeamName, required this.hunt});
 
   @override
   State<CreateTeamView> createState() => _CreateTeamViewState();
 }
 
 class _CreateTeamViewState extends State<CreateTeamView> {
-  final TextEditingController _teamNameController = TextEditingController();
   final List<String> _teamMembers = ['Chell', 'GLaDOS', 'Wheatley'];
   final List<String> _requests = ['NewMember1', 'NewMember2', 'NewMember3'];
   final int _maxTeamSize = 4;
-
-  @override
-  void dispose() {
-    _teamNameController.dispose();
-    super.dispose();
-  }
 
   void _removeMember(String member) {
     setState(() {
@@ -48,19 +46,14 @@ class _CreateTeamViewState extends State<CreateTeamView> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 240,
+            expandedHeight: 165,
             pinned: true,
             floating: true,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            ),
+            automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(
                 left: 16,
-                bottom: 100,
+                bottom: 75,
               ),
               centerTitle: false,
               title: Align(
@@ -84,7 +77,7 @@ class _CreateTeamViewState extends State<CreateTeamView> {
               delegate: SliverChildListDelegate(
                 [
                   Text(
-                    'Aperture Science',
+                    widget.newTeamName,
                     style: GoogleFonts.poppins(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -169,8 +162,11 @@ class _CreateTeamViewState extends State<CreateTeamView> {
                     ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      // TODO: Implement leaving the team
+                    onPressed: () async {
+                      if(await _confirmLeaveTeam(context)) {
+                        if(!context.mounted) return;
+                        Navigator.pop(context);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -186,4 +182,34 @@ class _CreateTeamViewState extends State<CreateTeamView> {
       ),
     );
   }
+
+  Future<bool> _confirmLeaveTeam(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        insetPadding: const EdgeInsets.symmetric(vertical: 215),
+        backgroundColor: praxisGrey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          side: const BorderSide(color: Colors.black),
+        ),
+        content: const SizedBox(),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: const Text('Leave'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: const Text('Confirm'),
+          ),
+        ],
+      ),
+    );
+  }
 }
+

@@ -53,7 +53,7 @@ class TeamOptions extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreateTeamView(),
+                    builder: (context) => const CreateTeamView(newTeamName: "test")
                   ),
                 );
               },
