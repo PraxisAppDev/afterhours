@@ -144,7 +144,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
     return filteredTiles.map((tile) {
       final index = filteredTiles.indexOf(tile);
       return tile
-          .animate(delay: 150.milliseconds * index + 150.milliseconds)
+          .animate(delay: 150.milliseconds)
           .fade()
           .slideY(
             begin: 0.5,
