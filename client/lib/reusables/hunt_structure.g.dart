@@ -141,3 +141,35 @@ Map<String, dynamic> _$HuntToJson(Hunt instance) => <String, dynamic>{
       'huntLocation': instance.huntLocation,
       'challenges': instance.challenges,
     };
+
+Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
+      playerId: json['playerId'] as String,
+      timeJoined: _DateUtil._fromJson(json['timeJoined'] as String),
+    );
+
+Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
+      'playerId': instance.playerId,
+      'timeJoined': _DateUtil._toJson(instance.timeJoined),
+    };
+
+Team _$TeamFromJson(Map<String, dynamic> json) => Team(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      teamLeader: json['teamLead'] as String,
+      players: (json['players'] as List<dynamic>)
+          .map((e) => Player.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      invitations: (json['invitations'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      isLocked: json['isLocked'] as bool,
+    );
+
+Map<String, dynamic> _$TeamToJson(Team instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'teamLead': instance.teamLeader,
+      'players': instance.players,
+      'invitations': instance.invitations,
+      'isLocked': instance.isLocked,
+    };

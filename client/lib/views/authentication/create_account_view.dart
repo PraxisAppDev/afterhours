@@ -12,10 +12,10 @@ class CreateAccountView extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

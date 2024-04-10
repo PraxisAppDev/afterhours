@@ -1,14 +1,11 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:praxis_afterhours/apis/teams_api.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/reusables/hunt_structure.dart';
 import 'package:praxis_afterhours/views/dashboard/join_hunt_options/waiting_room_view.dart';
-import 'package:http/http.dart' as http;
 
 class JoinTeamView extends StatefulWidget {
   final String huntId;
@@ -41,20 +38,8 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   }
 
   Future<void> _fetchTeams() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:8001/teams/get_teams?id_hunt=$huntId'));
-
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final List<dynamic> teamData = jsonData['content'];
-      
-      setState(() {
-        _teams = teamData.map((team) => Team.fromJson(team)).toList();
-      });
-    } else {
-      // Handle error case
-      if(kDebugMode) print('Failed to fetch upcoming hunts');
-    }
+    TeamsResponseModel teams = await listTeams(huntId);
+    _teams = teams.content.map((team) => team).toList();
   }
 
   @override
@@ -143,7 +128,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
     List<Widget> teamTiles = [];
     for (Team team in _teams) {
       teamTiles.add(
-        _buildTeamTile(team.name, team.players.length, team.capacity, team.players, team.isLocked, context)
+        _buildTeamTile(team.name, team.players.length, team.players.length+1, team.players, false, context)
       );
     }
 
@@ -168,8 +153,8 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   Widget _buildTeamTile(
     String teamName,
     int currentMembers,
-    int capacity,
-    List<String> memberNames,
+    int totalMembers,
+    List<Player> memberNames,
     bool isLocked,
     BuildContext context,
   ) {
@@ -205,7 +190,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Members ($currentMembers/$capacity):",
+                    "Members ($currentMembers/$totalMembers):",
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.start,
                   ),
@@ -213,31 +198,31 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                   Wrap(
                     alignment: WrapAlignment.start,
                     spacing: 16,
-                    children: memberNames.map((name) {
+                    children: memberNames.map((player) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.person, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(name, style: const TextStyle(fontSize: 16)),
+                          Text(player.playerId, style: const TextStyle(fontSize: 16)),
                         ],
                       );
                     }).toList(),
                   ),
                   const SizedBox(height: 16),
-                  if (currentMembers == capacity)
-                    Container(
+                  if (currentMembers == totalMembers)
+                    const SizedBox(
                       width: double.infinity,
-                      child: const Text(
+                      child: Text(
                         "This team is full!",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, color: Colors.red),
                       ),
                     )
                   else if (isLocked)
-                    Container(
+                    const SizedBox(
                       width: double.infinity,
-                      child: const Text(
+                      child: Text(
                         "This team is locked!",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, color: Colors.red),

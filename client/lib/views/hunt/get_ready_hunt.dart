@@ -5,7 +5,7 @@ class GetReadyHuntView extends StatefulWidget {
   const GetReadyHuntView({super.key});
 
   @override
-  _GetReadyHuntViewState createState() => _GetReadyHuntViewState();
+  State<GetReadyHuntView> createState() => _GetReadyHuntViewState();
 }
 
 class _GetReadyHuntViewState extends State<GetReadyHuntView> {
@@ -220,21 +220,21 @@ class _GetReadyHuntViewState extends State<GetReadyHuntView> {
     }
   }
 
-  Widget _buildTestingButton() {
-    return ElevatedButton(
-      onPressed: _updateStatus,
-      style: ElevatedButton.styleFrom(
-        foregroundColor: praxisRed,
-        backgroundColor: praxisWhite,
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-      ),
-      child: Text(
-        "Testing: $status",
-        style: const TextStyle(fontSize: 14),
-      ),
-    );
-  }
+  // Widget _buildTestingButton() {
+  //   return ElevatedButton(
+  //     onPressed: _updateStatus,
+  //     style: ElevatedButton.styleFrom(
+  //       foregroundColor: praxisRed,
+  //       backgroundColor: praxisWhite,
+  //       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(30),
+  //       ),
+  //     ),
+  //     child: Text(
+  //       "Testing: $status",
+  //       style: const TextStyle(fontSize: 14),
+  //     ),
+  //   );
+  // }
 }

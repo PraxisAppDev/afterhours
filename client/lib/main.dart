@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:praxis_afterhours/constants/api_urls.dart';
 import 'package:praxis_afterhours/views/splash.dart';
 
 void main() {

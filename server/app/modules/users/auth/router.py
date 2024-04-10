@@ -104,7 +104,9 @@ async def login_for_access_token(
       detail="Incorrect username or password",
       headers={"WWW-Authenticate": "Bearer"},
     )
+  access_token, exp = create_access_token({"_id": str(user["_id"])})
   return Token(
-    access_token=create_access_token({"_id": str(user["_id"])}),
+    access_token=access_token,
+    exp=exp,
     token_type="bearer"
   )

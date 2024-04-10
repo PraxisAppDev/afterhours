@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
-import '../api_client.dart' as api_client;
-
 enum HttpMethod {
   get("GET"),
   post("POST"),

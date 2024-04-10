@@ -9,36 +9,25 @@ part of 'teams_api.dart';
 TeamsResponseModel _$TeamsResponseModelFromJson(Map<String, dynamic> json) =>
     TeamsResponseModel(
       message: json['message'] as String,
-      teams: (json['teams'] as List<dynamic>)
-          .map((e) => TeamModel.fromJson(e as Map<String, dynamic>))
+      content: (json['content'] as List<dynamic>)
+          .map((e) => Team.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$TeamsResponseModelToJson(TeamsResponseModel instance) =>
     <String, dynamic>{
       'message': instance.message,
-      'teams': instance.teams,
+      'content': instance.content,
     };
 
-TeamModel _$TeamModelFromJson(Map<String, dynamic> json) => TeamModel(
-      huntId: json['hunt_id'] as String,
-      teamName: json['name'] as String,
-      teamLead: json['teamLead'] as String,
-      playerIds:
-          (json['playerIds'] as List<dynamic>).map((e) => e as String).toList(),
-      challengeResults: (json['challengeResults'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      invitations: (json['invitations'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+TeamOperationSuccessMessage _$TeamOperationSuccessMessageFromJson(
+        Map<String, dynamic> json) =>
+    TeamOperationSuccessMessage(
+      message: json['message'] as String,
     );
 
-Map<String, dynamic> _$TeamModelToJson(TeamModel instance) => <String, dynamic>{
-      'hunt_id': instance.huntId,
-      'name': instance.teamName,
-      'teamLead': instance.teamLead,
-      'playerIds': instance.playerIds,
-      'challengeResults': instance.challengeResults,
-      'invitations': instance.invitations,
+Map<String, dynamic> _$TeamOperationSuccessMessageToJson(
+        TeamOperationSuccessMessage instance) =>
+    <String, dynamic>{
+      'message': instance.message,
     };

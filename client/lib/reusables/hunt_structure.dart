@@ -62,6 +62,8 @@ class Challenge {
   });
 
   factory Challenge.fromJson(Map<String, dynamic> json) => _$ChallengeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }
 
 @JsonSerializable()
@@ -122,6 +124,8 @@ class TimeDecay {
   });
 
   factory TimeDecay.fromJson(Map<String, dynamic> json) => _$TimeDecayFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TimeDecayToJson(this);
 }
 
 @JsonSerializable()
@@ -137,6 +141,8 @@ class Response {
   });
 
   factory Response.fromJson(Map<String, dynamic> json) => _$ResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -171,32 +177,51 @@ class Hunt {
 }
 
 class _DateUtil {
-  static final formatter = DateFormat('yyyy-MM-dd hh:mm a');
-
   static DateTime _fromJson(String date) {
-    return formatter.parse(date);
+    return DateTime.parse(date);
   }
 
   static String _toJson(DateTime date) {
-    return formatter.format(date);
+    return date.toIso8601String();
   }
 
   static DateTime? _fromJsonNullable(String? date) {
-    return (date?.isEmpty ?? true) ? null : formatter.parse(date!);
+    return (date?.isEmpty ?? true) ? null : DateTime.parse(date!);
   }
 
   static String _toJsonNullable(DateTime? date) {
-    return date == null ? '' : formatter.format(date);
+    return date?.toIso8601String() ?? "";
   }
 }
 
+@JsonSerializable()
+class Player {
+  final String playerId;
+  @JsonKey(fromJson: _DateUtil._fromJson, toJson: _DateUtil._toJson)
+  final DateTime timeJoined;
+
+  Player({
+    required this.playerId,
+    required this.timeJoined,
+  });
+
+  factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlayerToJson(this);
+}
+
+@JsonSerializable()
 class Team {
+  @JsonKey(name: "id")
   final String id;
+  @JsonKey(name: "name")
   final String name;
+  @JsonKey(name: "teamLead")
   String teamLeader;
-  List<String> players;
+  @JsonKey(name: "players")
+  List<Player> players;
+  @JsonKey(name: "invitations")
   List<String> invitations;
-  final int capacity;
   bool isLocked;
 
   Team({
@@ -205,20 +230,9 @@ class Team {
     required this.teamLeader,
     required this.players,
     required this.invitations,
-    required this.capacity,
     required this.isLocked,
   });
 
-  factory Team.fromJson(Map<String, dynamic> json) {
-    return Team(
-      id: json['hunt_id'],
-      name: json['name'],
-      teamLeader: json['teamLead'],
-      players: List<String>.from(json['players']),
-      invitations: List<String>.from(json['invitations']),
-      capacity: json['capacity'],
-      isLocked: json['isLocked'],
-    );
-  }
+  factory Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
 
 }

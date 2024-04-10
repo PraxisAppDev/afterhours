@@ -1,9 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from app.modules.game.teams.service import service
-from app.modules.game.teams.router_models import TeamCreatedSuccesfully, TeamCreationErrorModel
-from app.modules.game.teams.router_models import TeamRequestModel
-from app.modules.game.teams.router_models import TeamsResponseModel
+from app.modules.game.teams.router_models import *
 from typing_extensions import Annotated
 from fastapi import Depends
 from app.modules.users.auth.service import service as auth_service
@@ -27,31 +25,32 @@ router = APIRouter()
     }
   }
 )
-async def create_team(request: TeamRequestModel, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
-  inserted_team_id = await service.create_team(request)
-  return TeamCreatedSuccesfully(message="Team created successfully", inserted_team_id=inserted_team_id)
+async def create_team(hunt_id: str, user_id: Annotated[str, Depends(auth_service.get_id_with_token)], team: InitialTeamData):
+  team = await service.create_team(hunt_id, user_id, team.name)
+  return TeamCreatedSuccesfully(team=team)
 
-@router.post(
-  '/join_team/{team_name}',
-  status_code=201,
-  response_model=TeamsResponseModel,
-  responses={
-    422: {
-      "description": "Request could not be validated",
-      "model": ValidationErrorsModel
-    },
-    500: {
-      "description": "Error joining team",
-      "model": TeamsResponseModel
-    } 
-  }
-)
-async def join_team(hunt_id: str, team_name: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
-  teams_list = await service.join_team(hunt_id, team_name, id_user)
-  return TeamsResponseModel(
-    message="joined team",
-    content=teams_list
-  )
+# you can't join a team without using the invitation process
+# @router.post(
+#   '/join_team/{team_name}',
+#   status_code=201,
+#   response_model=TeamsResponseModel,
+#   responses={
+#     422: {
+#       "description": "Request could not be validated",
+#       "model": ValidationErrorsModel
+#     },
+#     500: {
+#       "description": "Error joining team",
+#       "model": TeamsResponseModel
+#     } 
+#   }
+# )
+# async def join_team(hunt_id: str, team_name: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+#   teams_list = await service.join_team(hunt_id, team_name, id_user)
+#   return TeamsResponseModel(
+#     message="joined team",
+#     content=teams_list
+#   )
 
 @router.get(
   '/list_teams',
@@ -101,11 +100,11 @@ def listen_teams(hunt_id: str, id_user: Annotated[str, Depends(auth_service.get_
     # to be implemented
   }
 )
-def get_team_members(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
-  return service.get_team_members(hunt_id, team_id)
+async def get_team_members(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.get_team_members(hunt_id, team_id)
 
 @router.get(
-  '/{team_id}/listen_new_join_requests',
+  '/{team_id}/listen_members',
   status_code=200,
   response_class=StreamingResponse,
   responses={
@@ -120,7 +119,110 @@ def get_team_members(hunt_id: str, team_id: str, id_user: Annotated[str, Depends
     },
   }
 )
-async def watch_join_requests(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
-  #check that user is team captain
-  if not await service.is_team_leader(id_user, hunt_id, team_id):
-    return
+def watch_team_members(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return stream_jsonl_response(service.listen_team_members(hunt_id, team_id))
+
+@router.get(
+  '/{team_id}/join_requests',
+  status_code=200,
+  responses={
+    # to be implemented
+  },
+  response_model=List[str]
+)
+async def get_join_requests(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]) -> List[str]:
+  return await service.get_join_requests(hunt_id, team_id)
+
+@router.get(
+  '/{team_id}/listen_join_requests',
+  status_code=200,
+  response_class=StreamingResponse,
+  responses={
+    200: {
+      'content': {
+        'application/x-ndjson': {}
+      }
+    },
+    422: {
+      "description": "Request could not be validated",
+      "model": ValidationErrorsModel
+    },
+  }
+)
+async def watch_join_requests(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]) -> StreamingResponse:
+  return stream_jsonl_response(service.listen_join_requests(hunt_id, team_id))
+
+@router.post(
+  '/{team_id}/request_join',
+  status_code=201,
+  responses={
+    # to be implemented
+  },
+  response_model=TeamOperationSuccessMessage
+)
+async def request_join_team(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.request_join_team(hunt_id, team_id, id_user)
+
+@router.post(
+  '/{team_id}/cancel_request_join',
+  status_code=200,
+  responses={
+    # to be implemented
+  },
+  response_model=TeamOperationSuccessMessage
+)
+async def cancel_request_join_team(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.cancel_request_join_team(hunt_id, team_id, id_user)
+
+@router.post(
+  '/{team_id}/join_requests/{id_joining_user}/accept',
+  status_code=200,
+  responses={
+    # to be implemented
+  },
+  response_model=TeamOperationSuccessMessage
+)
+async def accept_join_request(hunt_id: str, team_id: str, id_joining_user: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.respond_to_join_request(hunt_id, team_id, id_user, id_joining_user, True)
+
+@router.delete(
+  '/{team_id}/join_requests/{id_joining_user}',
+  status_code=200,
+  responses={
+    # to be implemented
+  },
+  response_model=TeamOperationSuccessMessage
+)
+async def deny_join_request(hunt_id: str, team_id: str, id_joining_user: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.respond_to_join_request(hunt_id, team_id, id_user, id_joining_user, False)
+
+# we aren't having teams get deleted, except automatically when all members leave
+# @router.delete(
+#   '/{team_id}',
+#   status_code=200,
+#   responses={
+#     # to be implemented
+#   }
+# )
+# def remove_team(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+#   return service.remove_team(hunt_id, team_id)
+
+@router.delete(
+  '/{team_id}/members/{member_id}',
+  status_code=200,
+  responses={
+    # to be implemented
+  }
+)
+async def remove_member(hunt_id: str, team_id: str, member_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.remove_member(hunt_id, team_id, member_id, id_user)
+
+@router.post(
+  '/{team_id}/leave_team',
+  status_code=200,
+  responses={
+    # to be implemented
+  }
+)
+async def leave_team(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.leave_team(hunt_id, team_id, id_user)

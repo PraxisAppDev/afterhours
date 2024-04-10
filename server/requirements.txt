@@ -23,8 +23,8 @@ email-validator
 # testing
 pytest-timeout
 
-# websockets
-websockets
+# streaming JSON responses
+orjson==3.10.0
 
 # general
 requests

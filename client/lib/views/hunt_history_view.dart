@@ -89,19 +89,19 @@ class HuntHistoryView extends StatelessWidget {
 Widget buildEvent(String huntId, String title, String location, String date, String place) {
   return Padding(
       padding: const EdgeInsets.only(top: 2, bottom: 2, left: 0, right: 0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextButton(
-                onPressed: () {},
-                child: HuntTile(
-                    huntId: huntId,
-                    title: title,
-                    location: location,
-                    date: date,
-                    onTapEnabled: false,
-                    trailing: place)),
-          ),
-        ],
-      ));
+      // child: Row(
+      //   children: [
+      //     Expanded(
+      //       child: TextButton(
+      //           onPressed: () {},
+      //           child: HuntTile(
+      //               huntId: huntId,
+      //               title: title,
+      //               location: location,
+      //               date: date,
+      //               onTapEnabled: false,
+      //               trailing: place)),
+      //     ),
+      //   ],
+      );//);
 }

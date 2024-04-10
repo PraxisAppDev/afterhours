@@ -5,7 +5,7 @@ class WaitingRoomView extends StatefulWidget {
   const WaitingRoomView({super.key});
 
   @override
-  _WaitingRoomViewState createState() => _WaitingRoomViewState();
+  State<WaitingRoomView> createState() => _WaitingRoomViewState();
 }
 
 class _WaitingRoomViewState extends State<WaitingRoomView> {
