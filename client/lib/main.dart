@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/views/splash.dart';
+import 'package:praxis_afterhours/views/hunt_challenge_screen.dart';
 
 void main() {
   runApp(
@@ -8,7 +9,7 @@ void main() {
       theme: ThemeData(
         fontFamily: "Poppins",
       ),
-      home: const Splash(),
+      home: HuntChallengeScreen(),
     ),
   );
 }
