@@ -8,7 +8,7 @@ import json
 class HuntRepository:
   def __init__(self):
     self.collection = database.get_collection("hunts")
-
+  
   async def get_all_past_date(self, date=datetime.now()):
     cursor = self.collection.find({
       "endDate": {

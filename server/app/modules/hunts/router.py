@@ -56,6 +56,7 @@ async def join_hunt():
   #empty method, needs to be implemnted
   result = await service.get_upcoming()
   return HuntResponseModel(
+    message="fetched hunts",
     content=result
   )
 

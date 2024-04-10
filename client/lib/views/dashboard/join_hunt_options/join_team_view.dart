@@ -1,14 +1,13 @@
-import 'dart:convert';
+import 'dart:async';
 
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:praxis_afterhours/apis/teams_api.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/reusables/hunt_structure.dart';
 import 'package:praxis_afterhours/views/dashboard/join_hunt_options/waiting_room_view.dart';
-import 'package:http/http.dart' as http;
 
 class JoinTeamView extends StatefulWidget {
   final String huntId;
@@ -18,11 +17,12 @@ class JoinTeamView extends StatefulWidget {
   });
 
   @override
-  _JoinTeamViewState createState() => _JoinTeamViewState();
+  State<JoinTeamView> createState() => _JoinTeamViewState();
 }
 
 class _JoinTeamViewState extends State<JoinTeamView> {
   List<Team> _teams = [];
+  StreamSubscription<List<Team>>? _teamsSubscription;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   late final String huntId;
@@ -31,30 +31,18 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   void initState() {
     super.initState();
     huntId = widget.huntId;
-    _fetchTeams();
+    _teamsSubscription = watchListTeams(huntId).listen((teams) {
+      setState(() {
+        _teams = teams;
+      });
+    });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  Future<void> _fetchTeams() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:8001/teams/get_teams?id_hunt=$huntId'));
-
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final List<dynamic> teamData = jsonData['content'];
-      
-      setState(() {
-        _teams = teamData.map((team) => Team.fromJson(team)).toList();
-      });
-    } else {
-      // Handle error case
-      print('Failed to fetch upcoming hunts');
-    }
+    _teamsSubscription?.cancel();
   }
 
   @override
@@ -143,7 +131,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
     List<Widget> teamTiles = [];
     for (Team team in _teams) {
       teamTiles.add(
-        _buildTeamTile(team.name, team.players.length, team.capacity, team.players, team.isLocked, context)
+        _buildTeamTile(team.name, team.players.length, team.players.length+1, team.players, false, context)
       );
     }
 
@@ -156,7 +144,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
     return filteredTiles.map((tile) {
       final index = filteredTiles.indexOf(tile);
       return tile
-          .animate(delay: 150.milliseconds * index + 150.milliseconds)
+          .animate(delay: 150.milliseconds)
           .fade()
           .slideY(
             begin: 0.5,
@@ -168,8 +156,8 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   Widget _buildTeamTile(
     String teamName,
     int currentMembers,
-    int capacity,
-    List<String> memberNames,
+    int totalMembers,
+    List<Player> memberNames,
     bool isLocked,
     BuildContext context,
   ) {
@@ -205,7 +193,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Members ($currentMembers/$capacity):",
+                    "Members ($currentMembers/$totalMembers):",
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.start,
                   ),
@@ -219,25 +207,25 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                         children: [
                           const Icon(Icons.person, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(name, style: const TextStyle(fontSize: 16)),
+                          Text(name.playerId, style: const TextStyle(fontSize: 16)),
                         ],
                       );
                     }).toList(),
                   ),
                   const SizedBox(height: 16),
-                  if (currentMembers == capacity)
-                    Container(
+                  if (currentMembers == totalMembers)
+                    const SizedBox(
                       width: double.infinity,
-                      child: const Text(
+                      child: Text(
                         "This team is full!",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, color: Colors.red),
                       ),
                     )
                   else if (isLocked)
-                    Container(
+                    const SizedBox(
                       width: double.infinity,
-                      child: const Text(
+                      child: Text(
                         "This team is locked!",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, color: Colors.red),
@@ -301,9 +289,9 @@ class BasicTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final Function(String)? onChange;
-  final labelStyle;
+  final TextStyle labelStyle;
 
-  BasicTextField({
+  const BasicTextField({
     super.key,
     required this.editingController,
     required this.labelText,

@@ -168,4 +168,4 @@ class HuntSchema(BaseModel):
     huntLocation: HuntLocationGeofence = Field(...)
     challenges: List[Challenge] = Field(...)
     gameState: Optional[HuntGameState] = Field(None, description="Populated only during active hunt")
-    teams: List[Team]
+    maxTeamSize: int = Field(..., description="Maximum team size")

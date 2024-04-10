@@ -46,6 +46,8 @@ dependencies:
   flutter_bounceable: ^1.1.0
   auto_size_text: ^3.0.0
   page_transition: ^2.1.0
+  json_annotation: ^4.8.1
+  fetch_client: ^1.0.2
 
 
 dev_dependencies:
@@ -58,6 +60,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -74,6 +78,7 @@ flutter:
   assets:
     - images/
     - assets/images/
+    - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

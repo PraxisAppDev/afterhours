@@ -18,6 +18,6 @@ COPY ./app /app
 # HTTP1/2
 EXPOSE 8001/tcp 
 # HTTP3
-EXPOSE 8001/udp 
+EXPOSE 8001/udp
 
 CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--reload", "--port", "8001"]

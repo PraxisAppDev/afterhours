@@ -4,16 +4,15 @@ FROM python:3.12-alpine
 
 COPY ./requirements.txt /
 
-# Installing necessary dependencies for python cryptography package
-RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo pkgconfig
-
-# Directly installing python-jose[cryptography]
-RUN pip3 install python-jose[cryptography]
-
-RUN pip3 install pytest httpx
-
+# Installing compiler and headers to build C extensions for the python cryptography pachage and other similar packages
 # Installing python dependencies
-RUN pip3 install --no-cache-dir --upgrade -r /requirements.txt
+# Deleting compiler and headers because the necessary C extensions are already configured
+# Uninstalling pip itself to further reduce the image size
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev cargo pkgconfig &&\
+    pip3 install --no-cache-dir --upgrade -r /requirements.txt &&\
+    apk del --purge gcc musl-dev python3-dev libffi-dev openssl-dev cargo pkgconfig &&\
+    pip3 install --no-cache-dir pytest httpx &&\
+    pip3 uninstall --yes pip
 
 COPY ./app /app
 COPY ./test /test
