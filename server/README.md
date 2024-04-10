@@ -43,3 +43,19 @@
       >docker-compose --profile dev down
     - `test`
       >docker-compose --profile test down
+
+## Dockerless Support
+
+### Prerequisites
+- You need to have <a href="https://www.mongodb.com/docs/manual/administration/install-community/">MongoDB Community Edition</a> installed
+- Have bcrypt installed (will eventually move to environment.yml and use conda but for now this is the way around the limitations of requirements.txt)
+- Replace ME_CONFIG_MONGODB_URL value to "mongodb://localhost:27017" in .env file
+
+1. Run server
+    - In the `server` directory, run the following
+      >python3 dockerless.py
+
+2. Close server
+    - `CTRL-C`
+
+For more details, check the `dockerless.py` file in the `server` directory
