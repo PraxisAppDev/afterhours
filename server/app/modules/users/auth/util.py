@@ -21,10 +21,10 @@ def get_password_hash(plain_password):
 
 def create_access_token(data: dict):
   payload = data.copy()
-  expire = datetime.now(timezone.utc) + timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+  expire = datetime.now(timezone.utc).replace(microsecond=0) + timedelta(minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
   payload.update({"exp": expire})
   encoded_jwt = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
-  return encoded_jwt
+  return encoded_jwt, expire.isoformat()
 
 def get_payload(token: str):
   return jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])

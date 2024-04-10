@@ -9,7 +9,6 @@ class HuntService:
   async def get_upcoming(self):
     return await self.repository.get_all_past_date(date=datetime.now())
   
-  
   async def get_past(self):
     return await self.repository.get_all_before_date(date=datetime.now())
 

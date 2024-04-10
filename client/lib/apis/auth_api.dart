@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:praxis_afterhours/apis/api_client.dart';
+import 'package:praxis_afterhours/storage/secure_storage.dart';
 
-Future<String> logIn(String username, String password) async {
+Future<(String, String)> logIn(String username, String password) async {
   Response response;
   try {
     response = await client.post(Uri.parse("$apiUrl/users/auth/login"),
@@ -13,13 +14,16 @@ Future<String> logIn(String username, String password) async {
   }
   if (response.statusCode == 201) {
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    return jsonResponse["token"]["access_token"];
+    return (
+      jsonResponse["token"]["access_token"].toString(),
+      jsonResponse["token"]["exp"].toString()
+    );
   } else {
     throw const FormatException("invalid credentials");
   }
 }
 
-Future<String> signUp(
+Future<(String, String)> signUp(
     String username, String email, String fullname, String password) async {
   Response response;
   try {
@@ -36,8 +40,16 @@ Future<String> signUp(
   }
   if (response.statusCode == 201) {
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    return jsonResponse["token"]["access_token"];
+    return (
+      jsonResponse["token"]["access_token"].toString(),
+      jsonResponse["token"]["exp"].toString()
+    );
   } else {
     throw const FormatException("invalid credentials");
   }
+}
+
+Future<void> logoutUser() async {
+  // Remove auth token from storage to logout of user session
+  await storage.delete(key: "token");
 }

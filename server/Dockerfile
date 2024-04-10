@@ -20,4 +20,4 @@ EXPOSE 8001/tcp
 # HTTP3
 EXPOSE 8001/udp 
 
-CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port", "8001"]
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--reload", "--port", "8001"]

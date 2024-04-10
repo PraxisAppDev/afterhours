@@ -158,7 +158,7 @@ class HuntGameState(BaseModel):
     teams: List[Team] = Field(...)
 
 
-class ChallengeSchema(BaseModel):
+class HuntSchema(BaseModel):
     id: Optional[str] = Field(None, alias="id")
     name: str = Field(..., min_length=1, max_length=255, description="Challenge name")
     description: Optional[str] = Field(None, min_length=1, max_length=4096, description="Challenge description")
@@ -168,3 +168,4 @@ class ChallengeSchema(BaseModel):
     huntLocation: HuntLocationGeofence = Field(...)
     challenges: List[Challenge] = Field(...)
     gameState: Optional[HuntGameState] = Field(None, description="Populated only during active hunt")
+    teams: List[Team]

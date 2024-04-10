@@ -1,24 +1,19 @@
 from fastapi import FastAPI
 from app.modules.users import router as users
 from app.modules.hunts import router as hunts
-from app.modules.hunts.teams import router as teams
-from app.modules.teams import router as teams
+from app.modules.game import router as game
 from app.exceptions import unhandled_exception_handler, validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-origins = [
-    "*"
-]
-
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origin_regex="http://localhost:[0-9]{4,5}",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -37,7 +32,7 @@ app.include_router(
 )
 
 app.include_router(
-    teams.router,
-    prefix="/hunts/teams",
-    tags=["Teams"]
+  game.router,
+  prefix="/game",
+  tags=["Game"]
 )

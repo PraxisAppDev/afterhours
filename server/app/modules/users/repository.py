@@ -47,6 +47,10 @@ class UserRepository:
     result = await self.collection.delete_one({"_id": ObjectId(id)})
     return result.deleted_count > 0
   
+  async def delete_one_by_username(self, username: str):
+    result = await self.collection.delete_one({"username": username})
+    return result.deleted_count > 0
+
   async def get_hunt_ids_for_user(self, id: str):
     cursor = self.collection.find({"_id": ObjectId(id)})
     if cursor:

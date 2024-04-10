@@ -41,13 +41,13 @@ class BasicTextField extends StatelessWidget {
         }
         break;
       case BasicTextFieldType.password:
-        if (value.length < 8) {
+        if (value.length < 6) {
           return 'Password should be at least 6 characters long';
         }
-        //Hopefully, this will enforce at least 8 characters, at least one number,
-        // and at least one special chacter
-        final passwordRegex = RegExp(
-            r"^(?=.{8,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.+=]).*$");
+
+        final passwordRegex =
+            RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+
         if (!passwordRegex.hasMatch(value)) {
           return 'Invalid password';
         }

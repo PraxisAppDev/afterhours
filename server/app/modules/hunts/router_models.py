@@ -53,12 +53,17 @@ class HuntModel(BaseModel):
   id: Optional[PyObjectId] = Field(alias="_id", default=None)
   name: str = Field(...)
   description: str = Field(...)
-  startDate: datetime = Field(...)
-  endDate: datetime = Field(...)
-  venueName: str = Field(...)
-  venueLocation: List[float] = [] # Change later
-  challenges: List[ChallengeModel] = []
-  teams: List[TeamModel] = []
+  # startDate: datetime = Field(...)
+  # endDate: datetime = Field(...)
+  startDate: str = Field(...)
+  joinableAfterDate: str = Field(...)
+  endDate: str = Field(...)
+  huntLocation: dict = Field(...)
+  # venueLocation: List[float] = [] # Change later
+  # challenges: List[ChallengeModel] = []
+  # teams: List[TeamModel] = []
+  challenges: List[dict] = Field(...)
+  teams: List[dict] = Field(...)
 
   # TODO
   model_config = {

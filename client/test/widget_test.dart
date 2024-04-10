@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:praxis_afterhours/views/sign_in_view.dart';
+import 'package:praxis_afterhours/views/authentication/sign_in_view.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
