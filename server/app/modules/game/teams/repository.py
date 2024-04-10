@@ -40,6 +40,8 @@ class TeamsRepository:
     teams_list = hunt.get("gameState").get("teams")
     team = [team for team in teams_list if team.get("id") == team_id]
     new_teams_list = [team for team in teams_list if team.get("id") != team_id]
+    if team[0].get("isLocked"):
+      raise Exception("Team is locked")
     if id_user in team[0]["invitations"]:
       raise Exception("User has already requested to join the team")
     if id_user in [player.get("playerId") for player in team[0]["players"]]:

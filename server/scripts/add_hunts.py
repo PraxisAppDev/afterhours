@@ -27,6 +27,7 @@ class Add_Hunts():
                 "radius": 1000
             }
         },
+        "maxTeamSize": 4,
         "challenges": [
             {
                 "questionTitle": "Parent Organization",
@@ -232,6 +233,7 @@ class Add_Hunts():
                 "radius": 1000
             }
         },
+        "maxTeamSize": 5,
         "challenges": [
             {
                 "questionTitle": "Find the President",
@@ -425,6 +427,7 @@ class Add_Hunts():
                 "radius": 1000
             }
         },
+        "maxTeamSize": 4,
         "challenges": [
             {
                 "questionTitle": "Find the Director of IT",
@@ -610,6 +613,7 @@ class Add_Hunts():
                 "radius": 1000
             }
         },
+        "maxTeamSize": 3,
         "challenges": [
             {
                 "questionTitle": "President",

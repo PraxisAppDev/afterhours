@@ -21,7 +21,7 @@ class Add_Teams:
         "isLocked": False
     }
 
-    def change(self, name, teamLead, players, isLocked, invitation):
+    def change(self, name, teamLead, players, invitation, isLocked):
         self.json_data['name'] = name
         self.json_data['teamLead'] = teamLead
         self.json_data['players'] = players
@@ -34,11 +34,11 @@ class Add_Teams:
         requests.post('http://localhost:8001/users/auth/login', headers=self.headers)
 
         #Players = [{"65e8d7479bf978a5b7c2dfbb", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
-        self.change(hunt_id, "BEAMTEAM", "Jim Jones", ["Jim Jones", "Bob Smith"], [])
+        self.change(hunt_id, "BEAMTEAM", "Jim Jones", ["Jim Jones", "Bob Smith"], [], False)
         requests.post('http://localhost:8001/teams/create_team', headers=self.headers, json=self.json_data)
 
         #Players = [{"65e8d8d29bf978a5b7c2dfbc", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
-        self.change(hunt_id, "DREAMTEAM", "Jim Jones", ["Jim Jones", "Bob Smith", "Tom Donaldson"], [])
+        self.change(hunt_id, "DREAMTEAM", "Jim Jones", ["Jim Jones", "Bob Smith", "Tom Donaldson"], [], True)
         requests.post('http://localhost:8001/teams/create_team', headers=self.headers, json=self.json_data)
 
         

@@ -49,21 +49,21 @@ class TeamModel(BaseModel):
     }
   }
 
+class HuntGameStateModel(BaseModel):
+  teams: List[TeamModel] = Field(...)
+
 class HuntModel(BaseModel):
   id: Optional[PyObjectId] = Field(alias="_id", default=None)
   name: str = Field(...)
   description: str = Field(...)
-  # startDate: datetime = Field(...)
-  # endDate: datetime = Field(...)
-  startDate: str = Field(...)
-  joinableAfterDate: str = Field(...)
+  startDate: datetime = Field(...)
+  joinableAfterDate: datetime = Field(...)
   endDate: str = Field(...)
   huntLocation: dict = Field(...)
-  # venueLocation: List[float] = [] # Change later
-  # challenges: List[ChallengeModel] = []
-  # teams: List[TeamModel] = []
+  venueLocation: List[float] = [] # Change later
+  maxTeamSize: int = Field(...)
   challenges: List[dict] = Field(...)
-  teams: List[dict] = Field(...)
+  gameState: Optional[HuntGameStateModel] = Field(None)
 
   # TODO
   model_config = {
