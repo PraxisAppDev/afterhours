@@ -50,7 +50,7 @@ Stream<List<Team>> watchListTeams(String huntId) async* {
   String? token = await getToken();
   if(token == null) throw Exception("User is not logged in.");
   yield* StreamRequest.get(
-    Uri.parse("$apiUrl/game/$huntId/teams/list_teams"),
+    Uri.parse("$apiUrl/game/$huntId/teams/listen_list_teams"),
     headers: {
       "authorization": "Bearer $token"
     },
@@ -76,7 +76,9 @@ Future<Team> createTeam(String huntId, String teamName) async {
     throw Exception("network error");
   }
   if (response.statusCode == 201) {
+    print(response.body);
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+    print(jsonResponse);
     return Team.fromJson(jsonResponse);
   } else {
     throw Exception("Error: Failed to create team: $response.statusCode");

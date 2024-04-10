@@ -373,7 +373,6 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
                           ),
                           const SizedBox(height: 16),
                           OpenContainer(
-                            useRootNavigator: true,
                             transitionDuration:
                             const Duration(seconds: 1),
                             openBuilder: (context, _) => CreateTeamView(hunt: widget.hunt, initialTeamName: newTeamNameController.text),
@@ -405,7 +404,10 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
               );
             },
             child: Container(
-              color: praxisRed,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: praxisRed,
+              ),
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Text(

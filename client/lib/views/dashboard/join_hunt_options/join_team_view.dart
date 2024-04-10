@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +22,7 @@ class JoinTeamView extends StatefulWidget {
 
 class _JoinTeamViewState extends State<JoinTeamView> {
   List<Team> _teams = [];
+  StreamSubscription<List<Team>>? _teamsSubscription;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   late final String huntId;
@@ -28,18 +31,18 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   void initState() {
     super.initState();
     huntId = widget.huntId;
-    _fetchTeams();
+    _teamsSubscription = watchListTeams(huntId).listen((teams) {
+      setState(() {
+        _teams = teams;
+      });
+    });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  Future<void> _fetchTeams() async {
-    TeamsResponseModel teams = await listTeams(huntId);
-    _teams = teams.content.map((team) => team).toList();
+    _teamsSubscription?.cancel();
   }
 
   @override
@@ -198,13 +201,13 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                   Wrap(
                     alignment: WrapAlignment.start,
                     spacing: 16,
-                    children: memberNames.map((player) {
+                    children: memberNames.map((name) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.person, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(player.playerId, style: const TextStyle(fontSize: 16)),
+                          Text(name.playerId, style: const TextStyle(fontSize: 16)),
                         ],
                       );
                     }).toList(),
