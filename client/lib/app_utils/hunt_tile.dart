@@ -55,7 +55,7 @@ class HuntTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                   side: const BorderSide(color: Colors.black),
                 ),
-                content: TeamOptions(huntTitle: huntTitle)),
+                content: TeamOptions(huntTitle: huntTitle, huntId: "")),
           );
         });
   }
