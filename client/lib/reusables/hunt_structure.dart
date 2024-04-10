@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'hunt_structure.g.dart';
@@ -159,6 +158,7 @@ class Hunt {
   final DateTime endDate;
   final HuntLocation huntLocation;
   final List<Challenge> challenges;
+  final int maxTeamSize;
 
   Hunt({
     required this.id,
@@ -169,6 +169,7 @@ class Hunt {
     required this.endDate,
     required this.huntLocation,
     required this.challenges,
+    required this.maxTeamSize,
   });
 
   factory Hunt.fromJson(Map<String, dynamic> json) => _$HuntFromJson(json);

@@ -128,6 +128,7 @@ Hunt _$HuntFromJson(Map<String, dynamic> json) => Hunt(
       challenges: (json['challenges'] as List<dynamic>)
           .map((e) => Challenge.fromJson(e as Map<String, dynamic>))
           .toList(),
+      maxTeamSize: json['maxTeamSize'] as int,
     );
 
 Map<String, dynamic> _$HuntToJson(Hunt instance) => <String, dynamic>{
@@ -140,6 +141,7 @@ Map<String, dynamic> _$HuntToJson(Hunt instance) => <String, dynamic>{
       'endDate': _DateUtil._toJson(instance.endDate),
       'huntLocation': instance.huntLocation,
       'challenges': instance.challenges,
+      'maxTeamSize': instance.maxTeamSize,
     };
 
 Player _$PlayerFromJson(Map<String, dynamic> json) => Player(

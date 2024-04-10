@@ -19,7 +19,6 @@ class TeamMembersView extends StatefulWidget {
 
 class _TeamMembersViewState extends State<TeamMembersView> {
   final List<String> _teamMembers = ['Chell', 'GLaDOS', 'Wheatley'];
-  final int _maxTeamSize = 4;
 
   void _removeMember(String member) {
     setState(() {
@@ -72,7 +71,7 @@ class _TeamMembersViewState extends State<TeamMembersView> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${_teamMembers.length}/$_maxTeamSize',
+                    '${_teamMembers.length}/${widget.hunt.maxTeamSize}',
                     style: GoogleFonts.poppins(fontSize: 16),
                   ),
                   const SizedBox(height: 16),
