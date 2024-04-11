@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/leaderboard_view.dart';
 import 'package:timelines/timelines.dart';
 
 enum QuestionState { answeredCorrectly, answeredIncorrectly, notAnswered }
@@ -141,7 +142,12 @@ class HuntChallengeScreen extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LeaderboardView(),
+                  ),
+                );
               },
               icon: const Icon(Icons.leaderboard, color: praxisWhite, size: 35),
             ),
