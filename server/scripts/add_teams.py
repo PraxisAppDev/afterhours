@@ -6,40 +6,47 @@ import sys
 sys.path.append('../')
 
 class Add_Teams:
-    headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json',
-    }
+    def __init__(self) -> None:
+        self.token = ''
+        self.headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {self.token}',
+        }
 
-    json_data = {
-        #id refers to team id, hunt_id refers to the hunt id
-        "hunt_id": "",
-        "name": "",
-        "teamLead": "",
-        "players":[],
-        "invitations": [],
-        "isLocked": False
-    }
+        self.json_data = {
+            #id refers to team id, hunt_id refers to the hunt id
+            "hunt_id": "",
+            "team": "",
+            'name': ''
+        }
 
-    def change(self, name, teamLead, players, invitation, isLocked):
-        self.json_data['name'] = name
-        self.json_data['teamLead'] = teamLead
-        self.json_data['players'] = players
-        self.json_data['isLocked'] = isLocked
-        self.json_data['invitations'] = invitation
-        
+    def change(self, huntId, teamName):
+        self.json_data['hunt_id'] = huntId
+        self.json_data['team'] = {'name': teamName}
+        self.json_data['name'] = teamName
         
 
-    def add(self, hunt_id, team_id):
-        requests.post('http://localhost:8001/users/auth/login', headers=self.headers)
+    def add(self, hunt_ids):
+        data = [
+            ('looneys', 'strawberry+martini2', 'BEAMTEAM'),
+            ('Rosserson', 'Pheobe4ever!', 'Test Team 2'),
+            ('newman', 'george*costanza4', 'Test Team 3'),
+            ('brownies', 'Boba:)100', 'Test Team 4')
+        ]
+        i = 0
+        for username, password, teamName in data:
+            response = requests.post('http://localhost:8001/users/auth/login', headers=self.headers, json={'username': username, 'password': password}).json()
+            self.token = response['token']['access_token']
 
-        #Players = [{"65e8d7479bf978a5b7c2dfbb", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
-        self.change(hunt_id, "BEAMTEAM", "Jim Jones", ["Jim Jones", "Bob Smith"], [], False)
-        requests.post('http://localhost:8001/teams/create_team', headers=self.headers, json=self.json_data)
+            # IMPORTANT: this needs to be updated or else it won't have the token
+            # after it's updated
+            self.headers = {
+                'accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {self.token}',
+            }
 
-        #Players = [{"65e8d8d29bf978a5b7c2dfbc", "timeJoined": datetime.now().strftime("%Y-%m-%d %I:%M %p")},]
-        self.change(hunt_id, "DREAMTEAM", "Jim Jones", ["Jim Jones", "Bob Smith", "Tom Donaldson"], [], True)
-        requests.post('http://localhost:8001/teams/create_team', headers=self.headers, json=self.json_data)
-
-        
-
+            self.change(hunt_ids[i], teamName)
+            requests.post(f'http://localhost:8001/game/{hunt_ids[i]}/teams/create_team', headers=self.headers, json=self.json_data)
+            i = i + 1
