@@ -58,7 +58,7 @@ class HuntModel(BaseModel):
   description: str = Field(...)
   startDate: datetime = Field(...)
   joinableAfterDate: datetime = Field(...)
-  endDate: str = Field(...)
+  endDate: datetime = Field(...)
   huntLocation: dict = Field(...)
   venueLocation: List[float] = [] # Change later
   maxTeamSize: int = Field(...)

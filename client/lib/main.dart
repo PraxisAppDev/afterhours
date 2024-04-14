@@ -22,7 +22,7 @@ void main() {
         ),
         fontFamily: "Poppins",
       ),
-      home: HuntChallengeScreen(),
+      home: const Splash(),
     ),
   );
 }
