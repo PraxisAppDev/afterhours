@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/hunt/mock_question.dart';
+import 'package:praxis_afterhours/views/leaderboard_view.dart';
 import 'package:timelines/timelines.dart';
 
 enum QuestionState { answeredCorrectly, answeredIncorrectly, notAnswered }
@@ -67,7 +69,7 @@ class HuntChallengeScreen extends StatelessWidget {
     }
   }
 
-  Widget buildChallenge(Question question) {
+  Widget buildChallenge(BuildContext context, Question question) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -77,37 +79,47 @@ class HuntChallengeScreen extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: SizedBox(
-                width: 330,
+                width: 360,
                 height: 90,
-                child: ListTile(
-                  title: Text(
-                    question.questionTitle,
-                    style: const TextStyle(
-                        color: Colors.white), // Set text color to white
-                  ),
-                  subtitle: Row(
-                    // Updated to use Row widget
-                    children: [
-                      const Icon(Icons.score,
-                          color: Colors.white), // Set icon color to white
-                      const SizedBox(width: 5), // Use SizedBox for spacing
-                      Text(
-                        '${question.questionPoints} points',
-                        style: const TextStyle(
-                            color: Colors.white), // Set text color to white
-                      ),
-                      const SizedBox(
-                          width: 20), // Add spacing between points and time
-                      const Icon(Icons.timer,
-                          color: Colors.white), // Timer icon with white color
-                      const SizedBox(
-                          width: 5), // Add spacing between timer icon and text
-                      Text(
-                        '${question.timeRemaining} minutes remaining',
-                        style: const TextStyle(
-                            color: Colors.white), // Set text color to white
-                      ),
-                    ],
+                child: TextButton(
+                  onPressed: () => {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MockQuestionView(),
+                    ),
+                  )
+                  },
+                  child: ListTile(
+                    title: Text(
+                      question.questionTitle,
+                      style: const TextStyle(
+                          color: Colors.white), // Set text color to white
+                    ),
+                    subtitle: Row(
+                      // Updated to use Row widget
+                      children: [
+                        const Icon(Icons.score,
+                            color: Colors.white), // Set icon color to white
+                        const SizedBox(width: 5), // Use SizedBox for spacing
+                        Text(
+                          '${question.questionPoints} points',
+                          style: const TextStyle(
+                              color: Colors.white), // Set text color to white
+                        ),
+                        const SizedBox(
+                            width: 20), // Add spacing between points and time
+                        const Icon(Icons.timer,
+                            color: Colors.white), // Timer icon with white color
+                        const SizedBox(
+                            width: 5), // Add spacing between timer icon and text
+                        Text(
+                          '${question.timeRemaining} minutes \nremaining',
+                          style: const TextStyle(
+                              color: Colors.white), // Set text color to white
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -141,13 +153,18 @@ class HuntChallengeScreen extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LeaderboardView(),
+                  ),
+                );
               },
               icon: const Icon(Icons.leaderboard, color: praxisWhite, size: 35),
             ),
             IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                
               },
               icon: const Icon(Icons.person, color: praxisWhite, size: 35),
             ),
@@ -226,7 +243,7 @@ class HuntChallengeScreen extends StatelessWidget {
                 indicatorPositionBuilder: (context, index) => 0,
                 contentsBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.all(24),
-                  child: buildChallenge(questionList[index]),
+                  child: buildChallenge(context, questionList[index]),
                 ),
                 itemExtentBuilder: (_, index) {
                   return 150;
