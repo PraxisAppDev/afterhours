@@ -20,6 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController fullnameController = TextEditingController();
 
   @override
   void dispose() {
@@ -74,6 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
             if (snapshot.hasError) {
               return Text(snapshot.error.toString());
             } else {
+              String fullname = '';
               String username = '';
               String firstName = '';
               String lastName = '';
@@ -85,9 +87,10 @@ class _ProfileViewState extends State<ProfileView> {
               if (userInfo != null) {
                 var content = userInfo['content'];
                 username = content['username'];
-                List<String> fullname = content['fullname'].split(' ');
-                firstName = fullname[0];
-                lastName = fullname[1];
+                fullname = content['fullname'];
+                List<String> fullnameSplit = content['fullname'].split(' ');
+                firstName = fullnameSplit[0];
+                lastName = fullnameSplit[1];
                 email = content['email'];
                 phoneNumber = content['phone'] ?? '';
               }
@@ -105,6 +108,11 @@ class _ProfileViewState extends State<ProfileView> {
                                     firstName: firstName,
                                     lastName: lastName,
                                     screenWidth: screenWidth),
+                                ProfileTextField(
+                                    editingController: fullnameController,
+                                    defaultText: fullname,
+                                    label: 'Full name',
+                                    icon: 'profile'),
                                 ProfileTextField(
                                     editingController: usernameController,
                                     defaultText: username,
@@ -214,12 +222,14 @@ class _ProfileViewState extends State<ProfileView> {
 
   void _submitForm(Map<String, dynamic>? userInfo) async {
     if (userInfo != null) {
+      String fullname = fullnameController.text;
       String username = usernameController.text;
       String email = emailController.text;
       String phoneNumber = phoneNumberController.text;
 
       final updatedUserInfo = {
         ...userInfo['content'],
+        "fullname": fullname,
         "username": username,
         "email": email,
         "phone": phoneNumber,
