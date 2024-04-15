@@ -232,7 +232,7 @@ class _ProfileViewState extends State<ProfileView> {
         "fullname": fullname,
         "username": username,
         "email": email,
-        "phone": phoneNumber,
+        "phone": phoneNumber.isNotEmpty ? phoneNumber : null,
       };
 
       await updateUserInfo(updatedUserInfo);
