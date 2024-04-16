@@ -216,7 +216,7 @@ class Add_Hunts():
     }
 
     hunt2_json = {
-        "name": "Recruit Mixer",
+        "name": "Recruit Mixer 1",
         "description": "The Greene Turtle (in-person only)",
         "startDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
         "joinableAfterDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
@@ -410,7 +410,7 @@ class Add_Hunts():
     }
 
     hunt3_json = {
-        "name": "Recruit Mixer",
+        "name": "Recruit Mixer 2",
         "description": "The Greene Turtle (in-person only)",
         "startDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
         "joinableAfterDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
@@ -595,7 +595,7 @@ class Add_Hunts():
         "teams": []
     }
 
-    json_data = {
+    hunt4_json = {
         "name": "Recruit Mixer",
         "description": "The Greene Turtle (in-person only)",
         "startDate": datetime(2024, 3, 9, 19, 0).isoformat(),
@@ -693,8 +693,12 @@ class Add_Hunts():
         "teams": []
     }
 
-    # change("goob@gmail.com", "silly silly", "bl@hbl@h101", "raaaa raaaa")
     def do(self):
-        response = requests.post(
-            'http://localhost:8001/hunts/create_hunt', headers=self.headers, json=self.json_data)
-        return json.loads((response.__dict__.get('_content')).decode('utf-8')).get('inserted_hunt_id')
+        hunt_ids = []
+
+        for hunt_data in [self.hunt1_json, self.hunt2_json, self.hunt3_json, self.hunt4_json]:
+            response = requests.post(
+                'http://localhost:8001/hunts/create_hunt', headers=self.headers, json=hunt_data)
+            hunt_ids.append(json.loads((response.__dict__.get('_content')).decode('utf-8')).get('inserted_hunt_id'))
+        
+        return hunt_ids
