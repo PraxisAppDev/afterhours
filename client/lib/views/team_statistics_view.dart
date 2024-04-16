@@ -172,23 +172,6 @@ class TeamStatisticsView extends StatelessWidget {
                         color: praxisWhite,
                       ),
                     ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: praxisWhite,
-                          width: 3,
-                        ),
-                      ),
-                      child: Text(
-                        "Back",
-                        style: GoogleFonts.poppins(
-                          fontSize: 30,
-                          color: praxisWhite,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 Row(
