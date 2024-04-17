@@ -231,13 +231,19 @@ class _ProfileViewState extends State<ProfileView> {
       String email = emailController.text;
       String phoneNumber = phoneNumberController.text;
 
-      final updatedUserInfo = {
+      var updatedUserInfo = {
         ...userInfo['content'],
         "fullname": fullname,
         "username": username,
-        "email": email,
-        "phone": phoneNumber.isNotEmpty ? phoneNumber : null,
+        "email": email
       };
+
+      if (phoneNumber.isNotEmpty) {
+        updatedUserInfo = {
+          ...updatedUserInfo,
+          "phone": phoneNumber,
+        };
+      }
 
       await updateUserInfo(updatedUserInfo);
     }
