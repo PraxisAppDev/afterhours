@@ -84,7 +84,6 @@ class HuntRepository:
       for correct_answer in possible_Answers_List:
         if (response.get("caseSensitive") == True):
           if correct_answer == challenge_attempt.get("answerProvided"):
-
             solved = True
             return await update_team_challenge_result(solved, team_challenge_results, challenge_attempt, teams_list, id_hunt, team_id)
         else:
