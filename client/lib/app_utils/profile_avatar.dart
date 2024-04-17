@@ -105,7 +105,13 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
 Widget buildProfileImage(String firstName, String lastName, double screenWidth,
     Color? backgroundColor) {
   // Extract initials from username
-  String initials = firstName[0] + lastName[0];
+  String initials = firstName[0];
+
+  // If last name exists
+  if (lastName.length >= 1) {
+    initials += lastName[0];
+  }
+
   double avatarSize = screenWidth * 0.3;
   double maxAvatarSize = 150;
 

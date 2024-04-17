@@ -90,7 +90,11 @@ class _ProfileViewState extends State<ProfileView> {
                 fullname = content['fullname'];
                 List<String> fullnameSplit = content['fullname'].split(' ');
                 firstName = fullnameSplit[0];
-                lastName = fullnameSplit[1];
+
+                // If last name exists
+                if (fullnameSplit.length > 1) {
+                  lastName = fullnameSplit[1];
+                }
                 email = content['email'];
                 phoneNumber = content['phone'] ?? '';
               }
