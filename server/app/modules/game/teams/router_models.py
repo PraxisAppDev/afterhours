@@ -2,6 +2,8 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 from app.models import PyObjectId
 from datetime import datetime
+from app.modules.hunts.hunt_models import ChallengeAttempt, ChallengeResult
+
 class Player(BaseModel):
     playerId: str = Field(..., description="Player ID")
     timeJoined: datetime = Field(...)
@@ -14,7 +16,9 @@ class Team(BaseModel):
   name: str = Field(...)
   teamLead: str = Field()
   players: List[Player] = Field()
-  challengeResults: List[PyObjectId] = []
+  challengeAttempts: Optional[List[ChallengeAttempt]] = Field(None)
+  challengeResults: Optional[List[ChallengeResult]] = Field(None)
+  score: float = Field(..., description="Total team score")
   invitations: List[str] = Field()
 
   # TODO

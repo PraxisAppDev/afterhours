@@ -30,6 +30,7 @@ class Add_Hunts():
         "maxTeamSize": 4,
         "challenges": [
             {
+                "id": "test",
                 "questionTitle": "Parent Organization",
                 "description": "Who is the parent organization of Praxis?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
@@ -56,13 +57,14 @@ class Add_Hunts():
                     "type": "string_text_field",
                     "possibleAnswers": [
                         "General Dynamics",
-                        "General Dynamics Corporation"
+                        "General Dynamics Corporation",
                         "General Dynamics Information Technology"
                     ],
                     "caseSensitive": False
                 }
             },
             {
+                "id": "test2",
                 "questionTitle": "Praxis Founding Year",
                 "description": "When was Praxis founded?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -100,6 +102,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test3",
                 "questionTitle": "Core Values",
                 "description": "Name 3 core values of Praxis",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",

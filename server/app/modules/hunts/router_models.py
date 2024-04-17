@@ -28,9 +28,9 @@ class ChallengeModel(BaseModel):
 class ChallengeResultModel(BaseModel):
   challengeId: PyObjectId = Field(...)
   solved: bool = Field(...)
-  elapsedTime: int = Field(...)
+  elapsedTime: float = Field(...)
   answerAttempts: int = Field(...)
-  score: int = Field(...)
+  score: float = Field(...)
 
 class TeamModel(BaseModel):
   id: Optional[PyObjectId] = Field(alias="_id", default=None)
