@@ -170,16 +170,6 @@ class SignInView extends StatelessWidget {
                   24,
                   24,
                 ),
-                const SizedBox(height: 16),
-                _buildSocialButton(
-                  context,
-                  "Sign In With Apple",
-                  "images/apple.png",
-                  Colors.black,
-                  praxisWhite,
-                  24,
-                  24,
-                ),
                 const SizedBox(height: 32),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
