@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
     ports:
       - 8001:8001
     env_file:
@@ -23,7 +25,9 @@ services:
     depends_on:
       - mongo
   mongo:
+    profiles: [dev]
     image: mongo
+    hostname: mongo
     command: mongod --quiet --logpath /dev/null
     ports:
       - 27017:27017

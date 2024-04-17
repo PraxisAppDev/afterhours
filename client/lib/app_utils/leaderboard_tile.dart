@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/team_statistics_view.dart';
 
 class LeaderboardTile extends StatelessWidget {
   final int place;
@@ -28,7 +29,14 @@ class LeaderboardTile extends StatelessWidget {
             )
           ]),
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TeamStatisticsView(),
+            ),
+          );
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

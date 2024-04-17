@@ -5,10 +5,13 @@ router = APIRouter()
 
 manager = TeamConnectionManager()
 
+
 @router.websocket("/stream")
 async def websocket_endpoint(
   ws: WebSocket,
 ):
+  print("Websocket connection opening", flush=True)
+  print(ws, flush=True)
   await manager.connect(ws)
   try:
     while True:

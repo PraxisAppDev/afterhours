@@ -4,81 +4,60 @@ import 'package:praxis_afterhours/constants/colors.dart';
 class Instructions extends StatelessWidget {
   const Instructions({super.key, required this.title});
   final String title;
-  final EdgeInsets margins = const EdgeInsets.all(32.0);
+  final EdgeInsets margins = const EdgeInsets.all(16.0);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'How to Play',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: praxisWhite,
+          ),
+        ),
+        backgroundColor: praxisRed,
+        iconTheme: const IconThemeData(color: praxisWhite),
+      ),
       body: Container(
-        color: praxisRed,
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Padding(
-                padding: margins,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.arrow_back,
-                                color: praxisBlack, size: 30),
-                          ),
-                          const SizedBox(
-                              width:
-                                  8), //spacing between the back button and the "How to Play" text
-                          const Flexible(
-                            fit: FlexFit.loose, //prevent overflow error
-                            child: Text(
-                              'How to Play',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                                color: praxisWhite,
-                              ),
-                              overflow: TextOverflow
-                                  .ellipsis, //prevent overflow error
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                          height:
-                              20), //spacing between "How to Play" text and other text
-                      const Text(
-                        'Welcome to AFTERHOURS Hunts – where participants, either individuals or teams, attempt to solve a series of intriguing  challenges while delving deeper into the world of Praxis. Pool your diverse talents, strategize together, and unleash your creativity to conquer each challenge that lies ahead.\n',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: praxisWhite),
-                      ),
-                      const Divider(
-                          color:
-                              praxisWhite), //adding divider(line) between intro and instructions
-                      const Text(
-                        '\n1. Each challenge presents a unique puzzle to solve. Work together to find the solution, but remember, you only have a limited number of guesses per challenge. Additionally, a timer will determine when you can make your next attempt.\n\n'
-                        '2. Find detailed instructions for each challenge on its respective page.\n\n'
-                        '3. Keep an eye on the leaderboard by clicking the three bars. See how your team stacks up against the competition and track your progress throughout the Hunt.\n\n'
-                        '4. Should you find yourselves in need of guidance, do not hesitate to seek help from your fellow participants or the Praxis employees overseeing the event. They are here to support you on your quest.\n\n'
-                        '5. Get ready to embark on an adventure like no other.\n\n'
-                        'Happy Hunting!',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 20, color: praxisWhite),
-                      ),
-                    ],
+        color: praxisWhite,
+        child: Padding(
+          padding: margins,
+          child: const SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Welcome to AFTERHOURS Hunts – an exhilarating experience where participants, either as individuals or teams, embark on a journey to solve a series of captivating challenges while immersing themselves in the world of Praxis. Combine your diverse talents, collaborate strategically, and unleash your creativity to triumph over each obstacle that stands in your way.\n',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 18, color: praxisBlack),
+                ),
+                Divider(color: praxisRed, thickness: 2),
+                SizedBox(height: 16),
+                Text(
+                  'Instructions:',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: praxisBlack,
                   ),
                 ),
-              ),
+                SizedBox(height: 8),
+                Text(
+                  '1. Each challenge presents a unique puzzle to solve. Work together to find the solution, but remember, you have a limited number of attempts per challenge. A timer will determine when you can make your next attempt.\n\n'
+                  '2. Detailed instructions for each challenge can be found on its respective page.\n\n'
+                  '3. Keep track of your progress and see how your team compares to others by accessing the leaderboard through the menu icon. Stay motivated and strive for the top spot!\n\n'
+                  '4. If you find yourself in need of assistance, don\'t hesitate to reach out to your fellow participants or the Praxis staff overseeing the event. They are here to guide and support you on your quest.\n\n'
+                  '5. Prepare yourself for an unforgettable adventure that will test your wits, teamwork, and determination.\n\n'
+                  'Let the hunt begin, and may the odds be ever in your favor!',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 18, color: praxisBlack),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

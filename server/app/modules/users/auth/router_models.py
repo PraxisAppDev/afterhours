@@ -115,6 +115,9 @@ class Token(BaseModel):
     description="A JWT token to be used for authentication.",
     pattern=r"^[A-Za-z0-9_-]{2,}(?:\.[A-Za-z0-9_-]{2,}){2}$"
   )
+  exp: str = Field(
+    description="Expiration date for client"
+  )
   token_type: str = "bearer"
 
   model_config = {
@@ -122,6 +125,7 @@ class Token(BaseModel):
       "examples": [
         {
           "access_token": "<a_token>",
+          "exp": "2019-05-18T15:17:08",
           "token_type": "bearer"
         }
       ]
@@ -147,6 +151,7 @@ class AuthSuccessModel(BaseModel):
           "message": "login successful",
           "token": {
             "access_token": "<a_token>",
+            "exp": "2019-05-18T15:17:08",
             "token_type": "bearer"
           }
         }

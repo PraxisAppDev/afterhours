@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/views/hunt_history_view.dart';
-import 'package:praxis_afterhours/views/join_hunt_view.dart';
+import 'package:praxis_afterhours/views/dashboard/join_hunt_view.dart';
 import 'package:praxis_afterhours/views/profile_view.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -31,17 +31,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
         },
         indicatorColor: praxisRed,
         selectedIndex: currentPageIndex,
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.play_arrow),
+            icon: Icon(
+              Icons.play_arrow,
+              color: currentPageIndex == 0 ? Colors.white : Colors.black,
+            ),
             label: "Join a Hunt",
           ),
           NavigationDestination(
-            icon: Icon(Icons.history),
+            icon: Icon(
+              Icons.history,
+              color: currentPageIndex == 1 ? Colors.white : Colors.black,
+            ),
             label: "History",
           ),
           NavigationDestination(
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              color: currentPageIndex == 2 ? Colors.white : Colors.black,
+            ),
             label: "Profile",
           )
         ],
