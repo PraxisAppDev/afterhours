@@ -82,15 +82,20 @@ class _ProfileViewState extends State<ProfileView> {
             String lastName = '';
             String email = '';
             String phoneNumber = '';
+            String fullname = '';
 
             // Parse json data
             var userInfo = snapshot.data;
             if (userInfo != null) {
               var content = userInfo['content'];
               username = content['username'];
-              List<String> fullname = content['fullname'].split(' ');
-              firstName = fullname[0];
-              lastName = fullname[1];
+              fullname = content['fullname'];
+              List<String> fullnameSplit = content['fullname'].split(' ');
+              firstName = fullnameSplit[0];
+
+              if (fullnameSplit.length > 1) {
+                lastName = fullnameSplit[1];
+              }
               email = content['email'];
               phoneNumber = content['phone'] ?? '';
             }
@@ -112,6 +117,12 @@ class _ProfileViewState extends State<ProfileView> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        ProfileTextField(
+                          editingController: fullnameController,
+                          defaultText: fullname,
+                          label: 'Full name',
+                          icon: 'profile',
+                        ),
                         ProfileTextField(
                           editingController: usernameController,
                           defaultText: username,
@@ -199,19 +210,13 @@ class _ProfileViewState extends State<ProfileView> {
       String email = emailController.text;
       String phoneNumber = phoneNumberController.text;
 
-      var updatedUserInfo = {
+      final updatedUserInfo = {
         ...userInfo['content'],
         "fullname": fullname,
         "username": username,
-        "email": email
+        "email": email,
+        "phone": phoneNumber
       };
-
-      if (phoneNumber.isNotEmpty) {
-        updatedUserInfo = {
-          ...updatedUserInfo,
-          "phone": phoneNumber,
-        };
-      }
 
       await updateUserInfo(updatedUserInfo);
     }

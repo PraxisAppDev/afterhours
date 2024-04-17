@@ -108,7 +108,7 @@ Widget buildProfileImage(String firstName, String lastName, double screenWidth,
   String initials = firstName[0];
 
   // If last name exists
-  if (lastName.length >= 1) {
+  if (lastName.isNotEmpty) {
     initials += lastName[0];
   }
 
