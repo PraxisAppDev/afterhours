@@ -67,7 +67,6 @@ async def join_hunt():
 )
 async def check_answer(id_hunt: str, team_id: str, challenge_attempt: ChallengeAttempt):
   result = await service.check_answer(id_hunt, team_id, challenge_attempt)
-  print(result)
   return ChallengeResultModel(
     challengeId=result.get("challengeId"),
     solved=result.get("solved"),
