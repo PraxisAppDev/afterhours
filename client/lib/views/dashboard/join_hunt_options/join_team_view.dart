@@ -128,24 +128,38 @@ class _JoinTeamViewState extends State<JoinTeamView> {
 
   List<Widget> _buildFilteredTeamTiles() {
     List<Widget> teamTiles = [];
-    for (Team team in _teams) {
-      teamTiles.add(_buildTeamTile(team.name, team.players.length,
-          team.players.length + 1, team.players, false, context));
+    if (_teams.isEmpty) {
+      return [
+        Center(
+          child: Text(
+            "No teams have been created yet!",
+            style: GoogleFonts.poppins(
+              color: praxisBlack,
+              fontSize: 32,
+            ),
+          ),
+        )
+      ];
+    } else {
+      for (Team team in _teams) {
+        teamTiles.add(_buildTeamTile(team.name, team.players.length,
+            team.players.length + 1, team.players, false, context));
+      }
+
+      final filteredTiles = teamTiles.where((tile) {
+        final teamName = tile.key.toString().toLowerCase();
+        final searchQuery = _searchQuery.toLowerCase();
+        return teamName.contains(searchQuery);
+      }).toList();
+
+      return filteredTiles.map((tile) {
+        final index = filteredTiles.indexOf(tile);
+        return tile.animate(delay: 150.milliseconds).fade().slideY(
+              begin: 0.5,
+              end: 0,
+            );
+      }).toList();
     }
-
-    final filteredTiles = teamTiles.where((tile) {
-      final teamName = tile.key.toString().toLowerCase();
-      final searchQuery = _searchQuery.toLowerCase();
-      return teamName.contains(searchQuery);
-    }).toList();
-
-    return filteredTiles.map((tile) {
-      final index = filteredTiles.indexOf(tile);
-      return tile.animate(delay: 150.milliseconds).fade().slideY(
-            begin: 0.5,
-            end: 0,
-          );
-    }).toList();
   }
 
   Widget _buildTeamTile(
