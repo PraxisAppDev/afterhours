@@ -127,12 +127,10 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   }
 
   List<Widget> _buildFilteredTeamTiles() {
-
     List<Widget> teamTiles = [];
     for (Team team in _teams) {
-      teamTiles.add(
-        _buildTeamTile(team.name, team.players.length, team.players.length+1, team.players, false, context)
-      );
+      teamTiles.add(_buildTeamTile(team.name, team.players.length,
+          team.players.length + 1, team.players, false, context));
     }
 
     final filteredTiles = teamTiles.where((tile) {
@@ -143,10 +141,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
 
     return filteredTiles.map((tile) {
       final index = filteredTiles.indexOf(tile);
-      return tile
-          .animate(delay: 150.milliseconds)
-          .fade()
-          .slideY(
+      return tile.animate(delay: 150.milliseconds).fade().slideY(
             begin: 0.5,
             end: 0,
           );
@@ -207,7 +202,8 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                         children: [
                           const Icon(Icons.person, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(name.playerId, style: const TextStyle(fontSize: 16)),
+                          Text(name.playerId,
+                              style: const TextStyle(fontSize: 16)),
                         ],
                       );
                     }).toList(),

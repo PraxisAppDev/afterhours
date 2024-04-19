@@ -8,6 +8,7 @@ class Player(BaseModel):
 
 class InitialTeamData(BaseModel):
     name: str = Field(..., min_length=1, max_length=255, description="Team name")
+    is_locked: bool = Field(...)
 
 class Team(BaseModel):
   id: str = Field(..., alias = "id")
@@ -16,6 +17,7 @@ class Team(BaseModel):
   players: List[Player] = Field()
   challengeResults: List[PyObjectId] = []
   invitations: List[str] = Field()
+  isLocked: bool = Field(...)
 
   # TODO
   model_config = {
@@ -32,6 +34,7 @@ class TeamDataWithoutInvitations(BaseModel):
     name: str = Field(..., min_length=1, max_length=255, description="Team name")
     teamLead: str = Field(..., description="Team leader player")
     players: List[Player] = Field(...)
+
 
 class TeamsResponseModel(BaseModel):
   message: str

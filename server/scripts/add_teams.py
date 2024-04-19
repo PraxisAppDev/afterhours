@@ -18,13 +18,15 @@ class Add_Teams:
             #id refers to team id, hunt_id refers to the hunt id
             "hunt_id": "",
             "team": "",
-            'name': ''
+            "name": "",
+            "is_locked" : ""
         }
 
-    def change(self, huntId, teamName):
+    def change(self, huntId, teamName, isLocked):
         self.json_data['hunt_id'] = huntId
         self.json_data['team'] = {'name': teamName}
         self.json_data['name'] = teamName
+        self.json_data['is_locked'] = isLocked
         
 
     def add(self, hunt_ids):
@@ -47,6 +49,6 @@ class Add_Teams:
                 'Authorization': f'Bearer {self.token}',
             }
 
-            self.change(hunt_ids[i], teamName)
+            self.change(hunt_ids[i], teamName, False)
             requests.post(f'http://localhost:8001/game/{hunt_ids[i]}/teams/create_team', headers=self.headers, json=self.json_data)
             i = i + 1

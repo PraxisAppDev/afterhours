@@ -9,7 +9,7 @@ class TeamService:
     self.repository = repository
     self.change_stream = DatabaseChangeStream()
 
-  async def create_team(self, hunt_id, user_id, team_name):
+  async def create_team(self, hunt_id, user_id, team_name, is_locked):
     #print("USER_ID: " + user_id)
     new_team_id = str(ObjectId())
     creator = Player(playerId=user_id, timeJoined=datetime.now())
@@ -18,7 +18,8 @@ class TeamService:
       name=team_name,
       teamLead=user_id,
       players=[creator],
-      invitations=[]
+      invitations=[],
+      isLocked=is_locked
     )
     await self.repository.create_team(hunt_id, team_data)
     self.change_stream.add_change(f'/hunts/{hunt_id}/teams_list', ("+", team_data))

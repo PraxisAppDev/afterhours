@@ -38,6 +38,7 @@ class TeamModel(BaseModel):
   teamLead: PyObjectId = Field(...)
   players: List[PyObjectId] = []
   challengeResults: List[ChallengeResultModel] = []
+  isLocked: bool = Field(...)
 
   # TODO
   model_config = {
@@ -58,7 +59,7 @@ class HuntModel(BaseModel):
   description: str = Field(...)
   startDate: datetime = Field(...)
   joinableAfterDate: datetime = Field(...)
-  endDate: str = Field(...)
+  endDate: datetime = Field(...)
   huntLocation: dict = Field(...)
   venueLocation: List[float] = [] # Change later
   maxTeamSize: int = Field(...)
