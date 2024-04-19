@@ -38,6 +38,7 @@ class TeamModel(BaseModel):
   teamLead: PyObjectId = Field(...)
   players: List[PyObjectId] = []
   challengeResults: List[ChallengeResultModel] = []
+  isLocked: bool = Field(...)
 
   # TODO
   model_config = {

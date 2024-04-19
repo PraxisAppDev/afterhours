@@ -26,7 +26,7 @@ router = APIRouter()
   }
 )
 async def create_team(hunt_id: str, user_id: Annotated[str, Depends(auth_service.get_id_with_token)], team: InitialTeamData):
-  team = await service.create_team(hunt_id, user_id, team.name)
+  team = await service.create_team(hunt_id, user_id, team.name, team.is_locked)
   return TeamCreatedSuccesfully(team=team)
 
 # you can't join a team without using the invitation process
