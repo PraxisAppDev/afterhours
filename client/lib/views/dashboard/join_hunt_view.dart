@@ -51,11 +51,6 @@ class _JoinHuntViewState extends State<JoinHuntView> {
     }
   }
 
-  // DateTime _parseDate(String dateString) {
-  //   final formatter = DateFormat('yyyy-MM-dd hh:mm a');
-  //   return formatter.parse(dateString);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +97,16 @@ class _JoinHuntViewState extends State<JoinHuntView> {
             elevation: 0,
           ),
           _hunts.isEmpty
-              ? const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
+              ? SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      "No hunts available!",
+                      style: GoogleFonts.poppins(
+                        color: praxisBlack,
+                        fontSize: 32,
+                      ),
+                    ),
+                  ),
                 )
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
