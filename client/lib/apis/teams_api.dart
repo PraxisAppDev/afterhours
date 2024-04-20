@@ -68,15 +68,13 @@ Future<Team> createTeam(String huntId, String teamName) async {
           "authorization": "Bearer $token",
           "Content-Type": "application/json"
         },
-        body: jsonEncode({"name": teamName}));
+        body: jsonEncode({"name": teamName, "is_locked": false}));
   } catch (error) {
     throw Exception("network error");
   }
   if (response.statusCode == 201) {
-    print(response.body);
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    print(jsonResponse);
-    return Team.fromJson(jsonResponse);
+    return Team.fromJson(jsonResponse["team"]);
   } else {
     throw Exception("Error: Failed to create team: $response.statusCode");
   }

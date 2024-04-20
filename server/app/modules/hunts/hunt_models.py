@@ -152,6 +152,7 @@ class Team(BaseModel):
     players: List[Player] = Field(...)
     challengeResults: Optional[List[ChallengeResult]] = Field(None)
     invitations: List[str] = Field(...)
+    isLocked: bool = Field(...)
 
 
 class HuntGameState(BaseModel):
