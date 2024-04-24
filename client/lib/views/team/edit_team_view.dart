@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/apis/teams_api.dart' as teams_api;
+import 'package:praxis_afterhours/views/hunt/get_ready_hunt.dart';
+import 'package:praxis_afterhours/views/leaderboard_view.dart';
 
 import '../../reusables/hunt_structure.dart';
 
@@ -12,7 +14,12 @@ class TeamMembersView extends StatelessWidget {
   final Hunt hunt;
   final bool editMode;
 
-  const TeamMembersView({super.key, required this.userId, required this.team, required this.hunt, required this.editMode});
+  const TeamMembersView(
+      {super.key,
+      required this.userId,
+      required this.team,
+      required this.hunt,
+      required this.editMode});
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +49,22 @@ class TeamMembersView extends StatelessWidget {
                 ),
               ),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LeaderboardView(),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.leaderboard,
+                  size: 50,
+                ),
+              )
+            ],
             backgroundColor: praxisRed,
             elevation: 0,
           ),
@@ -51,12 +74,9 @@ class TeamMembersView extends StatelessWidget {
               delegate: SliverChildListDelegate(
                 [
                   TeamMembersListView(hunt: hunt, team: team, userId: userId),
-                  if (editMode)
-                    const SizedBox(height: 8),
-                  if (editMode)
-                    const Divider(),
-                  if (editMode)
-                    const SizedBox(height: 8),
+                  if (editMode) const SizedBox(height: 8),
+                  if (editMode) const Divider(),
+                  if (editMode) const SizedBox(height: 8),
                   if (editMode)
                     TeamRequestsView(hunt: hunt, team: team, userId: userId),
                   const SizedBox(height: 16),
@@ -72,6 +92,22 @@ class TeamMembersView extends StatelessWidget {
                       backgroundColor: praxisRed,
                     ),
                     child: const Text('Leave Team'),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GetReadyHuntView(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: praxisRed,
+                    ),
+                    child: const Text('I\'m Ready!'),
                   ),
                 ],
               ),
@@ -118,17 +154,19 @@ class TeamRequestsView extends StatelessWidget {
   final Team team;
   final Stream<List<String>> _requests;
 
-  TeamRequestsView({super.key, required this.userId, required this.hunt, required this.team}) : _requests = teams_api.watchListJoinRequestsForTeam(hunt.id, team.id);
+  TeamRequestsView(
+      {super.key, required this.userId, required this.hunt, required this.team})
+      : _requests = teams_api.watchListJoinRequestsForTeam(hunt.id, team.id);
 
   List<String> _sortJoinRequests(List<String> requests) {
     requests.sort((a, b) {
-      if(a == team.teamLeader) {
+      if (a == team.teamLeader) {
         return -1;
-      } else if(b == team.teamLeader) {
+      } else if (b == team.teamLeader) {
         return 1;
-      } else if(a == userId) {
+      } else if (a == userId) {
         return -1;
-      } else if(b == userId) {
+      } else if (b == userId) {
         return 1;
       } else {
         return a.compareTo(b);
@@ -138,7 +176,7 @@ class TeamRequestsView extends StatelessWidget {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return StreamBuilder(
       stream: _requests.map(_sortJoinRequests),
       builder: (context, snapshot) {
@@ -170,8 +208,8 @@ class TeamRequestsView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final request = snapshot.data?[index];
                     return ListTile(
-                      leading: const CircleAvatar(
-                          child: Icon(Icons.person_add)),
+                      leading:
+                          const CircleAvatar(child: Icon(Icons.person_add)),
                       title: Text(request!),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -197,12 +235,14 @@ class TeamRequestsView extends StatelessWidget {
   }
 
   void _acceptRequest(String request) async {
-    teams_api.TeamOperationSuccessMessage message = await teams_api.acceptRequestJoinTeam(hunt.id, team.id, request);
+    teams_api.TeamOperationSuccessMessage message =
+        await teams_api.acceptRequestJoinTeam(hunt.id, team.id, request);
     Fluttertoast.showToast(msg: message.message);
   }
 
   void _rejectRequest(String request) async {
-    teams_api.TeamOperationSuccessMessage message = await teams_api.rejectRequestJoinTeam(hunt.id, team.id, request);
+    teams_api.TeamOperationSuccessMessage message =
+        await teams_api.rejectRequestJoinTeam(hunt.id, team.id, request);
     Fluttertoast.showToast(msg: message.message);
   }
 }
@@ -215,13 +255,13 @@ class TeamMembersListView extends StatelessWidget {
 
   List<Player> _sortTeamMembers(List<Player> requests) {
     requests.sort((a, b) {
-      if(a.playerId == team.teamLeader) {
+      if (a.playerId == team.teamLeader) {
         return -1;
-      } else if(b.playerId == team.teamLeader) {
+      } else if (b.playerId == team.teamLeader) {
         return 1;
-      } else if(a.playerId == userId) {
+      } else if (a.playerId == userId) {
         return -1;
-      } else if(b.playerId == userId) {
+      } else if (b.playerId == userId) {
         return 1;
       } else {
         return a.playerId.compareTo(b.playerId);
@@ -230,7 +270,8 @@ class TeamMembersListView extends StatelessWidget {
     return requests;
   }
 
-  TeamMembersListView({super.key, required this.userId, required this.hunt, required this.team})
+  TeamMembersListView(
+      {super.key, required this.userId, required this.hunt, required this.team})
       : _teamMembers = teams_api.watchListPlayersForTeam(hunt.id, team.id);
 
   @override
@@ -283,8 +324,8 @@ class TeamMembersListView extends StatelessWidget {
   }
 
   void _removeMember(Player member) async {
-    teams_api.TeamOperationSuccessMessage message = await teams_api
-        .removePlayerFromTeam(hunt.id, team.id, member.playerId);
+    teams_api.TeamOperationSuccessMessage message =
+        await teams_api.removePlayerFromTeam(hunt.id, team.id, member.playerId);
     Fluttertoast.showToast(msg: message.message);
   }
 }

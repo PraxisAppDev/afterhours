@@ -96,40 +96,40 @@ class _JoinHuntViewState extends State<JoinHuntView> {
             elevation: 0,
           ),
           _hunts.isEmpty
-            ? SliverFillRemaining(
-                child: Center(
-                  child: Text(
-                    "No hunts available!",
-                    style: GoogleFonts.poppins(
-                      color: praxisBlack,
-                      fontSize: 32,
+              ? SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      "No hunts available!",
+                      style: GoogleFonts.poppins(
+                        color: praxisBlack,
+                        fontSize: 32,
+                      ),
                     ),
                   ),
-                ),
-              )
-            : SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final hunt = _hunts[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 16,
-                    ),
-                    child: HuntWidget(hunt: hunt)
-                        .animate(
-                          delay: 150.milliseconds * index,
-                        )
-                        .fade()
-                        .slideY(
-                          begin: 0.5,
-                          end: 0,
+                )
+              : SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final hunt = _hunts[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 16,
                         ),
-                  );
-                },
-                childCount: _hunts.length,
-              ),
-            ),
+                        child: HuntWidget(hunt: hunt)
+                            .animate(
+                              delay: 150.milliseconds * index,
+                            )
+                            .fade()
+                            .slideY(
+                              begin: 0.5,
+                              end: 0,
+                            ),
+                      );
+                    },
+                    childCount: _hunts.length,
+                  ),
+                ),
         ],
       ),
     );
@@ -355,7 +355,8 @@ class _JoinHuntOptionsDialogContentState
             onTap: () {
               //close this dialog and open a new one to enter a team name
               Navigator.pop(context);
-              showCreateHuntTeamNameDialog(context, hunt: widget.hunt, isLocked: false);
+              showCreateHuntTeamNameDialog(context,
+                  hunt: widget.hunt, isLocked: false);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -380,11 +381,8 @@ class _JoinHuntOptionsDialogContentState
             onTap: () {
               //close this dialog and open a new one to join a hunt alone
               Navigator.pop(context);
-              showCreateHuntTeamNameDialog(
-                  context,
-                  hunt: widget.hunt,
-                  isLocked: true
-              );
+              showCreateHuntTeamNameDialog(context,
+                  hunt: widget.hunt, isLocked: true);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -410,7 +408,8 @@ class _JoinHuntOptionsDialogContentState
   }
 }
 
-Future<void> showCreateHuntTeamNameDialog(BuildContext context, {required Hunt hunt, required bool isLocked}) {
+Future<void> showCreateHuntTeamNameDialog(BuildContext context,
+    {required Hunt hunt, required bool isLocked}) {
   final TextEditingController newTeamNameController = TextEditingController();
   return showDialog(
     context: context,
@@ -451,10 +450,7 @@ Future<void> showCreateHuntTeamNameDialog(BuildContext context, {required Hunt h
                     lockTeam: isLocked,
                   );
                   if (!context.mounted) return;
-                  Navigator.push(
-                    context,
-                    route
-                  );
+                  Navigator.push(context, route);
                 },
                 child: Container(
                   decoration: BoxDecoration(

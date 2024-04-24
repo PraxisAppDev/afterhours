@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
+import 'package:praxis_afterhours/views/hunt_challenge_screen.dart';
 
 class GetReadyHuntView extends StatefulWidget {
   const GetReadyHuntView({super.key});
@@ -194,6 +195,21 @@ class _GetReadyHuntViewState extends State<GetReadyHuntView> {
               },
               child: const Text(
                 "Exit Challenge",
+                style: TextStyle(fontSize: 18, color: praxisWhite),
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HuntChallengeScreen(),
+                  ),
+                );
+              },
+              child: const Text(
+                "(Go to Hunt Challenge mock screen)",
                 style: TextStyle(fontSize: 18, color: praxisWhite),
               ),
             ),

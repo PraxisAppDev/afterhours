@@ -14,7 +14,7 @@ class MockQuestionView extends StatelessWidget {
           "Question 1",
           style: GoogleFonts.poppins(
             color: Colors.white,
-            fontSize: 35,
+            fontSize: 24,
           ),
         ),
         actions: [
