@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, PlainTextResponse
 from app.modules.game.teams.service import service
 from app.modules.game.teams.router_models import *
 from typing_extensions import Annotated
@@ -155,13 +155,48 @@ async def watch_join_requests(hunt_id: str, team_id: str, id_user: Annotated[str
 @router.post(
   '/{team_id}/request_join',
   status_code=201,
+  response_class=StreamingResponse,
   responses={
-    # to be implemented
-  },
-  response_model=TeamOperationSuccessMessage
+    200: {
+      'content': {
+        'application/x-ndjson': {}
+      }
+    },
+    422: {
+      "description": "Request could not be validated",
+      "model": ValidationErrorsModel
+    },
+  }
 )
 async def request_join_team(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
-  return await service.request_join_team(hunt_id, team_id, id_user)
+  try:
+    await service.request_join_team(hunt_id, team_id, id_user)
+  except Exception as e:
+    print(str(e))
+    if str(e) == "User has already requested to join the team":
+      ... # just ignore and give status of request
+    else:
+      raise e
+  return stream_jsonl_response(service.listen_join_request_status(hunt_id, team_id, id_user))
+
+@router.post(
+  '/{team_id}/join_requests/currentUser/listenStatus',
+  status_code=200,
+  response_class=StreamingResponse,
+  responses={
+    200: {
+      'content': {
+        'application/x-ndjson': {}
+      }
+    },
+    422: {
+      "description": "Request could not be validated",
+      "model": ValidationErrorsModel
+    },
+  }
+)
+async def listen_join_request_status(hunt_id: str, team_id: str, id_user: Annotated[str, Depends(auth_service.get_id_with_token)]):
+  return await service.listen_join_request_status(hunt_id, team_id, id_user)
 
 @router.post(
   '/{team_id}/cancel_request_join',

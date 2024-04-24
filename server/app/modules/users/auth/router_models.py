@@ -143,6 +143,9 @@ class AuthSuccessModel(BaseModel):
   token: Token = Field(
     description="A JWT token to be used for authentication."
   )
+  user_id: str = Field(
+    description="The id of the user that was authenticated."
+  )
 
   model_config = {
     "json_schema_extra": {
