@@ -15,7 +15,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int currentPageIndex = 0;
   final screens = [
     const JoinHuntView(),
-    const HuntHistoryView(),
+    //const HuntHistoryView(),
     const ProfileView(),
   ];
 
@@ -39,13 +39,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             label: "Join a Hunt",
           ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.history,
-              color: currentPageIndex == 1 ? Colors.white : Colors.black,
-            ),
-            label: "History",
-          ),
+          // NavigationDestination(
+          //   icon: Icon(
+          //     Icons.history,
+          //     color: currentPageIndex == 1 ? Colors.white : Colors.black,
+          //   ),
+          //   label: "History",
+          // ),
           NavigationDestination(
             icon: Icon(
               Icons.person,
