@@ -2,29 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
-import 'package:praxis_afterhours/apis/teams_api.dart' as teamsApi;
+import 'package:praxis_afterhours/apis/teams_api.dart' as teams_api;
 
 import '../../reusables/hunt_structure.dart';
 
-class TeamMembersView extends StatefulWidget {
+class TeamMembersView extends StatelessWidget {
+  final String userId;
   final Team team;
   final Hunt hunt;
   final bool editMode;
 
-  const TeamMembersView({super.key, required this.team, required this.hunt, required this.editMode});
-
-  @override
-  State<TeamMembersView> createState() => _TeamMembersViewState();
-}
-
-class _TeamMembersViewState extends State<TeamMembersView> {
-  final List<String> _teamMembers = ['Chell', 'GLaDOS', 'Wheatley'];
-
-  void _removeMember(String member) {
-    setState(() {
-      _teamMembers.remove(member);
-    });
-  }
+  const TeamMembersView({super.key, required this.userId, required this.team, required this.hunt, required this.editMode});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +33,7 @@ class _TeamMembersViewState extends State<TeamMembersView> {
               title: Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  "My Team",
+                  team.name,
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 32,
@@ -62,54 +50,15 @@ class _TeamMembersViewState extends State<TeamMembersView> {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  Text(
-                    widget.team.name,
-                    style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${_teamMembers.length}/${widget.hunt.maxTeamSize}',
-                    style: GoogleFonts.poppins(fontSize: 16),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Team Members',
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  if (_teamMembers.isEmpty)
-                    const Text('No team members yet.')
-                  else
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _teamMembers.length,
-                      itemBuilder: (context, index) {
-                        final member = _teamMembers[index];
-                        return ListTile(
-                          leading:
-                              const CircleAvatar(child: Icon(Icons.person)),
-                          title: Text(member),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () => _removeMember(member),
-                          ),
-                        );
-                      },
-                    ),
-                  if (widget.editMode)
+                  TeamMembersListView(hunt: hunt, team: team, userId: userId),
+                  if (editMode)
                     const SizedBox(height: 8),
-                  if (widget.editMode)
+                  if (editMode)
                     const Divider(),
-                  if (widget.editMode)
+                  if (editMode)
                     const SizedBox(height: 8),
-                  TeamRequestsView(hunt: widget.hunt, team: widget.team),
+                  if (editMode)
+                    TeamRequestsView(hunt: hunt, team: team, userId: userId),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () async {
@@ -153,7 +102,7 @@ class _TeamMembersViewState extends State<TeamMembersView> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context, true);
+              Navigator.pop(context, false);
             },
             child: const Text('Cancel'),
           ),
@@ -164,16 +113,34 @@ class _TeamMembersViewState extends State<TeamMembersView> {
 }
 
 class TeamRequestsView extends StatelessWidget {
+  final String userId;
   final Hunt hunt;
   final Team team;
   final Stream<List<String>> _requests;
 
-  TeamRequestsView({super.key, required this.hunt, required this.team}) : _requests = teamsApi.watchListJoinRequestsForTeam(hunt.id, team.id);
+  TeamRequestsView({super.key, required this.userId, required this.hunt, required this.team}) : _requests = teams_api.watchListJoinRequestsForTeam(hunt.id, team.id);
+
+  List<String> _sortJoinRequests(List<String> requests) {
+    requests.sort((a, b) {
+      if(a == team.teamLeader) {
+        return -1;
+      } else if(b == team.teamLeader) {
+        return 1;
+      } else if(a == userId) {
+        return -1;
+      } else if(b == userId) {
+        return 1;
+      } else {
+        return a.compareTo(b);
+      }
+    });
+    return requests;
+  }
 
   @override
   Widget build (BuildContext context) {
     return StreamBuilder(
-      stream: _requests,
+      stream: _requests.map(_sortJoinRequests),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -230,12 +197,94 @@ class TeamRequestsView extends StatelessWidget {
   }
 
   void _acceptRequest(String request) async {
-    teamsApi.TeamOperationSuccessMessage message = await teamsApi.acceptRequestJoinTeam(hunt.id, team.id, request);
+    teams_api.TeamOperationSuccessMessage message = await teams_api.acceptRequestJoinTeam(hunt.id, team.id, request);
     Fluttertoast.showToast(msg: message.message);
   }
 
   void _rejectRequest(String request) async {
-    teamsApi.TeamOperationSuccessMessage message = await teamsApi.rejectRequestJoinTeam(hunt.id, team.id, request);
+    teams_api.TeamOperationSuccessMessage message = await teams_api.rejectRequestJoinTeam(hunt.id, team.id, request);
+    Fluttertoast.showToast(msg: message.message);
+  }
+}
+
+class TeamMembersListView extends StatelessWidget {
+  final String userId;
+  final Hunt hunt;
+  final Team team;
+  final Stream<List<Player>> _teamMembers;
+
+  List<Player> _sortTeamMembers(List<Player> requests) {
+    requests.sort((a, b) {
+      if(a.playerId == team.teamLeader) {
+        return -1;
+      } else if(b.playerId == team.teamLeader) {
+        return 1;
+      } else if(a.playerId == userId) {
+        return -1;
+      } else if(b.playerId == userId) {
+        return 1;
+      } else {
+        return a.playerId.compareTo(b.playerId);
+      }
+    });
+    return requests;
+  }
+
+  TeamMembersListView({super.key, required this.userId, required this.hunt, required this.team})
+      : _teamMembers = teams_api.watchListPlayersForTeam(hunt.id, team.id);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: _teamMembers.map(_sortTeamMembers),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Column(
+            children: [
+              Text(
+                'Team Members',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              if (snapshot.data?.isEmpty ?? false)
+                const Text(
+                  'No team members yet.',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                )
+              else
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, index) {
+                    final member = snapshot.data?[index];
+                    return ListTile(
+                      leading: const CircleAvatar(child: Icon(Icons.person)),
+                      title: Text(member!.playerId),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => _removeMember(member),
+                      ),
+                    );
+                  },
+                ),
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  void _removeMember(Player member) async {
+    teams_api.TeamOperationSuccessMessage message = await teams_api
+        .removePlayerFromTeam(hunt.id, team.id, member.playerId);
     Fluttertoast.showToast(msg: message.message);
   }
 }

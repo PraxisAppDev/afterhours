@@ -1,7 +1,7 @@
 from typing import AsyncIterator
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from asyncio import Queue
+from asyncio import Queue, Lock
 import orjson
 
 def handle_object_id(document):
@@ -35,3 +35,18 @@ class DatabaseChangeStream:
     finally:
       for bucket in buckets:
         self._queues[bucket].remove(queue)
+
+class AsyncOnceBox:
+  def __init__(self, builder):
+    self._value = None
+    self._lock = Lock()
+    self._builder = builder
+
+  async def get(self):
+    if self._value is not None:
+      return self._value
+    else:
+      async with self._lock:
+        if self._value is None:
+          self._value = await self._builder()
+        return self._value

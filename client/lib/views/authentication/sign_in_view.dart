@@ -80,12 +80,13 @@ class SignInView extends StatelessWidget {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {
-                        var (token, exp) = await logIn(
+                        var (token, exp, userId) = await logIn(
                           usernameController.text,
                           passwordController.text,
                         );
                         await storage.write(key: "token", value: token);
                         await storage.write(key: "exp", value: exp);
+                        await storage.write(key: "user_id", value: userId);
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
