@@ -134,7 +134,7 @@ class Add_Hunts():
                 "response": {
                     "type": "string_list_text_field",
                     "possibleAnswers": [
-                        "Customer Success"
+                        "Customer Success",
                         "Employee Success",
                         "Technical Excellence",
                         "Fiscal Responsibility",
@@ -221,9 +221,10 @@ class Add_Hunts():
     hunt2_json = {
         "name": "Recruit Mixer 1",
         "description": "The Greene Turtle (in-person only)",
-        "startDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
-        "joinableAfterDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
-        "endDate": datetime(2024, 5, 1, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
+        "startDate": datetime(2024, 3, 9, 19, 0).isoformat(),
+        "joinableAfterDate": datetime(2024, 3, 9, 19, 0).isoformat(),
+        "endDate": datetime(2024, 5, 1, 19, 0).isoformat(),
+        
         "huntLocation": {
             "type": "string",
             "locationName": "Greene Turtle",
@@ -415,9 +416,9 @@ class Add_Hunts():
     hunt3_json = {
         "name": "Recruit Mixer 2",
         "description": "The Greene Turtle (in-person only)",
-        "startDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
-        "joinableAfterDate": datetime(2024, 3, 9, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
-        "endDate": datetime(2024, 5, 1, 19, 0).strftime("%Y-%m-%d %I:%M %p"),
+        "startDate": datetime(2024, 3, 9, 19, 0).isoformat(),
+        "joinableAfterDate": datetime(2024, 3, 9, 19, 0).isoformat(),
+        "endDate": datetime(2024, 5, 1, 19, 0).isoformat(),
         "huntLocation": {
             "type": "string",
             "locationName": "Greene Turtle",

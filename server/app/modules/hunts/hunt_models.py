@@ -162,6 +162,7 @@ class Team(BaseModel):
     challengeResults: Optional[List[ChallengeResult]] = Field(None)
     score: float = Field(..., description="Total team score")
     invitations: List[str] = Field(...)
+    isLocked: bool = Field(...)
 
 
 class HuntGameState(BaseModel):

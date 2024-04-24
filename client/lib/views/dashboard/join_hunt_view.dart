@@ -39,7 +39,7 @@ class _JoinHuntViewState extends State<JoinHuntView> {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final List<dynamic> huntData = jsonData['content'];
-      
+
       setState(() {
         _hunts = huntData.map((hunt) => Hunt.fromJson(hunt)).toList();
       });
@@ -50,11 +50,6 @@ class _JoinHuntViewState extends State<JoinHuntView> {
       }
     }
   }
-
-  // DateTime _parseDate(String dateString) {
-  //   final formatter = DateFormat('yyyy-MM-dd hh:mm a');
-  //   return formatter.parse(dateString);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +97,16 @@ class _JoinHuntViewState extends State<JoinHuntView> {
             elevation: 0,
           ),
           _hunts.isEmpty
-              ? const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
+              ? SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      "No hunts available!",
+                      style: GoogleFonts.poppins(
+                        color: praxisBlack,
+                        fontSize: 32,
+                      ),
+                    ),
+                  ),
                 )
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -283,7 +286,6 @@ class HuntWidget extends StatelessWidget {
   }
 }
 
-
 class JoinHuntOptionsDialogContent extends StatefulWidget {
   final Hunt hunt;
 
@@ -293,10 +295,12 @@ class JoinHuntOptionsDialogContent extends StatefulWidget {
   });
 
   @override
-  State<JoinHuntOptionsDialogContent> createState() => _JoinHuntOptionsDialogContentState();
+  State<JoinHuntOptionsDialogContent> createState() =>
+      _JoinHuntOptionsDialogContentState();
 }
 
-class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogContent> {
+class _JoinHuntOptionsDialogContentState
+    extends State<JoinHuntOptionsDialogContent> {
   final TextEditingController newTeamNameController = TextEditingController();
 
   @override
@@ -373,9 +377,10 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
                           ),
                           const SizedBox(height: 16),
                           OpenContainer(
-                            transitionDuration:
-                            const Duration(seconds: 1),
-                            openBuilder: (context, _) => CreateTeamView(hunt: widget.hunt, initialTeamName: newTeamNameController.text),
+                            transitionDuration: const Duration(seconds: 1),
+                            openBuilder: (context, _) => CreateTeamView(
+                                hunt: widget.hunt,
+                                initialTeamName: newTeamNameController.text),
                             closedShape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -383,8 +388,7 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
                             closedBuilder: (context, _) => Container(
                               color: praxisRed,
                               child: const Padding(
-                                padding:
-                                EdgeInsets.symmetric(vertical: 16),
+                                padding: EdgeInsets.symmetric(vertical: 16),
                                 child: Text(
                                   'Create Team',
                                   style: TextStyle(

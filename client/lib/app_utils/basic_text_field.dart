@@ -45,8 +45,8 @@ class BasicTextField extends StatelessWidget {
           return 'Password should be at least 6 characters long';
         }
 
-        final passwordRegex =
-            RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+        final passwordRegex = RegExp(
+            r'(?=.*?[a-z])(?=.*?[0-9])(?=.*?[`~!@#$%^&*()\-_=+[{\]}\\|";:,<.>/?]).{8,}');
 
         if (!passwordRegex.hasMatch(value)) {
           return 'Invalid password';
