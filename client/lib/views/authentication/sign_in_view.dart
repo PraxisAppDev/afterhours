@@ -97,7 +97,8 @@ class SignInView extends StatelessWidget {
                         }
                       } on FormatException {
                         if (context.mounted) {
-                          showFlashError(context, 'Invalid credentials');
+                          showFlashError(
+                              context, 'Invalid username or password');
                         }
                       } catch (err) {
                         if (context.mounted) {

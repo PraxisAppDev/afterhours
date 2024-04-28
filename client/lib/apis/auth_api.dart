@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:praxis_afterhours/apis/api_client.dart';
 import 'package:praxis_afterhours/storage/secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Future<(String, String, String)> logIn(String username, String password) async {
   Response response;
@@ -20,6 +21,13 @@ Future<(String, String, String)> logIn(String username, String password) async {
       jsonResponse["user_id"].toString()
     );
   } else {
+    // Remove this when deploying to prod
+    var body = jsonDecode(response.body);
+    var errorMsg = body['message'];
+    Fluttertoast.showToast(
+      msg: "Error ${response.statusCode}: $errorMsg",
+      timeInSecForIosWeb: 5,
+    );
     throw const FormatException("invalid credentials");
   }
 }
@@ -47,6 +55,13 @@ Future<(String, String, String)> signUp(
       jsonResponse["user_id"].toString()
     );
   } else {
+    // Remove this when deploying to prod
+    var body = jsonDecode(response.body);
+    var errorMsg = body['message'];
+    Fluttertoast.showToast(
+      msg: "Error ${response.statusCode}: $errorMsg",
+      timeInSecForIosWeb: 5,
+    );
     throw const FormatException("invalid credentials");
   }
 }
