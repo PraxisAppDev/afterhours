@@ -4,7 +4,6 @@ import 'package:praxis_afterhours/apis/api_client.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:praxis_afterhours/apis/api_utils/token.dart';
 
-
 Future<Map<String, dynamic>> fetchUserInfo() async {
   final token = await getToken();
   Response response;
@@ -22,11 +21,14 @@ Future<Map<String, dynamic>> fetchUserInfo() async {
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
     return jsonResponse;
   } else {
+    // Remove this when deploying to prod
+    var body = jsonDecode(response.body);
+    var errorMsg = body['message'];
     Fluttertoast.showToast(
-      msg: "Error: Failed to load user data: $response.statusCode",
-      timeInSecForIosWeb: 10,
+      msg: "Error ${response.statusCode}: $errorMsg",
+      timeInSecForIosWeb: 5,
     );
-    throw Exception("Error: Failed to load user data: $response.statusCode");
+    throw Exception("Error: Failed to load user data: ${response.statusCode}");
   }
 }
 
@@ -47,10 +49,14 @@ Future<void> updateUserInfo(Map<dynamic, dynamic> userInfo) async {
   if (response.statusCode == 200) {
     // User info updated successfully
   } else {
+    // Remove this when deploying to prod
+    var body = jsonDecode(response.body);
+    var errorMsg = body['message'];
     Fluttertoast.showToast(
-      msg: "Error: Failed to update user info: $response.statusCode",
-      timeInSecForIosWeb: 10,
+      msg: "Error ${response.statusCode}: $errorMsg",
+      timeInSecForIosWeb: 5,
     );
-    throw Exception("Error: Failed to update user info: $response.statusCode");
+    throw Exception(
+        "Error: Failed to update user info: ${response.statusCode}");
   }
 }
