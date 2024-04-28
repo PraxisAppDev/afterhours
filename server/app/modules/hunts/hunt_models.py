@@ -79,6 +79,8 @@ class StringSetMatchedResponse(BaseModel):
     type: str = Field("string_set_matched", description="Response type")
     possibleAnswers: List[List[str]] = Field(..., min_items=1, description="Possible correct answer sets")
     caseSensitive: bool = Field(False, description="Case sensitive matching")
+    #numOfAnswers needs to be implemented in schema
+    numOfAnswers: Optional[int] = Field(None, description="Number of Answers needed")
 
 
 class MultipleChoiceResponse(BaseModel):

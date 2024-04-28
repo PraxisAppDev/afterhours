@@ -34,7 +34,8 @@ class Add_Teams:
             ('looneys', 'strawberry+martini2', 'BEAMTEAM'),
             ('Rosserson', 'Pheobe4ever!', 'Test Team 2'),
             ('newman', 'george*costanza4', 'Test Team 3'),
-            ('brownies', 'Boba:)100', 'Test Team 4')
+            ('brownies', 'Boba:)100', 'Test Team 4'), 
+            ('F_to_the_E-R-G', 'fergie!=NBA20', 'Test Team 5')
         ]
         i = 0
         for username, password, teamName in data:

@@ -94,7 +94,7 @@ class Add_Hunts():
                     }
                 },
                 "response": {
-                    "type": "numeric_text_field",
+                    "type": "number",
                     "possibleAnswers": [
                         2002
                     ],
@@ -132,7 +132,7 @@ class Add_Hunts():
                     }
                 },
                 "response": {
-                    "type": "string_list_text_field",
+                    "type": "string_set_matched",
                     "possibleAnswers": [
                         "Customer Success",
                         "Employee Success",
@@ -140,7 +140,8 @@ class Add_Hunts():
                         "Fiscal Responsibility",
                         "Social Awareness"
                     ],
-                    "caseSensitive": False
+                    "caseSensitive": False,
+                    "numOfAnswers": 3
                 }
             },
             {
@@ -357,7 +358,7 @@ class Add_Hunts():
                     }
                 },
                 "response": {
-                    "type": "numeric_text_field",
+                    "type": "number",
                     "possibleAnswers": [
                         350
                     ],
@@ -388,7 +389,7 @@ class Add_Hunts():
                     }
                 },
                 "response": {
-                    "type": "list_text_field",
+                    "type": "string_set_matched",
                     "possibleAnswers": [
                         "Software",
                         "Cybersecurity",
@@ -406,7 +407,8 @@ class Add_Hunts():
                         "C5ISR",
                         "Wireless Exploitation"
                     ],
-                    "caseSensitive": False
+                    "caseSensitive": False,
+                    "numOfAnswers": 3
                 }
             },
         ],
@@ -489,13 +491,14 @@ class Add_Hunts():
                     }
                 },
                 "response": {
-                    "type": "string_list_text_field",
+                    "type": "string_set_matched",
                     "possibleAnswers": [
                         "NSA",
                         "CIA",
                         "DOD"
                     ],
-                    "caseSensitive": False
+                    "caseSensitive": False, 
+                    "numOfAnswers": 3
                 }
             },
             {
@@ -553,7 +556,7 @@ class Add_Hunts():
                     }
                 },
                 "response": {
-                    "type": "numeric_text_field",
+                    "type": "number",
                     "possibleAnswers": [
                         50
                     ],
@@ -564,7 +567,7 @@ class Add_Hunts():
                 "questionTitle": "Why Praxis",
                 "description": "Name 3 benefits of Praxis",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
-                "placeholderText": "Type your answers here:",
+                "placeholderText": "Type your answers here, seperated by a comma: ",
                 "sequence": {
                     "num": 1,
                     "order": 1
@@ -584,7 +587,7 @@ class Add_Hunts():
                     }
                 },
                 "response": {
-                    "type": "string_list_text_field",
+                    "type": "string_set_matched",
                     "possibleAnswers": [
                         "Let your voice be heard",
                         "Grow your geek",
@@ -592,7 +595,8 @@ class Add_Hunts():
                         "Less is more? Since when!",
                         "Whole self health"
                     ],
-                    "caseSensitive": False
+                    "caseSensitive": False, 
+                    "numOfAnswers": 3
                 }
             },
         ],
@@ -697,10 +701,133 @@ class Add_Hunts():
         "teams": []
     }
 
+    #Warning: Sample Hunt 5's images don't match the question.
+    #Sample Hunt 5 tests answers that weren't tested in the previous hunts including 
+    #multiple choice, number range, and date_time
+    hunt5_json = {
+        "name": "Sample Hunt 5 ",
+        "description": "CStone (in-person only)",
+        "startDate": datetime(2024, 5, 6, 19, 0).isoformat(),
+        "joinableAfterDate": datetime(2024, 5, 6, 19, 0).isoformat(),
+        "endDate": datetime(2024, 5, 1, 19, 0).isoformat(),
+        "huntLocation": {
+            "type": "string",
+            "locationName": "Cornerstone",
+            "locationInstructions": "Close to Nando's",
+            "geofence": {
+                "type": "string",
+                "coordinates": [
+                    38.98086, -76.93896
+                ],
+                "radius": 1000
+            }
+        },
+        "maxTeamSize": 4,
+        "challenges": [
+            {
+                "id": "test5",
+                "questionTitle": "Partner Organization",
+                "description": "Who are the Partner organization of Praxis?",
+                "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
+                "placeholderText": "Type the name here:",
+                "sequence": {
+                    "num": 1,
+                    "order": 1
+                },
+                "hints": [
+                    {
+                        "type": "string",
+                        "penalty": 25,
+                        "text": "Look on the Praxis website"
+                    },
+                ],
+                "scoring": {
+                    "points": 100,
+                    "timeDecay": {
+                        "type": "none",
+                        # "timeLimit": 0
+                    }
+                },
+                "response": {
+                    "type": "multiple_choice",
+                    "choices": [
+                        "A.J. O'Connor",
+                        "NASA",
+                        "Center for Creative Leadership",
+                        "Pet Rock"
+                    ],
+                    "correctAnswers": [0, 2]
+                }
+            },
+            {
+                "id": "test6",
+                "questionTitle": "Approx of Employees at Praxis Engineering in North America",
+                "description": "How many employees does Praxis Engineering have in North America?",
+                "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
+                "placeholderText": "Type your numeric answer here:",
+                "sequence": {
+                    "num": 1,
+                    "order": 1
+                },
+                "hints": [
+                    {
+                        "type": "string",
+                        "penalty": 25,
+                        "text": "Look at our about page"
+                    },
+                ],
+                "scoring": {
+                    "points": 100,
+                    "timeDecay": {
+                        "type": "none",
+                        # "timeLimit": 0
+                    }
+                },
+                "response": {
+                    "type": "number_range",
+                    "minAnswer": 200,
+                    "maxAnswer": 250
+                }
+            },
+            {
+                "id": "test7",
+                "questionTitle": "Praxis CEO",
+                "description": "When did Dave Blanchard become the CEO of Praxis?",
+                "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
+                "placeholderText": "Type your numeric answer here:",
+                "sequence": {
+                    "num": 1,
+                    "order": 1
+                },
+                "hints": [
+                    {
+                        "type": "string",
+                        "penalty": 25,
+                        "text": "Look at our about page"
+                    },
+                ],
+                "scoring": {
+                    "points": 100,
+                    "timeDecay": {
+                        "type": "none",
+                        # "timeLimit": 0
+                    }
+                },
+                "response": {
+                    "type": "date_time",
+                    "minAnswer": datetime(2011, 4, 1).isoformat(),
+                    "maxAnswer": datetime(2011, 4, 30).isoformat()
+                }
+            },
+           
+        ],
+        "teams": []
+    }
+
     def do(self):
         hunt_ids = []
 
-        for hunt_data in [self.hunt1_json, self.hunt2_json, self.hunt3_json, self.hunt4_json]:
+        for hunt_data in [self.hunt1_json, self.hunt2_json, self.hunt3_json, self.hunt4_json, self.hunt5_json]:
             response = requests.post(
                 'http://localhost:8001/hunts/create_hunt', headers=self.headers, json=hunt_data)
             hunt_ids.append(json.loads((response.__dict__.get('_content')).decode('utf-8')).get('inserted_hunt_id'))
