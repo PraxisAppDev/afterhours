@@ -46,7 +46,7 @@ class BasicTextField extends StatelessWidget {
         }
 
         final passwordRegex = RegExp(
-            r'(?=.*?[a-z])(?=.*?[0-9])(?=.*?[`~!@#$%^&*()\-_=+[{\]}\\|";:,<.>/?]).{8,}');
+            r'(?=.*?[a-z])(?=.*?[0-9])(?=.*?[`~!@#$%^&*()\-_=+[{\]}\\|";:,<.>\/?]).{8,}');
 
         if (!passwordRegex.hasMatch(value)) {
           return 'Invalid password';
