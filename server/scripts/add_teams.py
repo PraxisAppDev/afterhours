@@ -19,14 +19,14 @@ class Add_Teams:
             "hunt_id": "",
             "team": "",
             "name": "",
-            "isLocked" : False
+            "is_locked" : False
         }
 
     def change(self, huntId, teamName, isLocked):
         self.json_data['hunt_id'] = huntId
         self.json_data['team'] = {'name': teamName}
         self.json_data['name'] = teamName
-        self.json_data['isLocked'] = isLocked
+        self.json_data['is_locked'] = isLocked
         
 
     def add(self, hunt_ids):
