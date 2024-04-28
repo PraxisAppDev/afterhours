@@ -55,4 +55,5 @@ class TeamOperationSuccessMessage(BaseModel):
 
 class TeamMemberRemovalSuccessModel(BaseModel):
   success: bool
+  team_deleted: bool
   

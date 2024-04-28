@@ -10,3 +10,7 @@ Future<String?> getToken() async {
     throw Exception("Error: Failed to read token: $e");
   }
 }
+
+Future<String?> getUserId() {
+  return storage.read(key: "user_id");
+}
