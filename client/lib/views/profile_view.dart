@@ -166,7 +166,12 @@ class _ProfileViewState extends State<ProfileView> {
                               );
                             }
                           },
-                          child: const Text('Save Changes', style: TextStyle()),
+                          child: const Text(
+                            'Save Changes',
+                            style: TextStyle(
+                              color: praxisWhite,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 16),
                         OutlinedButton(
@@ -189,7 +194,12 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             );
                           },
-                          child: const Text('Logout'),
+                          child: const Text(
+                            'Logout',
+                            style: TextStyle(
+                              color: praxisWhite,
+                            ),
+                          ),
                         ),
                       ],
                     ),

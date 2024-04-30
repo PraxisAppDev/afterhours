@@ -172,7 +172,6 @@ async def request_join_team(hunt_id: str, team_id: str, id_user: Annotated[str, 
   try:
     await service.request_join_team(hunt_id, team_id, id_user)
   except Exception as e:
-    print(str(e))
     if str(e) == "User has already requested to join the team":
       ... # just ignore and give status of request
     else:
