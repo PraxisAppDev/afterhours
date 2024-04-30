@@ -58,7 +58,8 @@ class HuntRepository:
           challenge["answerAttempts"] = current_challenge_attempt.get("answerAttempts")
           
           if solved_boolean == True:
-            challenge["score"] = current_challenge_attempt.get("pointsAwarded") + challenge.get("score")
+            challenge["score"] = current_challenge_attempt.get("pointsIfCorrect") + team[0]["score"]
+            # team[0]["score"] = challenge.get("score")
           challenge_return = [challenge for challenge in team_challenge_results_list if challenge["challengeId"] == current_challenge_attempt.get("challengeId")]
           
           team[0]["challengeResults"] = team_challenge_results_list
@@ -69,12 +70,13 @@ class HuntRepository:
           return challenge_return[0]
         
       if solved_boolean == True:
-        challenge_result_model = {"challengeId":current_challenge_attempt.get("challengeId"), "solved":solved_boolean, "elapsedTime":current_challenge_attempt.get("elapsedTime"), "answerAttempts":current_challenge_attempt.get("answerAttempts"), "score":current_challenge_attempt.get("pointsAwarded")}
+        challenge_result_model = {"challengeId":current_challenge_attempt.get("challengeId"), "solved":solved_boolean, "elapsedTime":current_challenge_attempt.get("elapsedTime"), "answerAttempts":current_challenge_attempt.get("answerAttempts"), "score":current_challenge_attempt.get("pointsIfCorrect") + team[0]["score"]}
       else:
-        challenge_result_model = {"challengeId":current_challenge_attempt.get("challengeId"), "solved":solved_boolean, "elapsedTime":current_challenge_attempt.get("elapsedTime"), "answerAttempts":current_challenge_attempt.get("answerAttempts"), "score":0.0}
+        challenge_result_model = {"challengeId":current_challenge_attempt.get("challengeId"), "solved":solved_boolean, "elapsedTime":current_challenge_attempt.get("elapsedTime"), "answerAttempts":current_challenge_attempt.get("answerAttempts"), "score":team[0]["score"]}
   
       team[0]["challengeResults"].append(challenge_result_model)
-      team[0]["score"] = challenge_result_model.get("score")
+      if solved_boolean == True:
+        team[0]["score"] = challenge_result_model.get("score")
       new_teams_list= [team for team in list_teams if team.get("id") != id_team]
       new_teams_list.append(team[0])
       result = await self.collection.update_one({"_id": ObjectId(hunt_id)}, {"$set": {"gameState": {"teams": new_teams_list}}})
@@ -149,7 +151,7 @@ class HuntRepository:
       #datetime is set to have the format 09-11-2023 for users to input. 
       attempt = datetime.strptime(challenge_attempt.get("answerProvided"), '%m-%d-%Y').date()
 
-      if(min<attempt and max>attempt):
+      if(min<=attempt and max>=attempt):
         solved = True
         return await update_team_challenge_result(solved, team_challenge_results, challenge_attempt, teams_list, id_hunt, team_id)
     

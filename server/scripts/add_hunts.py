@@ -145,6 +145,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test4",
                 "questionTitle": "Director of Security",
                 "description": "Who is the director of security at Praxis?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
@@ -177,6 +178,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test5",
                 "questionTitle": "Praxis Definition",
                 "description": "Define Praxis as it relates to our company",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
@@ -241,6 +243,7 @@ class Add_Hunts():
         "maxTeamSize": 5,
         "challenges": [
             {
+                "id": "test1",
                 "questionTitle": "Find the President",
                 "description": "Take a picture with the president of Praxis",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
@@ -273,6 +276,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test2",
                 "questionTitle": "Bread and Butter",
                 "description": "What is the Bread and Butter of Praxis",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -304,6 +308,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test3",
                 "questionTitle": "Finish the sentence",
                 "description": "At Praxis, our success is your ...",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -335,6 +340,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test4",
                 "questionTitle": "Number of Employees at Praxis",
                 "description": "How many employees does Praxis Engineering have at a minimum?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -366,6 +372,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test5",
                 "questionTitle": "Areas of Expertise",
                 "description": "Name 3 areas in which Praxis has expertise",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -436,6 +443,7 @@ class Add_Hunts():
         "maxTeamSize": 4,
         "challenges": [
             {
+                "id": "test1",
                 "questionTitle": "Find the Director of IT",
                 "description": "Take a picture with the Director of IT",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
@@ -468,6 +476,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test2",
                 "questionTitle": "Praxis Customers",
                 "description": "Name 3 customers of Praxis (acronyms)",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -502,6 +511,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test3",
                 "questionTitle": "Figure out the missing word",
                 "description": "At Praxis, we are ... focused",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -533,6 +543,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test4",
                 "questionTitle": "Number of Contracts",
                 "description": "Praxis has over ... active contracts",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -564,6 +575,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test5",
                 "questionTitle": "Why Praxis",
                 "description": "Name 3 benefits of Praxis",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -624,6 +636,7 @@ class Add_Hunts():
         "maxTeamSize": 3,
         "challenges": [
             {
+                "id": "test1",
                 "questionTitle": "President",
                 "description": "Who is the president of Praxis",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
@@ -661,6 +674,7 @@ class Add_Hunts():
                 }
             },
             {
+                "id": "test2",
                 "questionTitle": "CTO",
                 "description": "Who is the CTO of Praxis",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -725,7 +739,7 @@ class Add_Hunts():
         "maxTeamSize": 4,
         "challenges": [
             {
-                "id": "test5",
+                "id": "test1",
                 "questionTitle": "Partner Organization",
                 "description": "Who are the Partner organization of Praxis?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
@@ -760,7 +774,7 @@ class Add_Hunts():
                 }
             },
             {
-                "id": "test6",
+                "id": "test2",
                 "questionTitle": "Approx of Employees at Praxis Engineering in North America",
                 "description": "How many employees does Praxis Engineering have in North America?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",
@@ -790,7 +804,7 @@ class Add_Hunts():
                 }
             },
             {
-                "id": "test7",
+                "id": "test3",
                 "questionTitle": "Praxis CEO",
                 "description": "When did Dave Blanchard become the CEO of Praxis?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_cto.png",

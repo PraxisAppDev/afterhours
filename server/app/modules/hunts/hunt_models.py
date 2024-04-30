@@ -135,11 +135,11 @@ class Challenge(BaseModel):
 
 class ChallengeAttempt(BaseModel):
     challengeId: str = Field(..., description="Challenge ID")
-    solved: datetime = Field(..., description="Time solved")
+    attemptTime: datetime = Field(..., description="Time of attempt")
     elapsedTime: float = Field(..., description="Time to solve in seconds")
     answerAttempts: int = Field(..., description="Number of answer attempts")
     hintsViewed: int = Field(..., description="Number of hints viewed")
-    pointsAwarded: float = Field(..., description="Points awarded")
+    pointsIfCorrect: float = Field(..., description="Points awarded if correct attempt")
     answerProvided: Optional[Union[str, None]] = Field(None, description="Last answer attempt")
 
 class ChallengeResult(BaseModel):
