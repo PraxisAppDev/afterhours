@@ -41,6 +41,7 @@ class _JoinHuntViewState extends State<JoinHuntView> {
 
       setState(() {
         _hunts = huntData.map((hunt) => Hunt.fromJson(hunt)).toList();
+        
       });
     } else {
       // Handle error case
