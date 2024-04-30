@@ -136,7 +136,7 @@ class TimeDecay {
 @JsonSerializable()
 class Response {
   final String type;
-  final List<dynamic> possibleAnswers;
+  final List<dynamic>? possibleAnswers;
   final bool? caseSensitive;
 
   Response({

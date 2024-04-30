@@ -770,7 +770,7 @@ class Add_Hunts():
                         "Center for Creative Leadership",
                         "Pet Rock"
                     ],
-                    "correctAnswers": [0, 2]
+                    "possibleAnswers": [0, 2]
                 }
             },
             {
@@ -800,7 +800,8 @@ class Add_Hunts():
                 "response": {
                     "type": "number_range",
                     "minAnswer": 200,
-                    "maxAnswer": 250
+                    "maxAnswer": 250,
+                    # TODO: needs a field called "possibleAnswers" which is a list  of all possible dates
                 }
             },
             {
@@ -830,7 +831,8 @@ class Add_Hunts():
                 "response": {
                     "type": "date_time",
                     "minAnswer": datetime(2011, 4, 1).isoformat(),
-                    "maxAnswer": datetime(2011, 4, 30).isoformat()
+                    "maxAnswer": datetime(2011, 4, 30).isoformat(),
+                    # TODO: needs a field called "possibleAnswers" which is a list  of all possible dates
                 }
             },
            

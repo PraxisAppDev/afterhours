@@ -103,7 +103,7 @@ Map<String, dynamic> _$TimeDecayToJson(TimeDecay instance) => <String, dynamic>{
 
 Response _$ResponseFromJson(Map<String, dynamic> json) => Response(
       type: json['type'] as String,
-      possibleAnswers: json['possibleAnswers'] as List<dynamic>,
+      possibleAnswers: json['possibleAnswers'] as List<dynamic>?,
       caseSensitive: json['caseSensitive'] as bool?,
     );
 
