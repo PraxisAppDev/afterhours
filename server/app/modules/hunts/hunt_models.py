@@ -79,6 +79,8 @@ class StringSetMatchedResponse(BaseModel):
     type: str = Field("string_set_matched", description="Response type")
     possibleAnswers: List[List[str]] = Field(..., min_items=1, description="Possible correct answer sets")
     caseSensitive: bool = Field(False, description="Case sensitive matching")
+    #numOfAnswers needs to be implemented in schema
+    numOfAnswers: Optional[int] = Field(None, description="Number of Answers needed")
 
 
 class MultipleChoiceResponse(BaseModel):
@@ -119,6 +121,7 @@ class Sequence(BaseModel):
 
 
 class Challenge(BaseModel):
+    id: Optional[str] = Field(None, alias="id")
     questionTitle: str = Field(..., min_length=1, max_length=255, description="Question title")
     description: Optional[str] = Field(None, min_length=1, max_length=32768, description="Question text")
     imageURL: str = Field(..., min_length=1, max_length=255, description="URL for Question Image")
@@ -130,14 +133,21 @@ class Challenge(BaseModel):
     response: Response = Field(...)
 
 
-class ChallengeResult(BaseModel):
+class ChallengeAttempt(BaseModel):
     challengeId: str = Field(..., description="Challenge ID")
-    solved: datetime = Field(..., description="Time solved")
+    attemptTime: datetime = Field(..., description="Time of attempt")
     elapsedTime: float = Field(..., description="Time to solve in seconds")
     answerAttempts: int = Field(..., description="Number of answer attempts")
     hintsViewed: int = Field(..., description="Number of hints viewed")
-    pointsAwarded: float = Field(..., description="Points awarded")
+    pointsIfCorrect: float = Field(..., description="Points awarded if correct attempt")
     answerProvided: Optional[Union[str, None]] = Field(None, description="Last answer attempt")
+
+class ChallengeResult(BaseModel):
+  challengeId: str = Field(...)
+  solved: bool = Field(...)
+  elapsedTime: float = Field(...)
+  answerAttempts: int = Field(...)
+  score: float = Field(...)
 
 
 class Player(BaseModel):
@@ -150,7 +160,9 @@ class Team(BaseModel):
     name: str = Field(..., min_length=1, max_length=255, description="Team name")
     teamLead: str = Field(..., description="Team leader player ID")
     players: List[Player] = Field(...)
+    challengeAttempts: Optional[List[ChallengeAttempt]] = Field(None)
     challengeResults: Optional[List[ChallengeResult]] = Field(None)
+    score: float = Field(..., description="Total team score")
     invitations: List[str] = Field(...)
     isLocked: bool = Field(...)
 

@@ -18,6 +18,9 @@ class TeamService:
       name=team_name,
       teamLead=user_id,
       players=[creator],
+      challengeAttempts=[],
+      challengeResults=[],
+      score=0.0,
       invitations=[],
       isLocked=is_locked
     )

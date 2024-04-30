@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from app.modules.hunts.service import service
-from app.modules.hunts.router_models import HuntModel, HuntResponseModel, HuntCreatedSuccessfullyModel, HuntCreationErrorModel
+from app.modules.hunts.router_models import HuntModel, HuntResponseModel, HuntCreatedSuccessfullyModel, HuntCreationErrorModel, ChallengeResultModel
 # from app.modules.hunts.hunt_models import ChallengeSchema
-from app.modules.hunts.hunt_models import HuntSchema
+from app.modules.hunts.hunt_models import HuntSchema, ChallengeAttempt
 from app.modules.users.auth.router_models import AuthSuccessTextModel
 
 router = APIRouter()
@@ -58,5 +58,20 @@ async def join_hunt():
   return HuntResponseModel(
     message="fetched hunts",
     content=result
+  )
+
+@router.post(
+  "/check_answer",
+  status_code=201,
+  response_model=ChallengeResultModel
+)
+async def check_answer(id_hunt: str, team_id: str, challenge_attempt: ChallengeAttempt):
+  result = await service.check_answer(id_hunt, team_id, challenge_attempt)
+  return ChallengeResultModel(
+    challengeId=result.get("challengeId"),
+    solved=result.get("solved"),
+    elapsedTime=result.get("elapsedTime"),
+    answerAttempts=result.get("answerAttempts"),
+    score=result.get("score")
   )
 
