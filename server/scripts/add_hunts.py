@@ -30,7 +30,7 @@ class Add_Hunts():
         "maxTeamSize": 4,
         "challenges": [
             {
-                "id": "test",
+                "id": "test1",
                 "questionTitle": "Parent Organization",
                 "description": "Who is the parent organization of Praxis?",
                 "imageURL": "https://aidmelvin.github.io/personal-website/praxis_president.png",
