@@ -82,11 +82,6 @@ class StreamRequest<T> {
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .map(jsonDecode)) {
-      // try {
-      //   yield converter(chunk);
-      // } on Exception catch (e) {
-      //   print(e.toString());
-      // }
       yield converter(chunk);
     }
   }

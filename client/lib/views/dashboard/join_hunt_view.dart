@@ -59,6 +59,7 @@ class _JoinHuntViewState extends State<JoinHuntView> {
             expandedHeight: 120,
             pinned: true,
             floating: true,
+            automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(
                 left: 16,

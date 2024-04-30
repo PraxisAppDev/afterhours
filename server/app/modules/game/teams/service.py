@@ -10,7 +10,6 @@ class TeamService:
     self.change_stream = DatabaseChangeStream()
 
   async def create_team(self, hunt_id, user_id, team_name, is_locked):
-    #print("USER_ID: " + user_id)
     new_team_id = str(ObjectId())
     creator = Player(playerId=user_id, timeJoined=datetime.now())
     team_data = Team(
