@@ -1,0 +1,3086 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/users/auth/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Login",
+                "operationId": "login_users_auth_login_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthSuccessModel"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Incorrect credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthErrorModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/auth/signup": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Signup",
+                "operationId": "signup_users_auth_signup_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SignUpModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthSuccessModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthErrorModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/auth/token": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Login For Access Token",
+                "operationId": "login_for_access_token_users_auth_token_post",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_login_for_access_token_users_auth_token_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Token"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/get_user_info": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Find User By Id",
+                "operationId": "find_user_by_id_users_get_user_info_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "user not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/users/update_user_info": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update User By Id",
+                "operationId": "update_user_by_id_users_update_user_info_put",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/users/delete_user": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete User By Id",
+                "operationId": "delete_user_by_id_users_delete_user_delete",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/users/get_hunt_history": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Load List Of Hunts For User",
+                "operationId": "load_list_of_hunts_for_user_users_get_hunt_history_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponseModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/hunts/upcoming": {
+            "get": {
+                "tags": [
+                    "Hunts"
+                ],
+                "summary": "Load Upcoming Hunts",
+                "operationId": "load_upcoming_hunts_hunts_upcoming_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HuntResponseModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/hunts/history": {
+            "get": {
+                "tags": [
+                    "Hunts"
+                ],
+                "summary": "Load Past Hunts",
+                "operationId": "load_past_hunts_hunts_history_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HuntResponseModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/hunts/create_hunt": {
+            "post": {
+                "tags": [
+                    "Hunts"
+                ],
+                "summary": "Create Hunt",
+                "operationId": "create_hunt_hunts_create_hunt_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/HuntSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HuntCreatedSuccessfullyModel"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating hunt",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HuntCreationErrorModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/hunts/current_hunts": {
+            "post": {
+                "tags": [
+                    "Hunts"
+                ],
+                "summary": "Join Hunt",
+                "operationId": "join_hunt_hunts_current_hunts_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HuntResponseModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/create_team/": {
+            "post": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Create Team",
+                "operationId": "create_team_game__hunt_id__teams_create_team__post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InitialTeamData"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamCreatedSuccesfully"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating team",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamCreationErrorModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/list_teams": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Get Teams",
+                "operationId": "get_teams_game__hunt_id__teams_list_teams_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamsResponseModel-Output"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error getting teams",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamsResponseModel-Input"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/listen_list_teams": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Listen Teams",
+                "operationId": "listen_teams_game__hunt_id__teams_listen_list_teams_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/x-ndjson": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/members": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Get Team Members",
+                "operationId": "get_team_members_game__hunt_id__teams__team_id__members_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/listen_members": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Watch Team Members",
+                "operationId": "watch_team_members_game__hunt_id__teams__team_id__listen_members_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/x-ndjson": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/join_requests": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Get Join Requests",
+                "operationId": "get_join_requests_game__hunt_id__teams__team_id__join_requests_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "title": "Response Get Join Requests Game  Hunt Id  Teams  Team Id  Join Requests Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/listen_join_requests": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Watch Join Requests",
+                "operationId": "watch_join_requests_game__hunt_id__teams__team_id__listen_join_requests_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/x-ndjson": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/request_join": {
+            "post": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Request Join Team",
+                "operationId": "request_join_team_game__hunt_id__teams__team_id__request_join_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful Response"
+                    },
+                    "200": {
+                        "content": {
+                            "application/x-ndjson": {}
+                        },
+                        "description": "OK"
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/join_requests/currentUser/listenStatus": {
+            "post": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Listen Join Request Status",
+                "operationId": "listen_join_request_status_game__hunt_id__teams__team_id__join_requests_currentUser_listenStatus_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/x-ndjson": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Request could not be validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorsModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/cancel_request_join": {
+            "post": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Cancel Request Join Team",
+                "operationId": "cancel_request_join_team_game__hunt_id__teams__team_id__cancel_request_join_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamOperationSuccessMessage"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/join_requests/{id_joining_user}/accept": {
+            "post": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Accept Join Request",
+                "operationId": "accept_join_request_game__hunt_id__teams__team_id__join_requests__id_joining_user__accept_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    },
+                    {
+                        "name": "id_joining_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Id Joining User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamOperationSuccessMessage"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/join_requests/{id_joining_user}": {
+            "delete": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Deny Join Request",
+                "operationId": "deny_join_request_game__hunt_id__teams__team_id__join_requests__id_joining_user__delete",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    },
+                    {
+                        "name": "id_joining_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Id Joining User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamOperationSuccessMessage"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/members/{member_id}": {
+            "delete": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Remove Member",
+                "operationId": "remove_member_game__hunt_id__teams__team_id__members__member_id__delete",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    },
+                    {
+                        "name": "member_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Member Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/game/{hunt_id}/teams/{team_id}/leave_team": {
+            "post": {
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Leave Team",
+                "operationId": "leave_team_game__hunt_id__teams__team_id__leave_team_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hunt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Hunt Id"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Team Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AuthErrorModel": {
+                "properties": {
+                    "message": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AuthErrorTextModel"
+                            }
+                        ],
+                        "description": "A message about the failure of the authentication operation."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "title": "AuthErrorModel",
+                "examples": [
+                    {
+                        "message": "Incorrect Email or Password. Please try again."
+                    },
+                    {
+                        "message": "Internal Server Error: error creating user"
+                    },
+                    {
+                        "message": "User already exists"
+                    }
+                ]
+            },
+            "AuthErrorTextModel": {
+                "type": "string",
+                "enum": [
+                    "Incorrect Email or Password. Please try again.",
+                    "Internal Server Error: error creating user",
+                    "User already exists"
+                ],
+                "title": "AuthErrorTextModel"
+            },
+            "AuthSuccessModel": {
+                "properties": {
+                    "message": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AuthSuccessTextModel"
+                            }
+                        ],
+                        "description": "A message about the success of the authentication operation."
+                    },
+                    "token": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Token"
+                            }
+                        ],
+                        "description": "A JWT token to be used for authentication."
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "title": "User Id",
+                        "description": "The id of the user that was authenticated."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message",
+                    "token",
+                    "user_id"
+                ],
+                "title": "AuthSuccessModel",
+                "examples": [
+                    {
+                        "message": "login successful",
+                        "token": {
+                            "access_token": "<a_token>",
+                            "exp": "2019-05-18T15:17:08",
+                            "token_type": "bearer"
+                        }
+                    }
+                ]
+            },
+            "AuthSuccessTextModel": {
+                "type": "string",
+                "enum": [
+                    "login successful",
+                    "signup successful"
+                ],
+                "title": "AuthSuccessTextModel"
+            },
+            "Body_login_for_access_token_users_auth_token_post": {
+                "properties": {
+                    "grant_type": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "pattern": "password"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Grant Type"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    },
+                    "scope": {
+                        "type": "string",
+                        "title": "Scope",
+                        "default": ""
+                    },
+                    "client_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Client Id"
+                    },
+                    "client_secret": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Client Secret"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "title": "Body_login_for_access_token_users_auth_token_post"
+            },
+            "Challenge": {
+                "properties": {
+                    "questionTitle": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "title": "Questiontitle",
+                        "description": "Question title"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 32768,
+                                "minLength": 1
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description",
+                        "description": "Question text"
+                    },
+                    "imageURL": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "title": "Imageurl",
+                        "description": "URL for Question Image"
+                    },
+                    "placeholderText": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 255,
+                                "minLength": 1
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Placeholdertext",
+                        "description": "Text field placeholder"
+                    },
+                    "sequence": {
+                        "$ref": "#/components/schemas/Sequence"
+                    },
+                    "hints": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "$ref": "#/components/schemas/StringHint"
+                                },
+                                {
+                                    "$ref": "#/components/schemas/ImageHint"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Hints",
+                        "description": "List of hints"
+                    },
+                    "scoring": {
+                        "$ref": "#/components/schemas/Scoring"
+                    },
+                    "response": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/StringResponse"
+                            },
+                            {
+                                "$ref": "#/components/schemas/StringSetMatchedResponse"
+                            },
+                            {
+                                "$ref": "#/components/schemas/MultipleChoiceResponse"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NumberResponse"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NumberRangeResponse"
+                            },
+                            {
+                                "$ref": "#/components/schemas/DateTimeResponse"
+                            },
+                            {
+                                "$ref": "#/components/schemas/QRCodeIdResponse"
+                            }
+                        ],
+                        "title": "Response"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "questionTitle",
+                    "imageURL",
+                    "sequence",
+                    "hints",
+                    "scoring",
+                    "response"
+                ],
+                "title": "Challenge"
+            },
+            "ChallengeResult": {
+                "properties": {
+                    "challengeId": {
+                        "type": "string",
+                        "title": "Challengeid",
+                        "description": "Challenge ID"
+                    },
+                    "solved": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Solved",
+                        "description": "Time solved"
+                    },
+                    "elapsedTime": {
+                        "type": "number",
+                        "title": "Elapsedtime",
+                        "description": "Time to solve in seconds"
+                    },
+                    "answerAttempts": {
+                        "type": "integer",
+                        "title": "Answerattempts",
+                        "description": "Number of answer attempts"
+                    },
+                    "hintsViewed": {
+                        "type": "integer",
+                        "title": "Hintsviewed",
+                        "description": "Number of hints viewed"
+                    },
+                    "pointsAwarded": {
+                        "type": "number",
+                        "title": "Pointsawarded",
+                        "description": "Points awarded"
+                    },
+                    "answerProvided": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Answerprovided",
+                        "description": "Last answer attempt"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "challengeId",
+                    "solved",
+                    "elapsedTime",
+                    "answerAttempts",
+                    "hintsViewed",
+                    "pointsAwarded"
+                ],
+                "title": "ChallengeResult"
+            },
+            "ChallengeResultModel": {
+                "properties": {
+                    "challengeId": {
+                        "type": "string",
+                        "title": "Challengeid"
+                    },
+                    "solved": {
+                        "type": "boolean",
+                        "title": "Solved"
+                    },
+                    "elapsedTime": {
+                        "type": "integer",
+                        "title": "Elapsedtime"
+                    },
+                    "answerAttempts": {
+                        "type": "integer",
+                        "title": "Answerattempts"
+                    },
+                    "score": {
+                        "type": "integer",
+                        "title": "Score"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "challengeId",
+                    "solved",
+                    "elapsedTime",
+                    "answerAttempts",
+                    "score"
+                ],
+                "title": "ChallengeResultModel"
+            },
+            "DateTimeResponse": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Response type",
+                        "default": "date_time"
+                    },
+                    "minAnswer": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Minanswer",
+                        "description": "Earliest correct datetime"
+                    },
+                    "maxAnswer": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Maxanswer",
+                        "description": "Latest correct datetime"
+                    }
+                },
+                "type": "object",
+                "title": "DateTimeResponse"
+            },
+            "ExponentialTimeDecayScoring": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "The type of time decay. Must be 'exponential'",
+                        "default": "exponential"
+                    },
+                    "halfLife": {
+                        "type": "number",
+                        "title": "Halflife",
+                        "description": "Half life in seconds"
+                    },
+                    "timeLimit": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Timelimit",
+                        "description": "Time limit in minutes. If None, no time limit."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "halfLife"
+                ],
+                "title": "ExponentialTimeDecayScoring"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "HuntCreatedSuccessfullyModel": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "inserted_hunt_id": {
+                        "type": "string",
+                        "title": "Inserted Hunt Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message",
+                    "inserted_hunt_id"
+                ],
+                "title": "HuntCreatedSuccessfullyModel"
+            },
+            "HuntCreationErrorModel": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "title": "HuntCreationErrorModel"
+            },
+            "HuntGameState": {
+                "properties": {
+                    "teams": {
+                        "items": {
+                            "$ref": "#/components/schemas/app__modules__hunts__hunt_models__Team"
+                        },
+                        "type": "array",
+                        "title": "Teams"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "teams"
+                ],
+                "title": "HuntGameState"
+            },
+            "HuntGameStateModel": {
+                "properties": {
+                    "teams": {
+                        "items": {
+                            "$ref": "#/components/schemas/TeamModel"
+                        },
+                        "type": "array",
+                        "title": "Teams"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "teams"
+                ],
+                "title": "HuntGameStateModel"
+            },
+            "HuntLocationGeofence": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type"
+                    },
+                    "locationName": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "title": "Locationname",
+                        "description": "Short name + address of hunt location"
+                    },
+                    "locationInstructions": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 4096,
+                                "minLength": 1
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Locationinstructions",
+                        "description": "Instructions on how to get to hunt location"
+                    },
+                    "geofence": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/HuntLocationPointAndRadius"
+                            }
+                        ],
+                        "description": "The geofence that defines the area in which the hunt can be joined. If None, the hunt can be joined from anywhere."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "type",
+                    "locationName"
+                ],
+                "title": "HuntLocationGeofence"
+            },
+            "HuntLocationPointAndRadius": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "The type of geofence. Must be 'Point and Radius'"
+                    },
+                    "coordinates": {
+                        "items": {
+                            "type": "number"
+                        },
+                        "type": "array",
+                        "title": "Coordinates",
+                        "description": "The coordinates of the center. Must have exactly 2 points, which are a pair of (longitude, latitude)"
+                    },
+                    "radius": {
+                        "type": "number",
+                        "title": "Radius",
+                        "description": "The radius from the center, in meters"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "type",
+                    "coordinates",
+                    "radius"
+                ],
+                "title": "HuntLocationPointAndRadius"
+            },
+            "HuntModel": {
+                "properties": {
+                    "_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": " Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    },
+                    "startDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Startdate"
+                    },
+                    "joinableAfterDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Joinableafterdate"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Enddate"
+                    },
+                    "huntLocation": {
+                        "type": "object",
+                        "title": "Huntlocation"
+                    },
+                    "venueLocation": {
+                        "items": {
+                            "type": "number"
+                        },
+                        "type": "array",
+                        "title": "Venuelocation",
+                        "default": []
+                    },
+                    "maxTeamSize": {
+                        "type": "integer",
+                        "title": "Maxteamsize"
+                    },
+                    "challenges": {
+                        "items": {
+                            "type": "object"
+                        },
+                        "type": "array",
+                        "title": "Challenges"
+                    },
+                    "gameState": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/HuntGameStateModel"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "description",
+                    "startDate",
+                    "joinableAfterDate",
+                    "endDate",
+                    "huntLocation",
+                    "maxTeamSize",
+                    "challenges"
+                ],
+                "title": "HuntModel",
+                "examples": [
+                    {}
+                ]
+            },
+            "HuntResponseModel": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "content": {
+                        "items": {
+                            "$ref": "#/components/schemas/HuntModel"
+                        },
+                        "type": "array",
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message",
+                    "content"
+                ],
+                "title": "HuntResponseModel"
+            },
+            "HuntSchema": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "title": "Name",
+                        "description": "Challenge name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 4096,
+                                "minLength": 1
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description",
+                        "description": "Challenge description"
+                    },
+                    "startDate": {
+                        "type": "string",
+                        "title": "Startdate",
+                        "description": "Start date/time"
+                    },
+                    "joinableAfterDate": {
+                        "type": "string",
+                        "title": "Joinableafterdate",
+                        "description": "Team join start date/time"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "title": "Enddate",
+                        "description": "End date/time"
+                    },
+                    "huntLocation": {
+                        "$ref": "#/components/schemas/HuntLocationGeofence"
+                    },
+                    "challenges": {
+                        "items": {
+                            "$ref": "#/components/schemas/Challenge"
+                        },
+                        "type": "array",
+                        "title": "Challenges"
+                    },
+                    "gameState": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/HuntGameState"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "description": "Populated only during active hunt"
+                    },
+                    "maxTeamSize": {
+                        "type": "integer",
+                        "title": "Maxteamsize",
+                        "description": "Maximum team size"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "startDate",
+                    "joinableAfterDate",
+                    "endDate",
+                    "huntLocation",
+                    "challenges",
+                    "maxTeamSize"
+                ],
+                "title": "HuntSchema"
+            },
+            "ImageHint": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "The type of clue. Must be 'image'",
+                        "default": "image"
+                    },
+                    "penalty": {
+                        "anyOf": [
+                            {
+                                "type": "number",
+                                "exclusiveMinimum": 0.0
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Penalty",
+                        "description": "Points deducted for viewing this clue. Must be positive."
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "maxLength": 32768,
+                        "minLength": 1,
+                        "title": "Imageurl",
+                        "description": "The URL of the image"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "imageUrl"
+                ],
+                "title": "ImageHint"
+            },
+            "InitialTeamData": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "title": "Name",
+                        "description": "Team name"
+                    },
+                    "is_locked": {
+                        "type": "boolean",
+                        "title": "Is Locked"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "is_locked"
+                ],
+                "title": "InitialTeamData"
+            },
+            "LinearTimeDecayScoring": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "The type of time decay. Must be 'linear'",
+                        "default": "linear"
+                    },
+                    "decayRate": {
+                        "type": "number",
+                        "title": "Decayrate",
+                        "description": "Point deduction per minute"
+                    },
+                    "timeLimit": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Timelimit",
+                        "description": "Time limit in minutes. If None, decay until 0 points."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "decayRate"
+                ],
+                "title": "LinearTimeDecayScoring"
+            },
+            "LoginModel": {
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "minLength": 3,
+                        "title": "Username",
+                        "description": "The username of the user. Most be unique. Must be between 3 and 20 characters long."
+                    },
+                    "password": {
+                        "type": "string",
+                        "maxLength": 72,
+                        "minLength": 8,
+                        "title": "Password",
+                        "description": "The password of the user. Must have 8 or more characters, one number and one special character. Alternatively, must be at least 16 characters long. Must be less than 72 characters."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "title": "LoginModel",
+                "examples": [
+                    {
+                        "password": "randompassword123",
+                        "username": "testy tester"
+                    }
+                ]
+            },
+            "MultipleChoiceResponse": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Response type",
+                        "default": "multiple_choice"
+                    },
+                    "choices": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "minItems": 1,
+                        "title": "Choices",
+                        "description": "Choices to display"
+                    },
+                    "correctAnswers": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "minItems": 1,
+                        "title": "Correctanswers",
+                        "description": "Indices of correct choices"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "choices",
+                    "correctAnswers"
+                ],
+                "title": "MultipleChoiceResponse"
+            },
+            "NoTimeDecayScoring": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "The type of time decay. Must be 'none'",
+                        "default": "none"
+                    },
+                    "timeLimit": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Timelimit",
+                        "description": "Time limit in minutes. If None, no time limit."
+                    }
+                },
+                "type": "object",
+                "title": "NoTimeDecayScoring"
+            },
+            "NumberRangeResponse": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Response type",
+                        "default": "number_range"
+                    },
+                    "minAnswer": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Minanswer",
+                        "description": "Minimum value"
+                    },
+                    "maxAnswer": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Maxanswer",
+                        "description": "Maximum value"
+                    }
+                },
+                "type": "object",
+                "title": "NumberRangeResponse"
+            },
+            "NumberResponse": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Response type",
+                        "default": "number"
+                    },
+                    "possibleAnswers": {
+                        "items": {
+                            "type": "number"
+                        },
+                        "type": "array",
+                        "minItems": 1,
+                        "title": "Possibleanswers",
+                        "description": "Possible correct answers"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "possibleAnswers"
+                ],
+                "title": "NumberResponse"
+            },
+            "Player": {
+                "properties": {
+                    "playerId": {
+                        "type": "string",
+                        "title": "Playerid",
+                        "description": "Player ID"
+                    },
+                    "timeJoined": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Timejoined"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "playerId",
+                    "timeJoined"
+                ],
+                "title": "Player"
+            },
+            "QRCodeIdResponse": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Response type",
+                        "default": "qr_code_id_response"
+                    },
+                    "correctId": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 16,
+                        "title": "Correctid",
+                        "description": "Correct QR code ID"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "correctId"
+                ],
+                "title": "QRCodeIdResponse"
+            },
+            "Scoring": {
+                "properties": {
+                    "points": {
+                        "type": "number",
+                        "title": "Points",
+                        "description": "Points awarded for solving"
+                    },
+                    "timeDecay": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/NoTimeDecayScoring"
+                            },
+                            {
+                                "$ref": "#/components/schemas/LinearTimeDecayScoring"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ExponentialTimeDecayScoring"
+                            }
+                        ],
+                        "title": "Timedecay"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "points",
+                    "timeDecay"
+                ],
+                "title": "Scoring"
+            },
+            "Sequence": {
+                "properties": {
+                    "num": {
+                        "type": "integer",
+                        "title": "Num",
+                        "description": "Sequence number"
+                    },
+                    "order": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Order",
+                        "description": "Order within sequence"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "num"
+                ],
+                "title": "Sequence"
+            },
+            "SignUpModel": {
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "minLength": 3,
+                        "title": "Username",
+                        "description": "The username of the user. Most be unique. Must be between 3 and 20 characters long."
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "maxLength": 1024,
+                        "minLength": 3,
+                        "title": "Fullname",
+                        "description": "The full name of the user. Must be between 3 and 1024 characters long."
+                    },
+                    "email": {
+                        "type": "string",
+                        "maxLength": 254,
+                        "minLength": 3,
+                        "title": "Email",
+                        "description": "The user's email address. Must be a valid email address."
+                    },
+                    "password": {
+                        "type": "string",
+                        "maxLength": 72,
+                        "minLength": 8,
+                        "title": "Password",
+                        "description": "The password of the user. Must have 8 or more characters, one number and one special character. Alternatively, must be at least 16 characters long. Must be less than 72 characters."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "fullname",
+                    "email",
+                    "password"
+                ],
+                "title": "SignUpModel",
+                "examples": [
+                    {
+                        "email": "random@gmail.com",
+                        "fullname": "Test Testy",
+                        "password": "randompassword123",
+                        "username": "testy tester"
+                    }
+                ]
+            },
+            "StringHint": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "The type of clue. Must be 'string'",
+                        "default": "string"
+                    },
+                    "penalty": {
+                        "anyOf": [
+                            {
+                                "type": "number",
+                                "exclusiveMinimum": 0.0
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Penalty",
+                        "description": "Points deducted for viewing this clue. Must be positive."
+                    },
+                    "text": {
+                        "type": "string",
+                        "maxLength": 32768,
+                        "minLength": 1,
+                        "title": "Text",
+                        "description": "The text of the clue"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "text"
+                ],
+                "title": "StringHint"
+            },
+            "StringResponse": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Response type",
+                        "default": "string_text_field"
+                    },
+                    "possibleAnswers": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "minItems": 1,
+                        "title": "Possibleanswers",
+                        "description": "Possible correct answers"
+                    },
+                    "caseSensitive": {
+                        "type": "boolean",
+                        "title": "Casesensitive",
+                        "description": "Case sensitive matching",
+                        "default": false
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "possibleAnswers"
+                ],
+                "title": "StringResponse"
+            },
+            "StringSetMatchedResponse": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Response type",
+                        "default": "string_set_matched"
+                    },
+                    "possibleAnswers": {
+                        "items": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "type": "array",
+                        "minItems": 1,
+                        "title": "Possibleanswers",
+                        "description": "Possible correct answer sets"
+                    },
+                    "caseSensitive": {
+                        "type": "boolean",
+                        "title": "Casesensitive",
+                        "description": "Case sensitive matching",
+                        "default": false
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "possibleAnswers"
+                ],
+                "title": "StringSetMatchedResponse"
+            },
+            "Team-Output": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "teamLead": {
+                        "type": "string",
+                        "title": "Teamlead"
+                    },
+                    "players": {
+                        "items": {
+                            "$ref": "#/components/schemas/Player"
+                        },
+                        "type": "array",
+                        "title": "Players"
+                    },
+                    "challengeResults": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Challengeresults",
+                        "default": []
+                    },
+                    "invitations": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Invitations"
+                    },
+                    "isLocked": {
+                        "type": "boolean",
+                        "title": "Islocked"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "teamLead",
+                    "players",
+                    "invitations",
+                    "isLocked"
+                ],
+                "title": "Team",
+                "examples": [
+                    {}
+                ]
+            },
+            "TeamCreatedSuccesfully": {
+                "properties": {
+                    "team": {
+                        "$ref": "#/components/schemas/Team-Output"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "team"
+                ],
+                "title": "TeamCreatedSuccesfully"
+            },
+            "TeamCreationErrorModel": {
+                "properties": {
+                    "error_message": {
+                        "type": "string",
+                        "title": "Error Message"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "error_message"
+                ],
+                "title": "TeamCreationErrorModel"
+            },
+            "TeamModel": {
+                "properties": {
+                    "_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": " Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "teamLead": {
+                        "type": "string",
+                        "title": "Teamlead"
+                    },
+                    "players": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Players",
+                        "default": []
+                    },
+                    "challengeResults": {
+                        "items": {
+                            "$ref": "#/components/schemas/ChallengeResultModel"
+                        },
+                        "type": "array",
+                        "title": "Challengeresults",
+                        "default": []
+                    },
+                    "isLocked": {
+                        "type": "boolean",
+                        "title": "Islocked"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "teamLead",
+                    "isLocked"
+                ],
+                "title": "TeamModel",
+                "examples": [
+                    {}
+                ]
+            },
+            "TeamOperationSuccessMessage": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "title": "TeamOperationSuccessMessage"
+            },
+            "TeamsResponseModel-Input": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "content": {
+                        "items": {
+                            "$ref": "#/components/schemas/app__modules__game__teams__router_models__Team"
+                        },
+                        "type": "array",
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message",
+                    "content"
+                ],
+                "title": "TeamsResponseModel"
+            },
+            "TeamsResponseModel-Output": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "content": {
+                        "items": {
+                            "$ref": "#/components/schemas/Team-Output"
+                        },
+                        "type": "array",
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message",
+                    "content"
+                ],
+                "title": "TeamsResponseModel"
+            },
+            "Token": {
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{2,}(?:\\.[A-Za-z0-9_-]{2,}){2}$",
+                        "title": "Access Token",
+                        "description": "A JWT token to be used for authentication."
+                    },
+                    "exp": {
+                        "type": "string",
+                        "title": "Exp",
+                        "description": "Expiration date for client"
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "title": "Token Type",
+                        "default": "bearer"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "access_token",
+                    "exp"
+                ],
+                "title": "Token",
+                "examples": [
+                    {
+                        "access_token": "<a_token>",
+                        "exp": "2019-05-18T15:17:08",
+                        "token_type": "bearer"
+                    }
+                ]
+            },
+            "UpdateUserModel": {
+                "properties": {
+                    "username": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Username"
+                    },
+                    "email": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 254,
+                                "minLength": 3
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Email"
+                    },
+                    "phone": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^(\\+\\d{1,3} )?(((\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4})|(\\d{5} \\d{5})|\\d{6,15})(, ?\\d{1,4})?$"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Phone"
+                    },
+                    "fullname": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Fullname"
+                    },
+                    "lastLogin": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Lastlogin"
+                    }
+                },
+                "type": "object",
+                "title": "UpdateUserModel",
+                "examples": [
+                    {
+                        "email": "test@gmail.com",
+                        "fullname": "testy tester",
+                        "huntId": "23d3f6fccdcd5a3917558d43",
+                        "lastLogin": "2024-02-19T10:30:00Z",
+                        "phone": "123-456-7890",
+                        "username": "test"
+                    }
+                ]
+            },
+            "UserModel": {
+                "properties": {
+                    "_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": " Id"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "email": {
+                        "type": "string",
+                        "title": "Email"
+                    },
+                    "phone": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^(\\+\\d{1,3} )?(((\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4})|(\\d{5} \\d{5})|\\d{6,15})(, ?\\d{1,4})?$"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Phone",
+                        "description": "The user's phone number."
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "title": "Fullname"
+                    },
+                    "lastLogin": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Lastlogin"
+                    },
+                    "huntHistory": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Hunthistory",
+                        "default": []
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "email",
+                    "fullname",
+                    "lastLogin"
+                ],
+                "title": "UserModel",
+                "examples": [
+                    {
+                        "email": "test@gmail.com",
+                        "fullname": "testy tester",
+                        "huntHistory": [],
+                        "lastLogin": "2024-02-19T10:30:00Z",
+                        "phone": "123-456-7890",
+                        "username": "test"
+                    }
+                ]
+            },
+            "UserResponseModel": {
+                "properties": {
+                    "message": {
+                        "$ref": "#/components/schemas/UserResponseTextModel"
+                    },
+                    "content": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/UserModel"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "$ref": "#/components/schemas/UserModel"
+                            },
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            }
+                        ],
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "message",
+                    "content"
+                ],
+                "title": "UserResponseModel"
+            },
+            "UserResponseTextModel": {
+                "type": "string",
+                "enum": [
+                    "user not found",
+                    "found user",
+                    "updated user",
+                    "deleted user",
+                    "found hunts"
+                ],
+                "title": "UserResponseTextModel"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "ValidationErrorModel": {
+                "properties": {
+                    "field_name": {
+                        "type": "string",
+                        "title": "Field Name"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "field_name",
+                    "message"
+                ],
+                "title": "ValidationErrorModel"
+            },
+            "ValidationErrorsModel": {
+                "properties": {
+                    "validation_errors": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationErrorModel"
+                        },
+                        "type": "array",
+                        "title": "Validation Errors"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "validation_errors"
+                ],
+                "title": "ValidationErrorsModel"
+            },
+            "app__modules__game__teams__router_models__Team": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "teamLead": {
+                        "type": "string",
+                        "title": "Teamlead"
+                    },
+                    "players": {
+                        "items": {
+                            "$ref": "#/components/schemas/Player"
+                        },
+                        "type": "array",
+                        "title": "Players"
+                    },
+                    "challengeResults": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Challengeresults",
+                        "default": []
+                    },
+                    "invitations": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Invitations"
+                    },
+                    "isLocked": {
+                        "type": "boolean",
+                        "title": "Islocked"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "teamLead",
+                    "players",
+                    "invitations",
+                    "isLocked"
+                ],
+                "title": "Team",
+                "examples": [
+                    {}
+                ]
+            },
+            "app__modules__hunts__hunt_models__Team": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "title": "Name",
+                        "description": "Team name"
+                    },
+                    "teamLead": {
+                        "type": "string",
+                        "title": "Teamlead",
+                        "description": "Team leader player ID"
+                    },
+                    "players": {
+                        "items": {
+                            "$ref": "#/components/schemas/Player"
+                        },
+                        "type": "array",
+                        "title": "Players"
+                    },
+                    "challengeResults": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/ChallengeResult"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Challengeresults"
+                    },
+                    "invitations": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Invitations"
+                    },
+                    "isLocked": {
+                        "type": "boolean",
+                        "title": "Islocked"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "teamLead",
+                    "players",
+                    "invitations",
+                    "isLocked"
+                ],
+                "title": "Team"
+            }
+        },
+        "securitySchemes": {
+            "OAuth2PasswordBearer": {
+                "type": "oauth2",
+                "flows": {
+                    "password": {
+                        "scopes": {},
+                        "tokenUrl": "users/auth/token"
+                    }
+                }
+            }
+        }
+    }
+}

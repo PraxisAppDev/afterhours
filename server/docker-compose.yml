@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  server:
+    profiles: [dev, prod]
+    image: ghcr.io/praxisappdev/afterhours-server:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
+    ports:
+      - 8001:8001
+    env_file:
+      - app/.env
+    depends_on:
+      - mongo
+  test:
+    profiles: [test]
+    image: ghcr.io/praxisappdev/afterhours-test:latest
+    build:
+      context: .
+      dockerfile: test.Dockerfile
+    env_file:
+      - app/.env
+    depends_on:
+      - mongo
+  mongo:
+    profiles: [dev, test]
+    image: mongo
+    hostname: mongo
+    command: mongod --quiet --logpath /dev/null
+    ports:
+      - 27017:27017
+    env_file:
+      - mongo.config.env
