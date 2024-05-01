@@ -71,7 +71,7 @@ class StreamRequest<T> {
     final streamedResponse = await client.send(request);
     //get the response MIME type
     final contentType = streamedResponse.headers[HttpHeaders.contentTypeHeader];
-    if (!{"application/json", "application/x+ndjson"}.contains(contentType)) {
+    if (!{"application/json", "application/x-ndjson"}.contains(contentType)) {
       if (kDebugMode) {
         print(
             "[WARNING] Unexpected content type: $contentType. Should either be a single JSON value (application/json) or a stream of JSON values (application/x+ndjson).");
