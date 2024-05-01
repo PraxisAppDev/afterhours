@@ -116,7 +116,7 @@ class CreateAccountView extends StatelessWidget {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {
-                        var (token, exp) = await signUp(
+                        var (token, exp, userId) = await signUp(
                           usernameController.text,
                           emailController.text,
                           fullNameController.text,
@@ -124,6 +124,7 @@ class CreateAccountView extends StatelessWidget {
                         );
                         await storage.write(key: "token", value: token);
                         await storage.write(key: "exp", value: exp);
+                        await storage.write(key: "user_id", value: userId);
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
@@ -205,16 +206,6 @@ class CreateAccountView extends StatelessWidget {
                   "images/google.png",
                   praxisWhite.withAlpha(200),
                   praxisBlack,
-                  24,
-                  24,
-                ),
-                const SizedBox(height: 16),
-                _buildSocialButton(
-                  context,
-                  "Sign Up With Apple",
-                  "images/apple.png",
-                  Colors.black,
-                  praxisWhite,
                   24,
                   24,
                 ),

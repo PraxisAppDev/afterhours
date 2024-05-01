@@ -31,3 +31,10 @@ Map<String, dynamic> _$TeamOperationSuccessMessageToJson(
     <String, dynamic>{
       'message': instance.message,
     };
+
+const _$JoinRequestStatusEnumMap = {
+  JoinRequestStatus.pending: 'pending',
+  JoinRequestStatus.accepted: 'accepted',
+  JoinRequestStatus.rejected: 'rejected',
+  JoinRequestStatus.teamDeleted: 'team_deleted',
+};

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProfileTextField extends StatelessWidget {
   final TextEditingController editingController;
   final String label;
-  final String defaultText;
+  final String? defaultText;
   final String regex;
   final String validatorMessage;
   final String icon;
@@ -12,7 +12,7 @@ class ProfileTextField extends StatelessWidget {
     super.key,
     required this.editingController,
     required this.label,
-    required this.defaultText,
+    this.defaultText = '',
     this.regex = '.',
     this.validatorMessage = 'Invalid format',
     this.icon = '',
@@ -22,7 +22,7 @@ class ProfileTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     bool showSuffixIcon = true;
 
-    editingController.text = defaultText;
+    editingController.text = defaultText ?? '';
 
     return Padding(
       padding: const EdgeInsets.only(left: 30, top: 8, right: 30, bottom: 8),
@@ -35,11 +35,11 @@ class ProfileTextField extends StatelessWidget {
           border: const OutlineInputBorder(),
         ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
+          if (label != "Phone Number" && (value == null || value.isEmpty)) {
             return 'This field cannot be empty';
           }
           RegExp regExp = RegExp(regex);
-          if (!regExp.hasMatch(value)) {
+          if (value != null && value.isNotEmpty && !regExp.hasMatch(value)) {
             return validatorMessage;
           }
           return null; // input is valid

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart';
 import 'package:praxis_afterhours/reusables/hunt_structure.dart' hide Response;
@@ -20,7 +21,8 @@ class TeamsResponseModel {
     required this.content,
   });
 
-  factory TeamsResponseModel.fromJson(Map<String, dynamic> json) => _$TeamsResponseModelFromJson(json);
+  factory TeamsResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$TeamsResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TeamsResponseModelToJson(this);
 }
@@ -28,13 +30,11 @@ class TeamsResponseModel {
 Future<TeamsResponseModel> listTeams(String huntId) async {
   Response response;
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
+  if (token == null) throw Exception("User is not logged in.");
   try {
-    response = await client.get(Uri.parse("$apiUrl/game/$huntId/teams/list_teams"),
-        headers: {
-          "authorization": "Bearer $token"
-        }
-    );
+    response = await client.get(
+        Uri.parse("$apiUrl/game/$huntId/teams/list_teams"),
+        headers: {"authorization": "Bearer $token"});
   } catch (error) {
     throw Exception("network error");
   }
@@ -48,38 +48,34 @@ Future<TeamsResponseModel> listTeams(String huntId) async {
 
 Stream<List<Team>> watchListTeams(String huntId) async* {
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
+  if (token == null) throw Exception("User is not logged in.");
   yield* StreamRequest.get(
     Uri.parse("$apiUrl/game/$huntId/teams/listen_list_teams"),
-    headers: {
-      "authorization": "Bearer $token"
-    },
+    headers: {"authorization": "Bearer $token"},
     converter: (json) => (json as List<Object?>)
         .map((e) => Team.fromJson(e as Map<String, dynamic>))
         .toList(),
   ).send(client);
 }
 
-Future<Team> createTeam(String huntId, String teamName) async {
+Future<Team> createTeam(String huntId, String teamName, {bool isLocked = false}) async {
   Response response;
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
+  if (token == null) throw Exception("User is not logged in.");
   try {
-    response = await client.post(Uri.parse("$apiUrl/game/$huntId/teams/create_team"),
+    response = await client.post(
+        Uri.parse("$apiUrl/game/$huntId/teams/create_team"),
         headers: {
           "authorization": "Bearer $token",
           "Content-Type": "application/json"
         },
-        body: jsonEncode({"name": teamName})
-    );
+        body: jsonEncode({"name": teamName, "is_locked": isLocked}));
   } catch (error) {
     throw Exception("network error");
   }
   if (response.statusCode == 201) {
-    print(response.body);
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    print(jsonResponse);
-    return Team.fromJson(jsonResponse);
+    return Team.fromJson(jsonResponse["team"]);
   } else {
     throw Exception("Error: Failed to create team: $response.statusCode");
   }
@@ -88,48 +84,46 @@ Future<Team> createTeam(String huntId, String teamName) async {
 Future<List<Player>> getListPlayersForTeam(String huntId, String teamId) async {
   Response response;
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
+  if (token == null) throw Exception("User is not logged in.");
   try {
-    response = await client.get(Uri.parse("$apiUrl/game/$huntId/teams/$teamId/members"),
-        headers: {
-          "authorization": "Bearer $token"
-        }
-    );
+    response = await client.get(
+        Uri.parse("$apiUrl/game/$huntId/teams/$teamId/members"),
+        headers: {"authorization": "Bearer $token"});
   } catch (error) {
     throw Exception("network error");
   }
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body) as List<dynamic>;
-    return jsonResponse.map((e) => Player.fromJson(e as Map<String, dynamic>)).toList();
+    return jsonResponse
+        .map((e) => Player.fromJson(e as Map<String, dynamic>))
+        .toList();
   } else {
     throw Exception("Error: Failed to load players: $response.statusCode");
   }
 }
 
-Stream<List<Player>> watchListPlayersForTeam(String huntId, String teamId) async* {
+Stream<List<Player>> watchListPlayersForTeam(
+    String huntId, String teamId) async* {
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
+  if (token == null) throw Exception("User is not logged in.");
   yield* StreamRequest.get(
     Uri.parse("$apiUrl/game/$huntId/teams/$teamId/listen_members"),
-    headers: {
-      "authorization": "Bearer $token"
-    },
+    headers: {"authorization": "Bearer $token"},
     converter: (json) => (json as List<Object?>)
         .map((e) => Player.fromJson(e as Map<String, dynamic>))
         .toList(),
   ).send(client);
 }
 
-Future<List<String>> getListJoinRequestsForTeam(String huntId, String teamId) async {
+Future<List<String>> getListJoinRequestsForTeam(
+    String huntId, String teamId) async {
   Response response;
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
+  if (token == null) throw Exception("User is not logged in.");
   try {
-    response = await client.get(Uri.parse("$apiUrl/game/$huntId/teams/$teamId/join_requests"),
-        headers: {
-          "authorization": "Bearer $token"
-        }
-    );
+    response = await client.get(
+        Uri.parse("$apiUrl/game/$huntId/teams/$teamId/join_requests"),
+        headers: {"authorization": "Bearer $token"});
   } catch (error) {
     throw Exception("network error");
   }
@@ -137,21 +131,23 @@ Future<List<String>> getListJoinRequestsForTeam(String huntId, String teamId) as
     var jsonResponse = jsonDecode(response.body) as List<dynamic>;
     return jsonResponse.cast<String>().toList();
   } else {
-    throw Exception("Error: Failed to load join requests: $response.statusCode");
+    throw Exception(
+        "Error: Failed to load join requests: $response.statusCode");
   }
 }
 
-Stream<List<String>> watchListJoinRequestsForTeam(String huntId, String teamId) async* {
+Stream<List<String>> watchListJoinRequestsForTeam(
+    String huntId, String teamId) async* {
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
-  yield* StreamRequest.get(
-    Uri.parse("$apiUrl/game/$huntId/teams/$teamId/listen_join_requests"),
-    headers: {
-      "authorization": "Bearer $token"
-    },
-    converter: (json) => (json as List<Object?>)
-        .cast<String>()
-        .toList(),
+  if (token == null) throw Exception("User is not logged in.");
+  yield* RetryStreamRequest(
+      () => StreamRequest.get(
+        Uri.parse("$apiUrl/game/$huntId/teams/$teamId/listen_join_requests"),
+        headers: {"authorization": "Bearer $token"},
+        converter: (json) => (json as List<Object?>).cast<String>().toList(),
+      ),
+      maxRetries: 5,
+      retryDelay: const Duration(seconds: 5),
   ).send(client);
 }
 
@@ -163,30 +159,74 @@ class TeamOperationSuccessMessage {
     required this.message,
   });
 
-  factory TeamOperationSuccessMessage.fromJson(Map<String, dynamic> json) => _$TeamOperationSuccessMessageFromJson(json);
+  factory TeamOperationSuccessMessage.fromJson(Map<String, dynamic> json) =>
+      _$TeamOperationSuccessMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$TeamOperationSuccessMessageToJson(this);
 }
 
-Future<TeamOperationSuccessMessage> requestJoinTeam(String huntId, String teamId) async {
-  Response response;
+@JsonEnum(alwaysCreate: true)
+enum JoinRequestStatus {
+  @JsonValue("pending")
+  pending,
+  @JsonValue("accepted")
+  accepted,
+  @JsonValue("rejected")
+  rejected,
+  @JsonValue("team_deleted")
+  teamDeleted;
+
+  static JoinRequestStatus fromJson(String json) {
+    if(!_$JoinRequestStatusEnumMap.values.contains(json)){
+      throw Exception("Invalid JoinRequestStatus: $json");
+    }
+    return JoinRequestStatus.values.firstWhere(
+        (element) => _$JoinRequestStatusEnumMap[element] == json);
+  }
+
+  String toJson() {
+    return _$JoinRequestStatusEnumMap[this]!;
+  }
+}
+
+Stream<JoinRequestStatus> requestJoinTeam(
+    String huntId, String teamId) async* {
   String? token = await getToken();
-  if(token == null) throw Exception("User is not logged in.");
+  if (token == null) throw Exception("User is not logged in.");
   try {
-    response = await client.post(Uri.parse("$apiUrl/game/$huntId/teams/$teamId/request_join"),
+    yield* StreamRequest.post(
+        Uri.parse("$apiUrl/game/$huntId/teams/$teamId/request_join"),
         headers: {
           "authorization": "Bearer $token",
           "Content-Type": "application/json"
-        }
-    );
-  } catch (error) {
-    throw Exception("network error");
-  }
-  if (response.statusCode == 201) {
-    var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    return TeamOperationSuccessMessage.fromJson(jsonResponse);
-  } else {
-    throw Exception("Error: Failed to request to join team: $response.statusCode");
+        },
+        body: null,
+        converter: (json) => JoinRequestStatus.fromJson(json as String)
+    ).send(client);
+  } catch (e1) {
+    if (kDebugMode) {
+      print("join request stream disconnected with error: $e1");
+    }
+    try {
+      newRequestBuilder() => StreamRequest.post(
+        Uri.parse("$apiUrl/game/$huntId/teams/$teamId/join_requests/currentUser/listenStatus"),
+        headers: {
+          "authorization": "Bearer $token"
+        },
+        body: null,
+        converter: (json) => JoinRequestStatus.fromJson(json as String)
+      );
+      yield* RetryStreamRequest<JoinRequestStatus>(
+        newRequestBuilder,
+        maxRetries: 5,
+        retryDelay: const Duration(seconds: 5),
+      ).send(client);
+    } catch (e2) {
+      if (kDebugMode) {
+        print("join request stream disconnected with error: $e2");
+      }
+      throw Exception("network error: $e1, $e2");
+    }
   }
 }
 
@@ -205,7 +245,7 @@ Future<TeamOperationSuccessMessage> cancelRequestJoinTeam(
   } catch (error) {
     throw Exception("network error");
   }
-  if (response.statusCode == 201) {
+  if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
     return TeamOperationSuccessMessage.fromJson(jsonResponse);
   } else {
@@ -221,7 +261,8 @@ Future<TeamOperationSuccessMessage> acceptRequestJoinTeam(
   if (token == null) throw Exception("User is not logged in.");
   try {
     response = await client.post(
-        Uri.parse("$apiUrl/game/$huntId/teams/$teamId/join_requests/$playerId/accept"),
+        Uri.parse(
+            "$apiUrl/game/$huntId/teams/$teamId/join_requests/$playerId/accept"),
         headers: {
           "authorization": "Bearer $token",
           "Content-Type": "application/json"
@@ -264,7 +305,7 @@ Future<TeamOperationSuccessMessage> rejectRequestJoinTeam(
   }
 }
 
-Future<void> removeMember(String huntId, String teamId, String memberId) async {
+Future<TeamOperationSuccessMessage> removePlayerFromTeam(String huntId, String teamId, String memberId) async {
   Response response;
   String? token = await getToken();
   if (token == null) throw Exception("User is not logged in.");
@@ -281,4 +322,5 @@ Future<void> removeMember(String huntId, String teamId, String memberId) async {
     throw Exception(
         "Error: Failed to remove member from team: ${response.statusCode}");
   }
+  return TeamOperationSuccessMessage.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
 }

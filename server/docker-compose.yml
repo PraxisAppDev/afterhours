@@ -25,7 +25,7 @@ services:
     depends_on:
       - mongo
   mongo:
-    profiles: [dev]
+    profiles: [dev, test]
     image: mongo
     hostname: mongo
     command: mongod --quiet --logpath /dev/null

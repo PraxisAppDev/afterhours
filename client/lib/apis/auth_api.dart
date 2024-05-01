@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:praxis_afterhours/apis/api_client.dart';
 import 'package:praxis_afterhours/storage/secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-Future<(String, String)> logIn(String username, String password) async {
+Future<(String, String, String)> logIn(String username, String password) async {
   Response response;
   try {
     response = await client.post(Uri.parse("$apiUrl/users/auth/login"),
@@ -16,14 +17,22 @@ Future<(String, String)> logIn(String username, String password) async {
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
     return (
       jsonResponse["token"]["access_token"].toString(),
-      jsonResponse["token"]["exp"].toString()
+      jsonResponse["token"]["exp"].toString(),
+      jsonResponse["user_id"].toString()
     );
   } else {
+    // Remove this when deploying to prod
+    var body = jsonDecode(response.body);
+    var errorMsg = body['message'];
+    Fluttertoast.showToast(
+      msg: "Error ${response.statusCode}: $errorMsg",
+      timeInSecForIosWeb: 5,
+    );
     throw const FormatException("invalid credentials");
   }
 }
 
-Future<(String, String)> signUp(
+Future<(String, String, String)> signUp(
     String username, String email, String fullname, String password) async {
   Response response;
   try {
@@ -42,9 +51,17 @@ Future<(String, String)> signUp(
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
     return (
       jsonResponse["token"]["access_token"].toString(),
-      jsonResponse["token"]["exp"].toString()
+      jsonResponse["token"]["exp"].toString(),
+      jsonResponse["user_id"].toString()
     );
   } else {
+    // Remove this when deploying to prod
+    var body = jsonDecode(response.body);
+    var errorMsg = body['message'];
+    Fluttertoast.showToast(
+      msg: "Error ${response.statusCode}: $errorMsg",
+      timeInSecForIosWeb: 5,
+    );
     throw const FormatException("invalid credentials");
   }
 }

@@ -31,11 +31,12 @@ async def login(request: LoginModel):
     access_token, exp = create_access_token({"_id": str(user["_id"])})
     return AuthSuccessModel(
       message=AuthSuccessTextModel.LOGIN_SUCCESSFUL,
+      user_id=str(user["_id"]),
       token=Token(
         access_token=access_token,
         exp=exp,
         token_type="bearer"
-      )
+      ),
     )
   else:
     return JSONResponse(
@@ -67,6 +68,7 @@ async def signup(request: SignUpModel):
       access_token, exp = create_access_token({"_id": new_user_id})
       return AuthSuccessModel(
         message=AuthSuccessTextModel.SIGNUP_SUCCESSFUL,
+        user_id = new_user_id,
         token=Token(
           access_token=access_token,
           exp=exp,

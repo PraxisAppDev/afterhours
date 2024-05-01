@@ -33,7 +33,8 @@ class StreamRequest<T> {
     this.uri, {
     required this.headers,
     required this.converter,
-  }) : method = HttpMethod.get, body = null;
+  })  : method = HttpMethod.get,
+        body = null;
 
   StreamRequest.post(
     this.uri, {
@@ -53,7 +54,8 @@ class StreamRequest<T> {
     this.uri, {
     required this.headers,
     required this.converter,
-  }) : method = HttpMethod.delete, body = null;
+  })  : method = HttpMethod.delete,
+        body = null;
 
   StreamRequest.patch(
     this.uri, {
@@ -64,13 +66,16 @@ class StreamRequest<T> {
 
   Stream<T> send(Client client) async* {
     final request = Request(method.strValue, uri);
-    if(headers != null) request.headers.addAll(headers!);
+    if (headers != null) request.headers.addAll(headers!);
     request.body = body == null ? '' : jsonEncode(body);
     final streamedResponse = await client.send(request);
     //get the response MIME type
     final contentType = streamedResponse.headers[HttpHeaders.contentTypeHeader];
     if (!{"application/json", "application/x-ndjson"}.contains(contentType)) {
-      if(kDebugMode) print("[WARNING] Unexpected content type: $contentType. Should either be a single JSON value (application/json) or a stream of JSON values (application/x+ndjson).");
+      if (kDebugMode) {
+        print(
+            "[WARNING] Unexpected content type: $contentType. Should either be a single JSON value (application/json) or a stream of JSON values (application/x+ndjson).");
+      }
     }
 
     await for (final chunk in streamedResponse.stream

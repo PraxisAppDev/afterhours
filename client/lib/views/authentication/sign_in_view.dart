@@ -80,12 +80,13 @@ class SignInView extends StatelessWidget {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {
-                        var (token, exp) = await logIn(
+                        var (token, exp, userId) = await logIn(
                           usernameController.text,
                           passwordController.text,
                         );
                         await storage.write(key: "token", value: token);
                         await storage.write(key: "exp", value: exp);
+                        await storage.write(key: "user_id", value: userId);
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
@@ -96,7 +97,8 @@ class SignInView extends StatelessWidget {
                         }
                       } on FormatException {
                         if (context.mounted) {
-                          showFlashError(context, 'Invalid credentials');
+                          showFlashError(
+                              context, 'Invalid username or password');
                         }
                       } catch (err) {
                         if (context.mounted) {
@@ -167,16 +169,6 @@ class SignInView extends StatelessWidget {
                   "images/google.png",
                   praxisWhite.withAlpha(200),
                   praxisBlack,
-                  24,
-                  24,
-                ),
-                const SizedBox(height: 16),
-                _buildSocialButton(
-                  context,
-                  "Sign In With Apple",
-                  "images/apple.png",
-                  Colors.black,
-                  praxisWhite,
                   24,
                   24,
                 ),

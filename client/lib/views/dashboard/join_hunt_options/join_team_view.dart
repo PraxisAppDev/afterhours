@@ -3,17 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:praxis_afterhours/apis/teams_api.dart';
+import 'package:praxis_afterhours/apis/teams_api.dart' as teams_api;
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/reusables/hunt_structure.dart';
 import 'package:praxis_afterhours/views/dashboard/join_hunt_options/waiting_room_view.dart';
 
 class JoinTeamView extends StatefulWidget {
-  final String huntId;
+  final Hunt hunt;
+  final String userId;
   const JoinTeamView({
     super.key,
-    required this.huntId,
+    required this.hunt,
+    required this.userId,
   });
 
   @override
@@ -21,17 +22,15 @@ class JoinTeamView extends StatefulWidget {
 }
 
 class _JoinTeamViewState extends State<JoinTeamView> {
-  List<Team> _teams = [];
+  List<Team>? _teams;
   StreamSubscription<List<Team>>? _teamsSubscription;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-  late final String huntId;
 
   @override
   void initState() {
     super.initState();
-    huntId = widget.huntId;
-    _teamsSubscription = watchListTeams(huntId).listen((teams) {
+    _teamsSubscription = teams_api.watchListTeams(widget.hunt.id).listen((teams) {
       setState(() {
         _teams = teams;
       });
@@ -79,7 +78,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
               ),
             ),
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight),
+              preferredSize: const Size.fromHeight(kToolbarHeight+16),
               child: Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 child: Column(
@@ -127,42 +126,58 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   }
 
   List<Widget> _buildFilteredTeamTiles() {
-
     List<Widget> teamTiles = [];
-    for (Team team in _teams) {
-      teamTiles.add(
-        _buildTeamTile(team.name, team.players.length, team.players.length+1, team.players, false, context)
-      );
+    if (_teams == null) {
+      return [
+        const Center(
+          child: CircularProgressIndicator(),
+        )
+      ];
     }
+    List<Team> teams = _teams!;
+    if (teams.isEmpty) {
+      return [
+        Center(
+          child: Text(
+            "No teams have been created yet!",
+            style: GoogleFonts.poppins(
+              color: praxisBlack,
+              fontSize: 32,
+            ),
+          ),
+        )
+      ];
+    } else {
+      for (Team team in teams) {
+        teamTiles.add(_buildTeamTile(widget.hunt, team, widget.userId, context));
+      }
 
-    final filteredTiles = teamTiles.where((tile) {
-      final teamName = tile.key.toString().toLowerCase();
-      final searchQuery = _searchQuery.toLowerCase();
-      return teamName.contains(searchQuery);
-    }).toList();
+      final filteredTiles = teamTiles.where((tile) {
+        final teamName = tile.key.toString().toLowerCase();
+        final searchQuery = _searchQuery.toLowerCase();
+        return teamName.contains(searchQuery);
+      }).toList();
 
-    return filteredTiles.map((tile) {
-      final index = filteredTiles.indexOf(tile);
-      return tile
-          .animate(delay: 150.milliseconds)
-          .fade()
-          .slideY(
-            begin: 0.5,
-            end: 0,
-          );
-    }).toList();
+      return filteredTiles.map((tile) {
+        // final index = filteredTiles.indexOf(tile);
+        // the animation occurs after the previous one implicitly
+        // so no need to set animation delay based on index
+        return tile.animate(delay: 150.milliseconds).fade().slideY(
+              begin: 0.5,
+              end: 0,
+            );
+      }).toList();
+    }
   }
 
   Widget _buildTeamTile(
-    String teamName,
-    int currentMembers,
-    int totalMembers,
-    List<Player> memberNames,
-    bool isLocked,
+    Hunt hunt,
+    Team team,
+    String userId,
     BuildContext context,
   ) {
     return Card(
-      key: Key(teamName),
+      key: Key(team.name),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -176,14 +191,14 @@ class _JoinTeamViewState extends State<JoinTeamView> {
           title: Row(
             children: [
               Text(
-                teamName,
+                team.name,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const Spacer(),
-              if (isLocked) const Icon(Icons.lock, color: Colors.grey),
+              if (team.isLocked) const Icon(Icons.lock, color: Colors.grey),
             ],
           ),
           children: [
@@ -193,7 +208,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Members ($currentMembers/$totalMembers):",
+                    "Members (${team.players.length}/${hunt.maxTeamSize}):",
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.start,
                   ),
@@ -201,19 +216,20 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                   Wrap(
                     alignment: WrapAlignment.start,
                     spacing: 16,
-                    children: memberNames.map((name) {
+                    children: team.players.map((name) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.person, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(name.playerId, style: const TextStyle(fontSize: 16)),
+                          Text(name.playerId,
+                              style: const TextStyle(fontSize: 16)),
                         ],
                       );
                     }).toList(),
                   ),
                   const SizedBox(height: 16),
-                  if (currentMembers == totalMembers)
+                  if (team.players.length == hunt.maxTeamSize)
                     const SizedBox(
                       width: double.infinity,
                       child: Text(
@@ -222,7 +238,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                         style: TextStyle(fontSize: 16, color: Colors.red),
                       ),
                     )
-                  else if (isLocked)
+                  else if (team.isLocked)
                     const SizedBox(
                       width: double.infinity,
                       child: Text(
@@ -235,13 +251,8 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                     SizedBox(
                       width: double.infinity,
                       child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: const WaitingRoomView(),
-                              ));
+                        onTap: () async {
+                          openWaitingRoomView(context, hunt, team, userId);
                         },
                         child: Container(
                           decoration: BoxDecoration(

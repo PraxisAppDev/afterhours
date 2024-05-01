@@ -3,18 +3,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:praxis_afterhours/apis/api_utils/token.dart';
 import 'package:praxis_afterhours/constants/colors.dart';
 import 'package:praxis_afterhours/reusables/hunt_structure.dart';
-import 'package:praxis_afterhours/views/team/create_team_view.dart';
-import 'package:praxis_afterhours/views/team/edit_team_view.dart';
 import 'package:praxis_afterhours/views/dashboard/join_hunt_options/join_team_view.dart';
-import 'package:praxis_afterhours/views/hunt/get_ready_hunt.dart';
 import 'package:praxis_afterhours/views/instructions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:animations/animations.dart';
+
+import '../team/create_team_view.dart';
 
 class JoinHuntView extends StatefulWidget {
   const JoinHuntView({super.key});
@@ -39,9 +38,10 @@ class _JoinHuntViewState extends State<JoinHuntView> {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final List<dynamic> huntData = jsonData['content'];
-      
+
       setState(() {
         _hunts = huntData.map((hunt) => Hunt.fromJson(hunt)).toList();
+        
       });
     } else {
       // Handle error case
@@ -50,11 +50,6 @@ class _JoinHuntViewState extends State<JoinHuntView> {
       }
     }
   }
-
-  // DateTime _parseDate(String dateString) {
-  //   final formatter = DateFormat('yyyy-MM-dd hh:mm a');
-  //   return formatter.parse(dateString);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +60,7 @@ class _JoinHuntViewState extends State<JoinHuntView> {
             expandedHeight: 120,
             pinned: true,
             floating: true,
+            automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(
                 left: 16,
@@ -102,8 +98,16 @@ class _JoinHuntViewState extends State<JoinHuntView> {
             elevation: 0,
           ),
           _hunts.isEmpty
-              ? const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
+              ? SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      "No hunts available!",
+                      style: GoogleFonts.poppins(
+                        color: praxisBlack,
+                        fontSize: 32,
+                      ),
+                    ),
+                  ),
                 )
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -283,7 +287,6 @@ class HuntWidget extends StatelessWidget {
   }
 }
 
-
 class JoinHuntOptionsDialogContent extends StatefulWidget {
   final Hunt hunt;
 
@@ -293,12 +296,12 @@ class JoinHuntOptionsDialogContent extends StatefulWidget {
   });
 
   @override
-  State<JoinHuntOptionsDialogContent> createState() => _JoinHuntOptionsDialogContentState();
+  State<JoinHuntOptionsDialogContent> createState() =>
+      _JoinHuntOptionsDialogContentState();
 }
 
-class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogContent> {
-  final TextEditingController newTeamNameController = TextEditingController();
-
+class _JoinHuntOptionsDialogContentState
+    extends State<JoinHuntOptionsDialogContent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -315,16 +318,27 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
             ),
           ),
           const SizedBox(height: 16),
-          OpenContainer(
-            useRootNavigator: true,
-            transitionDuration: const Duration(seconds: 1),
-            openBuilder: (context, _) => JoinTeamView(huntId: widget.hunt.id),
-            closedShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            closedColor: Colors.transparent,
-            closedBuilder: (context, _) => Container(
-              color: praxisRed,
+          GestureDetector(
+            onTap: () async {
+              //close this dialog and open a new one to join a team
+              Navigator.pop(context);
+              String? userId = await getUserId();
+              if (!context.mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => JoinTeamView(
+                    hunt: widget.hunt,
+                    userId: userId!,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: praxisRed,
+              ),
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Text(
@@ -343,65 +357,8 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
             onTap: () {
               //close this dialog and open a new one to enter a team name
               Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Text(
-                            'Enter a team name',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          TextField(
-                            decoration: const InputDecoration(
-                              hintText: 'Team Name',
-                            ),
-                            controller: newTeamNameController,
-                          ),
-                          const SizedBox(height: 16),
-                          OpenContainer(
-                            transitionDuration:
-                            const Duration(seconds: 1),
-                            openBuilder: (context, _) => CreateTeamView(hunt: widget.hunt, initialTeamName: newTeamNameController.text),
-                            closedShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            closedColor: Colors.transparent,
-                            closedBuilder: (context, _) => Container(
-                              color: praxisRed,
-                              child: const Padding(
-                                padding:
-                                EdgeInsets.symmetric(vertical: 16),
-                                child: Text(
-                                  'Create Team',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
+              showCreateHuntTeamNameDialog(context,
+                  hunt: widget.hunt, isLocked: false);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -422,16 +379,18 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
             ),
           ),
           const SizedBox(height: 16),
-          OpenContainer(
-            useRootNavigator: true,
-            transitionDuration: const Duration(seconds: 1),
-            openBuilder: (context, _) => const GetReadyHuntView(),
-            closedShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            closedColor: Colors.transparent,
-            closedBuilder: (context, _) => Container(
-              color: praxisRed,
+          GestureDetector(
+            onTap: () {
+              //close this dialog and open a new one to join a hunt alone
+              Navigator.pop(context);
+              showCreateHuntTeamNameDialog(context,
+                  hunt: widget.hunt, isLocked: true);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: praxisRed,
+              ),
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Text(
@@ -449,4 +408,74 @@ class _JoinHuntOptionsDialogContentState extends State<JoinHuntOptionsDialogCont
       ),
     );
   }
+}
+
+Future<void> showCreateHuntTeamNameDialog(BuildContext context,
+    {required Hunt hunt, required bool isLocked}) {
+  final TextEditingController newTeamNameController = TextEditingController();
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                isLocked ? 'Enter your team name' : 'Enter a team name',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Team Name',
+                ),
+                controller: newTeamNameController,
+              ),
+              const SizedBox(height: 16),
+              GestureDetector(
+                onTap: () async {
+                  //close this dialog and open a new one to create a team
+                  Navigator.pop(context);
+                  MaterialPageRoute route = await openCreateTeamManagerRoute(
+                    hunt: hunt,
+                    initialTeamName: newTeamNameController.text,
+                    lockTeam: isLocked,
+                  );
+                  if (!context.mounted) return;
+                  Navigator.push(context, route);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: praxisRed,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(
+                      isLocked ? 'Join as Individual' : 'Create Team',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

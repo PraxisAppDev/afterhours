@@ -20,6 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController fullnameController = TextEditingController();
 
   @override
   void dispose() {
@@ -81,15 +82,20 @@ class _ProfileViewState extends State<ProfileView> {
             String lastName = '';
             String email = '';
             String phoneNumber = '';
+            String fullname = '';
 
             // Parse json data
             var userInfo = snapshot.data;
             if (userInfo != null) {
               var content = userInfo['content'];
               username = content['username'];
-              List<String> fullname = content['fullname'].split(' ');
-              firstName = fullname[0];
-              lastName = fullname[1];
+              fullname = content['fullname'];
+              List<String> fullnameSplit = content['fullname'].split(' ');
+              firstName = fullnameSplit[0];
+
+              if (fullnameSplit.length > 1) {
+                lastName = fullnameSplit[1];
+              }
               email = content['email'];
               phoneNumber = content['phone'] ?? '';
             }
@@ -111,6 +117,12 @@ class _ProfileViewState extends State<ProfileView> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        ProfileTextField(
+                          editingController: fullnameController,
+                          defaultText: fullname,
+                          label: 'Full name',
+                          icon: 'profile',
+                        ),
                         ProfileTextField(
                           editingController: usernameController,
                           defaultText: username,
@@ -154,7 +166,12 @@ class _ProfileViewState extends State<ProfileView> {
                               );
                             }
                           },
-                          child: const Text('Save Changes', style: TextStyle()),
+                          child: const Text(
+                            'Save Changes',
+                            style: TextStyle(
+                              color: praxisWhite,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 16),
                         OutlinedButton(
@@ -177,7 +194,12 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             );
                           },
-                          child: const Text('Logout'),
+                          child: const Text(
+                            'Logout',
+                            style: TextStyle(
+                              color: praxisWhite,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -193,15 +215,17 @@ class _ProfileViewState extends State<ProfileView> {
 
   void _submitForm(Map<String, dynamic>? userInfo) async {
     if (userInfo != null) {
+      String fullname = fullnameController.text;
       String username = usernameController.text;
       String email = emailController.text;
       String phoneNumber = phoneNumberController.text;
 
       final updatedUserInfo = {
         ...userInfo['content'],
+        "fullname": fullname,
         "username": username,
         "email": email,
-        "phone": phoneNumber,
+        "phone": phoneNumber
       };
 
       await updateUserInfo(updatedUserInfo);
